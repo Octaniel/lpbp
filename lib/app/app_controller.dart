@@ -2,19 +2,56 @@ import 'dart:math';
 
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:lpbp/app/data/model/presenca.dart';
+import 'package:lpbp/app/data/repository/presenca_repository.dart';
 import 'package:lpbp/app/routes/app_routes.dart';
 
+import 'data/model/pessoa.dart';
+import 'data/model/usuario.dart';
+import 'data/provider/seguranca_provider.dart';
+import 'data/repository/pessoa_repository.dart';
+import 'data/repository/seguranca_repository.dart';
+
 class AppController extends GetxController {
+  final repository = SegurancaRepository();
+  final presencaRepository = PresencaRepository();
   final assetsAudioPlayer = AssetsAudioPlayer();
+  final _empregados = List<Pessoa>().obs;
+  final pessoaRepository = PessoaRepository();
+  final listPresenca = List<Presenca>();
+  var _usuario = Usuario().obs;
+  final _logado = false.obs;
+
+  bool get logado => _logado.value;
+
+  set logado(bool value) {
+    _logado.value = value;
+    update(['mostrarLogin']);
+  }
 
   AppController() {
     assetsAudioPlayer.open(
       Audio("assets/audio/1.mp3"),
       autoStart: false,
     );
+    listarEmpregados();
     entrada();
     saida();
     momentoDeTocar();
+    verificarLogado();
+  }
+
+  Usuario get usuario => _usuario.value;
+
+  set usuario(Usuario value) {
+    _usuario.value = value;
+  }
+
+  List<Pessoa> get empregados => _empregados.value;
+
+  set empregados(List<Pessoa> value) {
+    _empregados.value = value;
   }
 
   tocarOuPausar() async {
@@ -23,6 +60,18 @@ class AppController extends GetxController {
 
   parar() {
     assetsAudioPlayer.stop();
+  }
+
+  salvarPresencas(){
+    print(listPresenca.length);
+    listPresenca.forEach((element) {
+      presencaRepository.salvar(element);
+    });
+  }
+
+  salvarPresenca(Presenca presenca){
+    presenca.justificada = true;
+    presencaRepository.atualizar(presenca);
   }
 
   saida() async {
@@ -46,8 +95,11 @@ class AppController extends GetxController {
           tocarOuPausar();
           await Future.delayed(Duration(minutes: 2), () async {
             tocarOuPausar();
-            await Future.delayed(Duration(minutes: 8), () {
-              Get.offNamed(Routes.LISTAPRESENCA);
+            await Future.delayed(Duration(minutes: 3), () {
+              Get.offNamed(Routes.HOME);
+              listPresenca.forEach((element) {
+                presencaRepository.salvar(element);
+              });
             });
           });
         }
@@ -77,8 +129,11 @@ class AppController extends GetxController {
           tocarOuPausar();
           await Future.delayed(Duration(minutes: 2), () async {
             tocarOuPausar();
-            await Future.delayed(Duration(minutes: 8), () {
-              Get.offNamed(Routes.LISTAPRESENCA);
+            await Future.delayed(Duration(minutes: 3), () {
+              Get.offNamed(Routes.HOME);
+              listPresenca.forEach((element) {
+                presencaRepository.salvar(element);
+              });
             });
           });
         }
@@ -102,13 +157,45 @@ class AppController extends GetxController {
             tocarOuPausar();
             await Future.delayed(Duration(minutes: 2), () async {
               tocarOuPausar();
-              await Future.delayed(Duration(minutes: 8), () {
-                Get.offNamed(Routes.LISTAPRESENCA);
+              await Future.delayed(Duration(minutes: 3), () {
+                Get.offNamed(Routes.HOME);
+                listPresenca.forEach((element) {
+                  presencaRepository.salvar(element);
+                });
               });
             });
           });
         }
       });
+    }
+  }
+
+  listarEmpregados() async {
+    empregados = await pessoaRepository.listar();
+    update();
+  }
+
+  Pessoa filtrarPorCodigo(String codigo){
+    return empregados.firstWhere((element) => element.codigo == codigo, orElse: (){return null;});
+  }
+
+  Future<void> refreshUsuario() async {
+    final storage = await GetStorage();
+    var id = storage.read('idUsuario');
+    usuario = await repository.getId(id);
+    logado = true;
+    update();
+  }
+
+  Future<bool> logout() async {
+    usuario = Usuario();
+    return await repository.logout();
+  }
+
+  Future<bool> verificarLogado() async {
+    if (await SegurancaProvider().verificarERenovarToken()) {
+      await Get.find<AppController>().refreshUsuario();
+      logado = true;
     }
   }
 

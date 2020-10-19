@@ -3,4 +3,8 @@ abstract class Routes {
   static const MARCAPONTO = '/marcaPonto';
   static const LISTAPRESENCA = '/listaPresenca';
   static const DETALHEMPREGADO = '/detalheEmpregado';
+  static const RECORDPAGE = '/recordPage';
+  static const  HOME = '/home';
+  static const  LOGIN = '/login';
+  static const  REGISTRAR = '/registrar';
 }

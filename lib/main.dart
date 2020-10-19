@@ -24,7 +24,7 @@ void main() => runApp(GetMaterialApp(
           background: Container(color: Color(0xFFF5F5F5))),
       debugShowCheckedModeBanner: false,
       initialBinding: AppBinding(),
-      initialRoute: Routes.LISTAPRESENCA, //Rota inicial
+      initialRoute: Routes.HOME, //Rota inicial
       theme: appThemeData, //Tema personalizado app
       defaultTransition: Transition.fade, // Transição de telas padrão
       getPages: AppPages

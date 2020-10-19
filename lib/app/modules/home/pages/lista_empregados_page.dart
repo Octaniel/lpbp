@@ -30,6 +30,7 @@ class ListaEmpregadosPage extends GetView<HomeController> {
                     InkWell(
                       onTap: () {
                         Get.toNamed(Routes.DETALHEMPREGADO, arguments: e);
+                        // Get.toNamed(Routes.MARCAPONTO);
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 20),

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lpbp/app/app_controller.dart';
 import 'package:lpbp/app/data/model/pessoa.dart';
+import 'package:lpbp/app/modules/home/controllers/home_controller.dart';
+import 'package:lpbp/app/routes/app_routes.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class DetalheEmpregadoPage extends StatelessWidget {
+class DetalheEmpregadoPage extends GetView<HomeController> {
   final f = new DateFormat('dd/MM/yyyy HH:mm');
 
   @override
@@ -59,13 +62,65 @@ class DetalheEmpregadoPage extends StatelessWidget {
                                 Spacer(
                                   flex: 100,
                                 ),
+                                Visibility(
+                                  visible: Get.find<AppController>().usuario.grupo !='vendedor',
+                                  replacement: ''.text.make(),
+                                  child: Tooltip(
+                                    message: 'Mais Sobre',
+                                    child: GestureDetector(
+                                      onTap: (){
+                                        // Get.toNamed(Routes.RECORDPAGE, arguments: e);
+                                      },
+                                      child: Icon(
+                                        FontAwesomeIcons.info,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 20,),
                                 e.presente
                                     ? ''.text.make()
-                                    : Tooltip(
+                                    : e.justificada&&e.justificacaoAceitoPorGerente.isNull?Tooltip(
+                                  message: 'Justificado, mais esperando gerente',
+                                  child: GestureDetector(
+                                    onTap: (){},
+                                    child: Icon(FontAwesomeIcons.signature, color: Colors.deepOrange),
+                                  ),
+                                ):e.justificada&&e.justificacaoAceitoPorGerente&&e.justificacaoAceitoPorAdministrador.isNull?Tooltip(
+                                  message: 'Justificado, já aceito por gerente',
+                                  child: GestureDetector(
+                                    onTap: (){},
+                                    child: Icon(FontAwesomeIcons.signLanguage, color: Colors.deepOrangeAccent),
+                                  ),
+                                ):e.justificada&&e.justificacaoAceitoPorGerente&&e.justificacaoAceitoPorAdministrador?Tooltip(
+                                  message: 'Justificado, e aceito',
+                                  child: GestureDetector(
+                                    onTap: (){},
+                                    child: Icon(FontAwesomeIcons.check, color: Colors.greenAccent),
+                                  ),
+                                ):e.justificada&&!e.justificacaoAceitoPorGerente?Tooltip(
+                                  message: 'Justificado, e rejeitado',
+                                  child: GestureDetector(
+                                    onTap: (){},
+                                    child: Icon(FontAwesomeIcons.times, color: Colors.redAccent),
+                                  ),
+                                ):Get.find<AppController>().usuario.grupo !='vendedor'?Tooltip(
+                                  message: 'Ainda não foi justificado',
+                                  child: GestureDetector(
+                                    onTap: (){},
+                                    child: Icon(FontAwesomeIcons.commentSlash, color: Colors.black87),
+                                  ),
+                                ): Tooltip(
                                         message: 'Justificar',
-                                        child: Icon(
-                                          FontAwesomeIcons.indent,
-                                          color: Colors.black87,
+                                        child: GestureDetector(
+                                          onTap: (){
+                                            Get.toNamed(Routes.RECORDPAGE, arguments: e);
+                                          },
+                                          child: Icon(
+                                            FontAwesomeIcons.indent,
+                                            color: Colors.black87,
+                                          ),
                                         ),
                                       ),
                                 SizedBox(

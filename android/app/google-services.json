@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "742556804061",
+    "firebase_url": "https://lpdp-dde6b.firebaseio.com",
+    "project_id": "lpdp-dde6b",
+    "storage_bucket": "lpdp-dde6b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742556804061:android:6663d7ca6075fd12fccc34",
+        "android_client_info": {
+          "package_name": "com.bsoftware.lpbp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742556804061-8nhishk7fls3s44rsm7tcl75p6pvos8k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bsoftware.lpbp",
+            "certificate_hash": "c1854ded06c750716c1429e834c91c57c030f7bf"
+          }
+        },
+        {
+          "client_id": "742556804061-3ut1jhq15uk24psj5v5u2v9h3adibav7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0Yuhcu3pU8il0YPgVfCnn9kVNJc0Woig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742556804061-3ut1jhq15uk24psj5v5u2v9h3adibav7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

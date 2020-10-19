@@ -196,6 +196,7 @@ class AppController extends GetxController {
     if (await SegurancaProvider().verificarERenovarToken()) {
       await Get.find<AppController>().refreshUsuario();
       logado = true;
+      print(logado);
     }
   }
 

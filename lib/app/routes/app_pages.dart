@@ -1,6 +1,7 @@
 import 'package:lpbp/app/modules/home/home_binding.dart';
 import 'package:lpbp/app/modules/home/pages/detalhe_empregado_page.dart';
 import 'package:lpbp/app/modules/home/pages/home_page.dart';
+import 'package:lpbp/app/modules/home/pages/info_presenca_page.dart';
 import 'package:lpbp/app/modules/home/pages/lista_empregados_page.dart';
 import 'package:lpbp/app/modules/home/pages/record_page.dart';
 import 'package:lpbp/app/modules/marcacao_ponto/marcacao_ponto_binding.dart';
@@ -42,5 +43,9 @@ abstract class AppPages {
         name: Routes.REGISTRAR,
         page: () => RegistrarPage(),
         binding: SegurancaBinding()),
+    GetPage(
+        name: Routes.INFOPRESENCA,
+        page: () => InfoPresencaPage(),
+        binding: HomeBinding()),
   ];
 }

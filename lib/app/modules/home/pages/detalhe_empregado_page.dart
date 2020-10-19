@@ -69,7 +69,7 @@ class DetalheEmpregadoPage extends GetView<HomeController> {
                                     message: 'Mais Sobre',
                                     child: GestureDetector(
                                       onTap: (){
-                                        // Get.toNamed(Routes.RECORDPAGE, arguments: e);
+                                         Get.toNamed(Routes.INFOPRESENCA, arguments: e);
                                       },
                                       child: Icon(
                                         FontAwesomeIcons.info,

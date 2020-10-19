@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:lpbp/app/data/model/presenca.dart';

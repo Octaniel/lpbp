@@ -36,7 +36,7 @@ class HomePage extends GetView<HomeController> {
               GetBuilder<AppController>(
                 builder: (_) {
                   return Visibility(
-                    visible: Get.find<AppController>().logado,
+                    visible: !Get.find<AppController>().logado,
                     replacement: ''.text.make(),
                     child: AnimatedContainer(
                       height: 60,
@@ -60,6 +60,13 @@ class HomePage extends GetView<HomeController> {
       onTap: () {
         if (rota == Routes.DETALHEMPREGADO) {
           if (Get.find<AppController>().usuario.grupo == 'vendedor') {
+            var filtrarPorCodigo = Get.find<AppController>()
+                .filtrarPorCodigo(Get.find<AppController>().usuario.pessoa.codigo);
+            Get.toNamed(rota,
+                arguments: filtrarPorCodigo);
+          } else if (Get.find<AppController>().usuario.grupo.isNotBlank) {
+            Get.toNamed(Routes.LISTAPRESENCA);
+          } else {
             Get.defaultDialog(
               title: 'Teu Codigo',
               onConfirm: () {
@@ -128,8 +135,6 @@ class HomePage extends GetView<HomeController> {
                     hintText: 'Sua Senha'),
               ),
             );
-          }else{
-            Get.toNamed(Routes.LISTAPRESENCA);
           }
         } else
           Get.toNamed(rota);

@@ -44,6 +44,7 @@ class SegurancaProvider {
 
 
   Future<bool> login(String senha, String email) async {
+    print("object");
     String login = "username=$email&password=$senha&grant_type=password";
     final response = await http.post("${baseUrl}oauth/token",
         headers: <String, String>{
@@ -60,7 +61,7 @@ class SegurancaProvider {
       storage.write("access_token", decode["access_token"]);
       storage.write("date_expires_in", DateTime.now().toString());
       storage.write("expires_in", decode["expires_in"].toString());
-      storage.write("refresh_token", decode["refresh_token"].toString());
+      storage.write("refresh_token", decode["refresh_token"]);
       return true;
     }
     return false;

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:lpbp/app/data/model/presenca.dart';
 import 'package:lpbp/app/res/lpbp_http.dart';

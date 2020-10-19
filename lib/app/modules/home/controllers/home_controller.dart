@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:lpbp/app/app_controller.dart';
 import 'package:lpbp/app/data/model/pessoa.dart';
 import 'package:lpbp/app/data/model/presenca.dart';
-import 'package:lpbp/app/data/provider/seguranca_provider.dart';
 
 class HomeController extends GetxController {
   final _empregados = List<Pessoa>().obs;

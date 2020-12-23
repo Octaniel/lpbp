@@ -36,9 +36,11 @@ class AppController extends GetxController {
       autoStart: false,
     );
     listarEmpregados();
-    entrada();
-    saida();
-    momentoDeTocar();
+    if(!GetPlatform.isWeb){
+      entrada();
+      saida();
+      momentoDeTocar();
+    }
     verificarLogado();
   }
 
@@ -180,7 +182,7 @@ class AppController extends GetxController {
   }
 
   Future<void> refreshUsuario() async {
-    final storage = await GetStorage();
+    final storage = GetStorage();
     var id = storage.read('idUsuario');
     usuario = await repository.getId(id);
     logado = true;

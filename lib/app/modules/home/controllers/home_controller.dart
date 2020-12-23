@@ -8,6 +8,14 @@ class HomeController extends GetxController {
   final _audio = ''.obs;
   final _presenca = Presenca().obs;
   final _boxShadow = true.obs;
+  final _isPlay = false.obs;
+
+  bool get isPlay => _isPlay.value;
+
+  set isPlay(bool value) {
+    _isPlay.value = value;
+    update(['isPlay']);
+  }
 
   bool get boxShadow => _boxShadow.value;
 

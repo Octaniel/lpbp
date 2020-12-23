@@ -1,13 +1,19 @@
+import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lpbp/app/app_controller.dart';
 import 'package:lpbp/app/data/model/presenca.dart';
 import 'package:lpbp/app/modules/home/controllers/home_controller.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class InfoPresencaPage extends GetView<HomeController> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  AudioPlayer audioPlayer = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -16,26 +22,69 @@ class InfoPresencaPage extends GetView<HomeController> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: 'Informação da presença(${presenca.presente?'Presente':'Ausente'})'.text.make(),
+        title:
+            'Informação da presença(${presenca.presente ? 'Presente' : 'Ausente'})'
+                .text
+                .make(),
         centerTitle: true,
       ),
       body: Center(
         child: ListView(
           children: [
-            Container(
-              width: 200,
-              height: 300,
-              child: Image.network(
-                presenca.nomeFoto,
-                fit: BoxFit.contain,
-              ),
+            GetBuilder<HomeController>(
+              builder: (_) {
+                print(presenca.nomeAudio);
+                return presenca.presente
+                    ? Container(
+                        width: 200,
+                        height: 300,
+                        child: Image.network(
+                          presenca.nomeFoto,
+                          fit: BoxFit.contain,
+                        ),
+                      )
+                    : Column(
+                  children: [
+                    'Justificação por audio:'.text.make(),
+                    SizedBox(height: 10,),
+                    Container(
+                      child: IconButton(
+                        onPressed: () {
+                          if (controller.isPlay) {
+                            audioPlayer.pause();
+                            controller.isPlay = false;
+                          } else {
+                            audioPlayer.play(presenca.nomeAudio,
+                                isLocal: false);
+                            controller.isPlay = true;
+                          }
+                        },
+                        icon: Icon(controller.isPlay
+                            ? Icons.pause
+                            : Icons.play_arrow),
+                      ),
+                    ),
+                  ],
+                );
+              },
+              id: 'isPlay',
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                'Data da Presenca:'.text.size(18).color(Colors.greenAccent).make(),
-                '${dateFormat.format(presenca.dataCriacao)}'.text.size(20).color(Colors.greenAccent).make()
+                'Data da Presenca:'
+                    .text
+                    .size(18)
+                    .color(Colors.greenAccent)
+                    .make(),
+                '${dateFormat.format(presenca.dataCriacao)}'
+                    .text
+                    .size(20)
+                    .color(Colors.greenAccent)
+                    .make()
               ],
             )
           ],

@@ -1,6 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lpbp/app/app_controller.dart';
 import 'package:lpbp/app/modules/home/controllers/home_controller.dart';
 import 'package:lpbp/app/routes/app_routes.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -22,10 +23,10 @@ class ListaEmpregadosPage extends GetView<HomeController> {
       body: SafeArea(
         child: ListView(
           children: [
-            GetBuilder<HomeController>(builder: (_) {
-              print(controller.empregados.length);
+            GetBuilder<AppController>(builder: (v) {
+              print(v.empregados.length);
               return Column(
-                children: controller.empregados
+                children: v.empregados
                     .map((e) =>
                     InkWell(
                       onTap: () {
@@ -66,7 +67,7 @@ class ListaEmpregadosPage extends GetView<HomeController> {
                     ))
                     .toList(),
               );
-            }),
+            },),
           ],
         ),
       ),

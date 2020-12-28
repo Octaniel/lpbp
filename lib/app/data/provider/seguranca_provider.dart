@@ -17,7 +17,7 @@ class SegurancaProvider {
     try {
       var response = await httpClient.get(baseUrl + 'home');
       if (response.statusCode == 200) {
-        List jsonResponse = json.decode(decoder(response.body));
+        List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
         var listUsuario = jsonResponse.map<Usuario>((map) {
           return Usuario.fromJson(map);
         }).toList();
@@ -33,7 +33,7 @@ class SegurancaProvider {
     var response = await LpbpHttp().get('${url}usuario/$id',
         headers: <String, String>{"Content-Type": "application/json"});
     if (response.statusCode == 200) {
-      var jsonResponse = json.decode(decoder(response.body));
+      var jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       return Usuario.fromJson(jsonResponse);
     } else {
       print('erro -get');

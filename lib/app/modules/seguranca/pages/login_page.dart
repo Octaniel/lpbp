@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lpbp/app/routes/app_routes.dart';
-import 'package:lpbp/app/widgets/text_input_widget.dart';
+import 'package:lpbp/app/widgets/text-form-widget.dart';
+import 'package:lpbp/app/widgets/text-widget.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../app_controller.dart';
@@ -13,103 +14,109 @@ class LoginPage extends GetView<SegurancaController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: ListView(
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height / 5, horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  'BEM VINDO AO E-DOBRA'.text.center.size(20).semiBold.make(),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Form(
-                    key: formKey,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height,
-                      child: Column(
-                        children: [
-                          TextInputWidget(
-                              false,
-                              Icons.email,
-                              'Email',
-                                  (value) => !controller.email.contains('@') ||
-                                  !controller.email.contains('.')
-                                  ? 'Email invalido'
-                                  : null,
-                              TextInputType.emailAddress,
-                                  (value) => controller.email = value),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextInputWidget(
-                              true,
-                              Icons.lock,
-                              'Senha',
-                                  (value) => controller.senha.length < 1
-                                  ? 'Senha tem no minimo 6 caracter'
-                                  : null,
-                              TextInputType.text,
-                                  (value) => controller.senha = value),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: InkWell(
-                              onTap: () {},
-                              child: 'Esqueci senha'
-                                  .text
-                                  .size(14)
-                                  .color(Color(0xFF575E63))
-                                  .make(),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            height: 47,
-                            width: MediaQuery.of(context).size.width,
-                            child: GetBuilder<SegurancaController>(
-                              builder: (_) {
-                                return RaisedButton(
-                                  disabledColor: Color(0xFF3C63FE).withOpacity(.5),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16)),
-                                  color: Color(0xFF3C63FE),
-                                  onPressed:
-                                  !controller.circularProgressButaoRegistrar
-                                      ? () {
-                                    validarForm();
-                                  }
-                                      : null,
-                                  child: !controller.circularProgressButaoRegistrar
-                                      ? 'LOGIN'
-                                      .text
-                                      .color(Colors.white)
-                                      .size(14)
-                                      .make()
-                                      : CircularProgressIndicator(),
-                                );
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+              child: TextWidget(
+                text: GetPlatform.isWeb?'FEEDFOOD ADMIN':'FEEDFOOD',
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
               ),
-            )
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(0),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color.fromRGBO(143, 148, 251, .2),
+                        blurRadius: 20.0,
+                        offset: Offset(0, 10))
+                  ]),
+              width: 300,
+              height: GetPlatform.isWeb?270:312,
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    TextFormFieldWidget(
+                        label: 'E-mail',
+                        onChanged: (v) => controller.email = v,
+                        isObscure: false,
+                        icon: Icon(
+                          Icons.email,
+                          color: Colors.black,
+                        ),
+                        inputType: TextInputType.emailAddress,
+                        validator: (value) {
+                          var email = controller.email;
+                          if (GetUtils.isNullOrBlank(email))
+                            return "Preencha o seu e-mail";
+                          if (!GetUtils.isEmail(email))
+                            return "E-mail inválido";
+                          return null;
+                        }),
+                    TextFormFieldWidget(
+                        label: 'Senha',
+                        onChanged: (v) => controller.senha = v,
+                        isObscure: true,
+                        icon: Icon(
+                          Icons.lock_outline,
+                          color: Colors.black,
+                        ),
+                        inputType: TextInputType.text,
+                        validator: (value) {
+                          var senha = controller.senha;
+                          if (GetUtils.isNullOrBlank(senha))
+                            return "Preencha a sua senha";
+                          return null;
+                        }),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      width: Get.width - 30,
+                      height: 40,
+                      child: RaisedButton(
+                          color: Colors.grey[300],
+                          elevation: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Center(
+                                child: Obx(
+                                      () => controller.circularProgressButaoRegistrar
+                                      ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                      : TextWidget(
+                                    text: "LOGAR",
+                                    color: Colors.black,
+                                  ),
+                                )),
+                          ),
+                          onPressed: !controller.circularProgressButaoRegistrar
+                              ? () {
+                            validarForm();
+                          }
+                              : null),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    // GetPlatform.isWeb?Text(''):
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

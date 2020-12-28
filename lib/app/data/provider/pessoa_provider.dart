@@ -14,7 +14,7 @@ class PessoaProvider {
       "Content-Type":"application/json"
     });
     if (response.statusCode == 200) {
-      List jsonResponse = json.decode(decoder(response.body));
+      List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       var listUsuarioModel = jsonResponse.map<Pessoa>((map) {
         return Pessoa.fromMap(map);
       }).toList();

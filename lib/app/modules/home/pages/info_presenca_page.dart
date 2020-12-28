@@ -18,6 +18,9 @@ class InfoPresencaPage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     Presenca presenca = Get.arguments;
+    if(presenca==null){
+      Navigator.pop(Get.context);
+    }
     var dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
     return Scaffold(
       key: _scaffoldKey,
@@ -44,28 +47,35 @@ class InfoPresencaPage extends GetView<HomeController> {
                         ),
                       )
                     : Column(
-                  children: [
-                    'Justificação por audio:'.text.make(),
-                    SizedBox(height: 10,),
-                    Container(
-                      child: IconButton(
-                        onPressed: () {
-                          if (controller.isPlay) {
-                            audioPlayer.pause();
-                            controller.isPlay = false;
-                          } else {
-                            audioPlayer.play(presenca.nomeAudio,
-                                isLocal: false);
-                            controller.isPlay = true;
-                          }
-                        },
-                        icon: Icon(controller.isPlay
-                            ? Icons.pause
-                            : Icons.play_arrow),
-                      ),
-                    ),
-                  ],
-                );
+                        children: [
+                          presenca.nomeAudio.isNotBlank?
+                          Column(
+                            children: [
+                              'Justificação por audio:'.text.make(),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                child: IconButton(
+                                  onPressed: () {
+                                    if (controller.isPlay) {
+                                      audioPlayer.pause();
+                                      controller.isPlay = false;
+                                    } else {
+                                      audioPlayer.play(presenca.nomeAudio,
+                                          isLocal: false);
+                                      controller.isPlay = true;
+                                    }
+                                  },
+                                  icon: Icon(controller.isPlay
+                                      ? Icons.pause
+                                      : Icons.play_arrow),
+                                ),
+                              ),
+                            ],
+                          ):Container(),
+                        ],
+                      );
               },
               id: 'isPlay',
             ),

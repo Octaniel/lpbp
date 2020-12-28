@@ -21,15 +21,27 @@ class HomePage extends GetView<HomeController> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              containerCustom('ENTRADA', Routes.MARCAPONTO),
-              SizedBox(
-                height: 20,
-              ),
-              containerCustom('SAIDA', Routes.MARCAPONTO),
-              SizedBox(
-                height: 20,
-              ),
+              GetPlatform.isMobile
+                  ? Column(
+                      children: [
+                        containerCustom('ENTRADA', Routes.MARCAPONTO),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        containerCustom('SAIDA', Routes.MARCAPONTO),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    )
+                  : Container(),
               containerCustom('STATUS', Routes.DETALHEMPREGADO),
+              SizedBox(
+                height: 20,
+              ),
+              GetPlatform.isWeb
+                  ? containerCustom('REGISTRAR FUNCIONARIO', Routes.REGISTRAR)
+                  : Container(),
               SizedBox(
                 height: 40,
               ),
@@ -60,10 +72,9 @@ class HomePage extends GetView<HomeController> {
       onTap: () {
         if (rota == Routes.DETALHEMPREGADO) {
           if (Get.find<AppController>().usuario.grupo == 'vendedor') {
-            var filtrarPorCodigo = Get.find<AppController>()
-                .filtrarPorCodigo(Get.find<AppController>().usuario.pessoa.codigo);
-            Get.toNamed(rota,
-                arguments: filtrarPorCodigo);
+            var filtrarPorCodigo = Get.find<AppController>().filtrarPorCodigo(
+                Get.find<AppController>().usuario.pessoa.codigo);
+            Get.toNamed(rota, arguments: filtrarPorCodigo);
           } else if (Get.find<AppController>().usuario.grupo.isNotBlank) {
             Get.toNamed(Routes.LISTAPRESENCA);
           } else {

@@ -14,6 +14,9 @@ class DetalheEmpregadoPage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     Pessoa arguments = Get.arguments;
+    if(arguments==null){
+      Navigator.pop(Get.context);
+    }
     return Scaffold(
       appBar: AppBar(
         title: 'Pontos'.text.make(),

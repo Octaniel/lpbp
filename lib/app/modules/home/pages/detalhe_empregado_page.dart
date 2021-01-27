@@ -84,13 +84,13 @@ class DetalheEmpregadoPage extends GetView<HomeController> {
                                 SizedBox(width: 20,),
                                 e.presente
                                     ? ''.text.make()
-                                    : e.justificada&&e.justificacaoAceitoPorGerente.isNull?Tooltip(
+                                    : e.justificada&&e.justificacaoAceitoPorGerente==null?Tooltip(
                                   message: 'Justificado, mais esperando gerente',
                                   child: GestureDetector(
                                     onTap: (){},
                                     child: Icon(FontAwesomeIcons.signature, color: Colors.deepOrange),
                                   ),
-                                ):e.justificada&&e.justificacaoAceitoPorGerente&&e.justificacaoAceitoPorAdministrador.isNull?Tooltip(
+                                ):e.justificada&&e.justificacaoAceitoPorGerente&&e.justificacaoAceitoPorAdministrador==null?Tooltip(
                                   message: 'Justificado, já aceito por gerente',
                                   child: GestureDetector(
                                     onTap: (){},

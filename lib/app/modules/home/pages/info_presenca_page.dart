@@ -1,15 +1,13 @@
-import 'dart:io';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:lpbp/app/app_controller.dart';
 import 'package:lpbp/app/data/model/presenca.dart';
 import 'package:lpbp/app/modules/home/controllers/home_controller.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+// ignore: must_be_immutable
 class InfoPresencaPage extends GetView<HomeController> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 

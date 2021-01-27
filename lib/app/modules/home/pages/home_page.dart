@@ -84,7 +84,7 @@ class HomePage extends GetView<HomeController> {
                 if (controller.presenca.codigo.isNotBlank) {
                   var filtrarPorCodigo = Get.find<AppController>()
                       .filtrarPorCodigo(controller.presenca.codigo);
-                  if (filtrarPorCodigo.isNull) {
+                  if (filtrarPorCodigo==null) {
                     Get.rawSnackbar(
                         icon: Icon(
                           FontAwesomeIcons.eraser,

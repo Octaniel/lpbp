@@ -41,5 +41,9 @@ class SegurancaRepository {
   Future<bool> delete(id) async {
     return await segurancaProvider.delete(id);
   }
+
+  Future<List<Usuario>> listar() async {
+    return await segurancaProvider.listar();
+  }
 }
     

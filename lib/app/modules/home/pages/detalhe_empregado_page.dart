@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lpbp/app/app_controller.dart';
-import 'package:lpbp/app/data/model/pessoa.dart';
 import 'package:lpbp/app/modules/home/controllers/home_controller.dart';
 import 'package:lpbp/app/routes/app_routes.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -13,10 +12,10 @@ class DetalheEmpregadoPage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    Pessoa arguments = Get.arguments;
-    if(arguments==null){
-      Navigator.pop(Get.context);
-    }
+    // Pessoa arguments = Get.arguments;
+    // if(arguments==null){
+    //   Navigator.pop(Get.context);
+    // }
     return Scaffold(
       appBar: AppBar(
         title: 'Pontos'.text.make(),
@@ -26,7 +25,7 @@ class DetalheEmpregadoPage extends GetView<HomeController> {
         child: ListView(
           children: [
             Column(
-              children: arguments.presencas
+              children: controller.pessoa.presencas
                   .map((e) => InkWell(
                         onTap: () {
                           // Get.toNamed(Routes.DETALHEMPREGADO, arguments: e);
@@ -66,7 +65,7 @@ class DetalheEmpregadoPage extends GetView<HomeController> {
                                   flex: 100,
                                 ),
                                 Visibility(
-                                  visible: Get.find<AppController>().usuario.grupo !='vendedor',
+                                  visible: Get.find<AppController>().usuario.tipo !='Vendedor',
                                   replacement: ''.text.make(),
                                   child: Tooltip(
                                     message: 'Mais Sobre',
@@ -108,7 +107,7 @@ class DetalheEmpregadoPage extends GetView<HomeController> {
                                     onTap: (){},
                                     child: Icon(FontAwesomeIcons.times, color: Colors.redAccent),
                                   ),
-                                ):Get.find<AppController>().usuario.grupo !='vendedor'?Tooltip(
+                                ):Get.find<AppController>().usuario.tipo !='Vendedor'?Tooltip(
                                   message: 'Ainda não foi justificado',
                                   child: GestureDetector(
                                     onTap: (){},

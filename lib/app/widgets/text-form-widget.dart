@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
+  final TextEditingController controller;
   final label;
   final Function(String) onChanged;
   final bool isObscure;
@@ -15,7 +16,7 @@ class TextFormFieldWidget extends StatelessWidget {
       this.isObscure,
       this.icon,
       this.inputType,
-      this.validator});
+      this.validator, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,7 @@ class TextFormFieldWidget extends StatelessWidget {
       decoration: BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.grey[100]))),
       child: TextFormField(
+        controller: controller,
         onChanged: onChanged,
         obscureText: isObscure,
         keyboardType: inputType,

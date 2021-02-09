@@ -1,7 +1,7 @@
 abstract class Routes {
   static const INITIAL = '/';
   static const MARCAPONTO = '/marcaPonto';
-  static const LISTAPRESENCA = '/listaPresenca';
+  static const LISTAFUNCIONARIO = '/listaFuncionario';
   static const DETALHEMPREGADO = '/detalheEmpregado';
   static const RECORDPAGE = '/recordPage';
   static const  HOME = '/home';

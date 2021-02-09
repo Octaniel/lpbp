@@ -2,13 +2,25 @@ import 'package:get/get.dart';
 import 'package:lpbp/app/app_controller.dart';
 import 'package:lpbp/app/data/model/pessoa.dart';
 import 'package:lpbp/app/data/model/presenca.dart';
+import 'package:lpbp/app/data/model/usuario.dart';
+import 'package:lpbp/app/data/repository/seguranca_repository.dart';
 
 class HomeController extends GetxController {
-  final _empregados = List<Pessoa>().obs;
+  final repository = SegurancaRepository();
+  final _empregados = <Usuario>[].obs;
   final _audio = ''.obs;
   final _presenca = Presenca().obs;
   final _boxShadow = true.obs;
   final _isPlay = false.obs;
+  final _circularProgressButaoRegistrar = false.obs;
+  var pessoa = Pessoa();
+  var usuario = Usuario();
+
+  get circularProgressButaoRegistrar => _circularProgressButaoRegistrar.value;
+
+  set circularProgressButaoRegistrar(value) {
+    _circularProgressButaoRegistrar.value = value;
+  }
 
   bool get isPlay => _isPlay.value;
 
@@ -41,15 +53,22 @@ class HomeController extends GetxController {
     listarEmpregados();
   }
 
-  List<Pessoa> get empregados => _empregados.value;
+  // ignore: invalid_use_of_protected_member
+  List<Usuario> get empregados => _empregados.value;
 
-  set empregados(List<Pessoa> value) {
-    _empregados.value = value;
+  set empregados(List<Usuario> value) {
+    _empregados.assignAll(value);
   }
 
   listarEmpregados() async {
     empregados = Get.find<AppController>().empregados;
     update();
+  }
+
+  Future<bool> salvarUsuario() async {
+    usuario.pessoa = pessoa;
+    usuario.nome = pessoa.nome.toLowerCase().trim();
+    return await repository.add(usuario);
   }
 
 

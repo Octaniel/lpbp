@@ -23,51 +23,115 @@ class ListaEmpregadosPage extends GetView<HomeController> {
       body: SafeArea(
         child: ListView(
           children: [
-            GetBuilder<AppController>(builder: (v) {
-              print(v.empregados.length);
-              return Column(
-                children: v.empregados
-                    .map((e) =>
-                    InkWell(
-                      onTap: () {
-                        Get.toNamed(Routes.DETALHEMPREGADO, arguments: e);
-                        // Get.toNamed(Routes.MARCAPONTO);
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        height: 60,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          elevation: 3,
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 20,
-                              ),
-                              e.nome.text
-                                  .size(18)
-                                  .bold
-                                  .make(),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              e.morada.selectableText.size(17).make(),
-                              Spacer(
-                                flex: 100,
-                              ),
-                              Icon(Icons.arrow_forward_ios),
-                              SizedBox(
-                                width: 10,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ))
-                    .toList(),
-              );
-            },),
+            GetBuilder<AppController>(
+              builder: (v) {
+                print(v.empregados.length);
+                return Center(
+                  child: Wrap(
+                    children: v.empregados
+                        .map((e) => Container(
+                                  width: 120,
+                                  height: 140,
+                                  child: Card(
+                                    elevation: 5,
+                                    child: Column(
+                                      children: [
+                                        e.nome.text.size(18).bold.make(),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        e.pessoa.morada.selectableText
+                                            .size(17)
+                                            .make(),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        if (e.tipo == 'Administrador')
+                                          e.tipo.selectableText.semiBold
+                                              .size(16)
+                                              .color(Colors.greenAccent)
+                                              .make()
+                                        else if (e.tipo == 'Gerente')
+                                          e.tipo.selectableText.semiBold
+                                              .size(17)
+                                              .color(Colors.blueAccent)
+                                              .make()
+                                        else
+                                          e.tipo.selectableText.semiBold
+                                              .size(17)
+                                              .color(Colors.orangeAccent)
+                                              .make(),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            IconButton(
+                                                icon: Icon(Icons.edit),
+                                                onPressed: () {
+                                                  controller.pessoa = e.pessoa;
+                                                  print(e.tipo);
+                                                  controller.usuario = e;
+                                                  print(
+                                                      controller.usuario.tipo);
+                                                  Get.toNamed(Routes.REGISTRAR);
+                                                }),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            IconButton(
+                                                icon: Icon(Icons.more_horiz),
+                                                onPressed: () {
+                                                  controller.pessoa = e.pessoa;
+                                                  Get.toNamed(
+                                                      Routes.DETALHEMPREGADO,
+                                                      arguments: e);
+                                                }),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                            //     InkWell(
+                            //   onTap: () {
+                            //     Get.toNamed(Routes.DETALHEMPREGADO, arguments: e);
+                            //     // Get.toNamed(Routes.MARCAPONTO);
+                            //   },
+                            //   child: Container(
+                            //     margin: EdgeInsets.symmetric(horizontal: 20),
+                            //     height: 60,
+                            //     child: Card(
+                            //       shape: RoundedRectangleBorder(
+                            //           borderRadius: BorderRadius.circular(10)),
+                            //       elevation: 3,
+                            //       child: Row(
+                            //         children: [
+                            //           SizedBox(
+                            //             width: 20,
+                            //           ),
+                            //           e.nome.text.size(18).bold.make(),
+                            //           SizedBox(
+                            //             width: 10,
+                            //           ),
+                            //           e.morada.selectableText.size(17).make(),
+                            //           Spacer(
+                            //             flex: 100,
+                            //           ),
+                            //           Icon(Icons.arrow_forward_ios),
+                            //           SizedBox(
+                            //             width: 10,
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                            )
+                        .toList(),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),

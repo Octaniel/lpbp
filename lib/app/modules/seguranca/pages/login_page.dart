@@ -21,7 +21,7 @@ class LoginPage extends GetView<SegurancaController> {
           children: [
             Container(
               child: TextWidget(
-                text: GetPlatform.isWeb?'FEEDFOOD ADMIN':'FEEDFOOD',
+                text: GetPlatform.isWeb?'LPDP ADMIN':'LPDP',
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),

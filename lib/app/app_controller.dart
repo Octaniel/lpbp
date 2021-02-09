@@ -7,7 +7,6 @@ import 'package:lpbp/app/data/model/presenca.dart';
 import 'package:lpbp/app/data/repository/presenca_repository.dart';
 import 'package:lpbp/app/routes/app_routes.dart';
 
-import 'data/model/pessoa.dart';
 import 'data/model/usuario.dart';
 import 'data/provider/seguranca_provider.dart';
 import 'data/repository/pessoa_repository.dart';
@@ -17,9 +16,9 @@ class AppController extends GetxController {
   final repository = SegurancaRepository();
   final presencaRepository = PresencaRepository();
   final assetsAudioPlayer = AssetsAudioPlayer();
-  final _empregados = List<Pessoa>().obs;
+  final _empregados = <Usuario>[].obs;
   final pessoaRepository = PessoaRepository();
-  final listPresenca = List<Presenca>();
+  final listPresenca = <Presenca>[];
   var _usuario = Usuario().obs;
   final _logado = false.obs;
 
@@ -50,10 +49,11 @@ class AppController extends GetxController {
     _usuario.value = value;
   }
 
-  List<Pessoa> get empregados => _empregados.value;
+  // ignore: invalid_use_of_protected_member
+  List<Usuario> get empregados => _empregados.value;
 
-  set empregados(List<Pessoa> value) {
-    _empregados.value = value;
+  set empregados(List<Usuario> value) {
+    _empregados.assignAll(value);
   }
 
   tocarOuPausar() async {
@@ -172,13 +172,13 @@ class AppController extends GetxController {
     }
   }
 
-  listarEmpregados() async {
-    empregados = await pessoaRepository.listar();
+ Future<void> listarEmpregados() async {
+    empregados = await repository.listar();
     update();
   }
 
-  Pessoa filtrarPorCodigo(String codigo){
-    return empregados.firstWhere((element) => element.codigo == codigo, orElse: (){return null;});
+  Usuario filtrarPorCodigo(String codigo){
+    return empregados.firstWhere((element) => element.pessoa.codigo == codigo, orElse: (){return null;});
   }
 
   Future<void> refreshUsuario() async {

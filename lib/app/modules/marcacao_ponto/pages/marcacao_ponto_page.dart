@@ -237,7 +237,7 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
             borderRadius: 10,
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
       } else {
-        var nomeCompleto = '${filtrarPorCodigo.nome} ${filtrarPorCodigo.apelido}';
+        var nomeCompleto = '${filtrarPorCodigo.nome} ${filtrarPorCodigo.pessoa.apelido}';
         var dateTime = DateTime.now();
         var nomeFoto = '${nomeCompleto}_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}:${dateTime.minute}';
         var saveArquiv = await saveArquivo(

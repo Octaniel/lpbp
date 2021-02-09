@@ -23,7 +23,7 @@ class PessoaProvider {
       print(response.body);
       print("object");
     }
-    return List<Pessoa>();
+    return <Pessoa>[];
   }
 
   Future<bool> salvar(Pessoa pessoa) async {

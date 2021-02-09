@@ -5,16 +5,16 @@ class Usuario {
   String nome;
   String senha;
   Pessoa pessoa;
-  String grupo;
+  String tipo;
 
-  Usuario({this.id, this.nome, this.senha, this.grupo});
+  Usuario({this.id, this.nome, this.senha, this.tipo = 'Administrador'});
 
   Usuario.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nome = json['nome'];
     senha = json['senha'];
     pessoa = Pessoa.fromMap(json['pessoa']);
-    grupo = json['grupo'];
+    tipo = json['tipo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -22,7 +22,8 @@ class Usuario {
     data['id'] = this.id;
     data['nome'] = this.nome;
     data['senha'] = this.senha;
-    data['grupo'] = this.grupo;
+    data['tipo'] = this.tipo;
+    data['pessoa'] = pessoa.toMap();
     return data;
   }
 }

@@ -251,7 +251,7 @@ class RecordPage extends GetView<HomeController> {
     if (controller.audio.isNotEmpty && controller.presenca.codigo.isNotEmpty) {
       var find = Get.find<AppController>();
       var filtrarPorCodigo = find.filtrarPorCodigo(controller.presenca.codigo);
-      var nomeCompleto = '${filtrarPorCodigo.nome} ${filtrarPorCodigo.apelido}';
+      var nomeCompleto = '${filtrarPorCodigo.nome} ${filtrarPorCodigo.pessoa.apelido}';
       var dateTime = DateTime.now();
       var nomeAudio =
           '${nomeCompleto}_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}:${dateTime.minute}';

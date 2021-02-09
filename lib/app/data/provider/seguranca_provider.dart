@@ -68,7 +68,7 @@ class SegurancaProvider {
   }
 
   Future<bool> add(Usuario obj) async {
-    var response = await httpClient.post('${baseUrl}usuario/add',
+    var response = await LpbpHttp().post('${baseUrl}usuario/add',
         headers: {'Content-Type': 'application/json'}, body: jsonEncode(obj));
     if (response.statusCode == 201) {
       return true;
@@ -157,5 +157,23 @@ class SegurancaProvider {
       }
     } catch (_) {}
     return false;
+  }
+
+  Future<List<Usuario>> listar() async {
+    final response =
+    await LpbpHttp().get("${url}usuario/listar",headers: <String,String>{
+      "Content-Type":"application/json"
+    });
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+      var listUsuarioModel = jsonResponse.map<Usuario>((map) {
+        return Usuario.fromJson(map);
+      }).toList();
+      return listUsuarioModel;
+    } else {
+      print(response.body);
+      print("object");
+    }
+    return <Usuario>[];
   }
 }

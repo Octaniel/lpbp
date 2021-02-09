@@ -4,10 +4,10 @@ import 'package:lpbp/app/modules/home/pages/home_page.dart';
 import 'package:lpbp/app/modules/home/pages/info_presenca_page.dart';
 import 'package:lpbp/app/modules/home/pages/lista_empregados_page.dart';
 import 'package:lpbp/app/modules/home/pages/record_page.dart';
+import 'package:lpbp/app/modules/home/pages/registar_page.dart';
 import 'package:lpbp/app/modules/marcacao_ponto/marcacao_ponto_binding.dart';
 import 'package:lpbp/app/modules/marcacao_ponto/pages/marcacao_ponto_page.dart';
 import 'package:lpbp/app/modules/seguranca/pages/login_page.dart';
-import 'package:lpbp/app/modules/seguranca/pages/registar_page.dart';
 import 'package:lpbp/app/modules/seguranca/seguranca_binding.dart';
 
 import 'app_routes.dart';
@@ -20,7 +20,7 @@ abstract class AppPages {
         page: () => MarcacaoPontoPage(),
         binding: MarcacaoPontoBinding()),
     GetPage(
-        name: Routes.LISTAPRESENCA,
+        name: Routes.LISTAFUNCIONARIO,
         page: () => ListaEmpregadosPage(),
         binding: HomeBinding()),
     GetPage(
@@ -42,7 +42,7 @@ abstract class AppPages {
     GetPage(
         name: Routes.REGISTRAR,
         page: () => RegistrarPage(),
-        binding: SegurancaBinding()),
+        binding: HomeBinding()),
     GetPage(
         name: Routes.INFOPRESENCA,
         page: () => InfoPresencaPage(),

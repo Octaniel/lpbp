@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:lpbp/app/app_controller.dart';
+import 'package:lpbp/app/data/model/pessoa.dart';
 import 'package:lpbp/app/modules/home/controllers/home_controller.dart';
 import 'package:lpbp/app/routes/app_routes.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -68,15 +69,16 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget containerCustom(String label, String rota) {
+    controller.pessoa = Pessoa();
     return GestureDetector(
       onTap: () {
         if (rota == Routes.DETALHEMPREGADO) {
-          if (Get.find<AppController>().usuario.grupo == 'vendedor') {
+          if (Get.find<AppController>().usuario.tipo == 'Vendedor') {
             var filtrarPorCodigo = Get.find<AppController>().filtrarPorCodigo(
                 Get.find<AppController>().usuario.pessoa.codigo);
             Get.toNamed(rota, arguments: filtrarPorCodigo);
-          } else if (Get.find<AppController>().usuario.grupo.isNotBlank) {
-            Get.toNamed(Routes.LISTAPRESENCA);
+          } else if (Get.find<AppController>().usuario.tipo.isNotBlank) {
+            Get.toNamed(Routes.LISTAFUNCIONARIO);
           } else {
             Get.defaultDialog(
               title: 'Teu Codigo',

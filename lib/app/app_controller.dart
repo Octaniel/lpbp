@@ -90,7 +90,7 @@ class AppController extends GetxController {
             dateTime.millisecond,
             dateTime.microsecond);
         var dateTime3 = DateTime(dateTime.year, dateTime.month, dateTime.day,
-            19, 0, dateTime.second, dateTime.millisecond, dateTime.microsecond);
+            19, 00, dateTime.second, dateTime.millisecond, dateTime.microsecond);
         if (dateTime.isAtSameMomentAs(dateTime2) ||
             dateTime.isAtSameMomentAs(dateTime3)) {
           Get.offNamed(Routes.MARCAPONTO);
@@ -120,8 +120,8 @@ class AppController extends GetxController {
             dateTime.year,
             dateTime.month,
             dateTime.day,
-            13,
-            30,
+            9,
+            40,
             dateTime.second,
             dateTime.millisecond,
             dateTime.microsecond);

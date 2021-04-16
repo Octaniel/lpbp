@@ -22,8 +22,7 @@ class HomePage extends GetView<HomeController> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              GetPlatform.isMobile
-                  ? Column(
+              Column(
                       children: [
                         containerCustom('MARCAR', Routes.MARCAPONTO),
                         SizedBox(
@@ -34,8 +33,7 @@ class HomePage extends GetView<HomeController> {
                         //   height: 20,
                         // ),
                       ],
-                    )
-                  : Container(),
+                    ),
               containerCustom('STATUS', Routes.DETALHEMPREGADO),
               SizedBox(
                 height: 20,

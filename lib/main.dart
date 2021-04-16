@@ -18,41 +18,41 @@ Future<void> main()  async {
       WidgetsFlutterBinding.ensureInitialized();
       await GetStorage.init();
       // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-
       OneSignal.shared.init(
-          "b856e4e5-e7c5-46cf-95e6-b67aea0fa4e7",
-          iOSSettings: {
-                OSiOSSettings.autoPrompt: false,
-                OSiOSSettings.inAppLaunchUrl: false
-          }
-      );
-      OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
-
-// The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
-      await OneSignal.shared.promptUserForPushNotificationPermission(fallbackToSettings: true);
-
-  OneSignal.shared.setNotificationReceivedHandler((OSNotification notification) async {
-    Get.offNamed(Routes.MARCAPONTO);
-    Get.find<AppController>().tocarOuPausar();
-    await Future.delayed(Duration(minutes: 2), () async {
-      Get.find<AppController>().tocarOuPausar();
-      Get.offNamed(Routes.HOME);
-      // await Future.delayed(Duration(minutes: 3), () {
-      //   Get.offNamed(Routes.HOME);
-      // });
-    });
-  });
-
-  OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) async {
-    Get.offNamed(Routes.MARCAPONTO);
-    Get.find<AppController>().tocarOuPausar();
-    await Future.delayed(Duration(minutes: 2), () async {
-      Get.find<AppController>().tocarOuPausar();
-      await Future.delayed(Duration(minutes: 3), () {
-        Get.offNamed(Routes.HOME);
-      });
-    });
-  });
+//           "b856e4e5-e7c5-46cf-95e6-b67aea0fa4e7",
+//           iOSSettings: {
+//                 OSiOSSettings.autoPrompt: false,
+//                 OSiOSSettings.inAppLaunchUrl: false
+//           }
+//       );
+//       OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
+//
+// // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+//       await OneSignal.shared.promptUserForPushNotificationPermission(fallbackToSettings: true);
+//
+//   OneSignal.shared.setNotificationReceivedHandler((OSNotification notification) async {
+//     Get.offNamed(Routes.MARCAPONTO);
+//     Get.find<AppController>().tocarOuPausar();
+//     await Future.delayed(Duration(minutes: 2), () async {
+//       Get.find<AppController>().tocarOuPausar();
+//       Get.offNamed(Routes.HOME);
+//       // await Future.delayed(Duration(minutes: 3), () {
+//       //   Get.offNamed(Routes.HOME);
+//       // });
+//     });
+//   });
+//
+//   OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) async {
+//     Get.offNamed(Routes.MARCAPONTO);
+//     Get.find<AppController>().tocarOuPausar();
+//     await Future.delayed(Duration(minutes: 2), () async {
+//       Get.find<AppController>().tocarOuPausar();
+//       await Future.delayed(Duration(minutes: 3), () {
+//         Get.offNamed(Routes.HOME);
+//       });
+//     });
+//   });
+//
 
       runApp(GetMaterialApp(
       builder: (context, widget) => ResponsiveWrapper.builder(

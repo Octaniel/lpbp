@@ -89,6 +89,11 @@ class HomeController extends GetxController {
   }
 
   Future<bool> salvarUsuario() async {
+    if(pessoa.turno == null||pessoa.turno == 'Manhã')
+      pessoa.turno = 'MANHA';
+    else pessoa.turno = 'TARDE';
+    if(usuario.tipo==null)
+      usuario.tipo = 'Vendedor';
     usuario.pessoa = pessoa;
     usuario.nome = pessoa.nome.toLowerCase().trim();
     return await repository.add(usuario);

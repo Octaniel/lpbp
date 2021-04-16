@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:lpbp/app/data/provider/auth_provider.dart';
 import 'package:lpbp/app/routes/app_routes.dart';
 import 'package:lpbp/app/widgets/text-form-widget.dart';
 import 'package:lpbp/app/widgets/text-widget.dart';
@@ -11,8 +13,18 @@ import '../controllers/seguranca_controller.dart';
 class LoginPage extends GetView<SegurancaController> {
   final formKey = GlobalKey<FormState>();
 
+  Future verificarToken() {
+    Future.delayed(Duration(seconds: 2), () async {
+      if (await AuthProvider().verificarERenovarToken()) {
+        await Get.find<AppController>().refreshUsuario();
+        Get.offNamed(Routes.HOME);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    verificarToken();
     return Scaffold(
       body: Center(
         child: Column(
@@ -47,6 +59,7 @@ class LoginPage extends GetView<SegurancaController> {
                 child: Column(
                   children: [
                     TextFormFieldWidget(
+                        autofillHints: [AutofillHints.username, AutofillHints.email],
                         label: 'E-mail',
                         onChanged: (v) => controller.email = v,
                         isObscure: false,
@@ -64,6 +77,10 @@ class LoginPage extends GetView<SegurancaController> {
                           return null;
                         }),
                     TextFormFieldWidget(
+                      autofillHints: [AutofillHints.password],
+                      onFieldSubmitted: (v){
+                        validarForm();
+                      },
                         label: 'Senha',
                         onChanged: (v) => controller.senha = v,
                         isObscure: true,
@@ -71,7 +88,7 @@ class LoginPage extends GetView<SegurancaController> {
                           Icons.lock_outline,
                           color: Colors.black,
                         ),
-                        inputType: TextInputType.text,
+                        inputType: TextInputType.visiblePassword,
                         validator: (value) {
                           var senha = controller.senha;
                           if (GetUtils.isNullOrBlank(senha))
@@ -128,11 +145,21 @@ class LoginPage extends GetView<SegurancaController> {
       controller.circularProgressButaoRegistrar = true;
       if (await controller.logar()) {
         Get.find<AppController>().refreshUsuario();
-        Get.rawSnackbar(
+        Get.snackbar("", "",
+            titleText: 'Sucesso'
+                .text
+                .color(Colors.white)
+                .size(16)
+                .bold
+                .make(),
+            snackPosition: SnackPosition.BOTTOM,
+            messageText: 'Bem vindo'.text.color(Colors.white).size(15).bold.make(),
+            icon: Icon(
+              FontAwesomeIcons.check,
+              color: Colors.white,
+            ),
             duration: Duration(seconds: 2),
             backgroundColor: Color(0xFF3CFEB5),
-            messageText:
-                'Bem vindo'.text.color(Colors.white).size(15).bold.make(),
             borderRadius: 10,
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
         Future.delayed(Duration(seconds: 2), () {
@@ -140,15 +167,26 @@ class LoginPage extends GetView<SegurancaController> {
           Get.offAndToNamed(Routes.HOME);
         });
       } else {
-        Get.rawSnackbar(
-            duration: Duration(seconds: 2),
-            backgroundColor: Color(0xFFFE3C3C),
+        Get.snackbar("", "",
+            titleText: 'Erro'
+                .text
+                .color(Colors.white)
+                .size(16)
+                .bold
+                .make(),
+            snackPosition: SnackPosition.BOTTOM,
             messageText: 'Senha ou E-mail Invalido'
                 .text
                 .color(Colors.white)
                 .size(15)
                 .bold
                 .make(),
+            icon: Icon(
+              FontAwesomeIcons.times,
+              color: Colors.white,
+            ),
+            duration: Duration(seconds: 2),
+            backgroundColor: Color(0xFFFE3C3C),
             borderRadius: 10,
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
         Future.delayed(Duration(seconds: 2), () {

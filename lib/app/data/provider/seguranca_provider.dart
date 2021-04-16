@@ -107,10 +107,8 @@ class SegurancaProvider {
   }
 
   Future<void> refreshToken() async {
-    print('<<<<<<<<333');
     final storage = GetStorage();
     var read1 = storage.read<String>("refresh_token");
-    print("<<<<<<bb"+read1);
     var response =
         await http.post("${baseUrl}oauth/token", headers: <String, String>{
       "Content-Type": "application/x-www-form-urlencoded",
@@ -120,7 +118,6 @@ class SegurancaProvider {
       "refresh_token": read1 == null ? "" : read1
     });
     if (response.statusCode == 200) {
-      print('<<<<<<<<4444');
       var decode = jsonDecode(response.body);
       storage.write("access_token", decode["access_token"]);
       storage.write("date_expires_in", DateTime.now().toString());

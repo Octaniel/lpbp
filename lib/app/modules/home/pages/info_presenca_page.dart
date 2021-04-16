@@ -8,6 +8,8 @@ import 'package:lpbp/app/data/model/presenca.dart';
 import 'package:lpbp/app/modules/home/controllers/home_controller.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../../app_controller.dart';
+
 // ignore: must_be_immutable
 class InfoPresencaPage extends GetView<HomeController> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
@@ -16,156 +18,298 @@ class InfoPresencaPage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    Presenca presenca = Get.arguments;
-    if (presenca == null) {
-      Navigator.pop(Get.context);
-    }
+    // Presenca controller.presencaa = Get.arguments;
     var dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: 'Informação da ${presenca.presente ? 'presença' : 'ausencia'}'
-            .text
-            .make(),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: ListView(
-          children: [
-            GetBuilder<HomeController>(
-              builder: (_) {
-                print(presenca.nomeAudio);
-                return presenca.presente
-                    ? Container(
-                        width: 200,
-                        height: 300,
-                        child: presenca.nomeFoto != null
-                            ? Image.network(
-                                presenca.nomeFoto,
-                                fit: BoxFit.contain,
-                              )
-                            : Container(),
-                      )
-                    : Column(
-                        children: [
-                          presenca.nomeAudio.isNotBlank
-                              ? Column(
-                                  children: [
-                                    'Justificação por audio:'.text.make(),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Container(
-                                      child: IconButton(
-                                        onPressed: () {
-                                          if (controller.isPlay) {
-                                            audioPlayer.pause();
-                                            controller.isPlay = false;
-                                          } else {
-                                            audioPlayer.play(presenca.nomeAudio,
-                                                isLocal: false);
-                                            controller.isPlay = true;
-                                          }
-                                        },
-                                        icon: Icon(controller.isPlay
-                                            ? Icons.pause
-                                            : Icons.play_arrow),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Container(),
-                        ],
-                      );
-              },
-              id: 'isPlay',
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                'Data da  ${presenca.presente ? 'presença' : 'ausencia'}:'
-                    .text
-                    .size(18)
-                    .color(presenca.presente
-                        ? Colors.greenAccent
-                        : presenca.justificacaoAceitoPorAdministrador == true
-                            ? Colors.lightGreenAccent
-                            : presenca.justificacaoAceitoPorGerente == true
-                                ? Colors.lightBlueAccent
-                                : presenca.justificada
-                                    ? Colors.deepOrangeAccent
-                                    : Colors.redAccent)
-                    .make(),
-                '${dateFormat.format(presenca.dataCriacao)}'
-                    .text
-                    .size(20)
-                    .color(presenca.presente
-                        ? Colors.greenAccent
-                        : presenca.justificacaoAceitoPorAdministrador == true
-                            ? Colors.lightGreenAccent
-                            : presenca.justificacaoAceitoPorGerente == true
-                                ? Colors.lightBlueAccent
-                                : presenca.justificada
-                                    ? Colors.deepOrangeAccent
-                                    : Colors.redAccent)
-                    .make(),
-              ],
-            ),
-            if (presenca.presente)
-              '*Esteve presente'.text.size(14).center.make()
-            else if (!presenca.justificada)
-              '*Ainda não foi justificada'.text.size(14).center.make()
-            else if (presenca.justificacaoAceitoPorGerente == null)
-              '*Já justificada mais ainda não foi aceita por gerente'
+    return WillPopScope(
+      onWillPop: () {
+        controller.isPlay = false;
+        controller.presencaa = Presenca();
+        return Future.value(true);
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title:
+              'Informação da ${controller.presencaa.presente ? 'presença' : 'ausencia'}'
                   .text
-                  .size(14)
-                  .center
-                  .make()
-            else if (presenca.justificacaoAceitoPorAdministrador == null)
-              '*Já justificada e já foi aceita por gerente, mais ainda não'
-                      ' foi aceita por administrador'
-                  .text
-                  .size(14)
-                  .center
-                  .make()
-            else
-              '*Já justificada e já foi aceita por gerente e admininstrador'
-                  .text
-                  .size(14)
-                  .center
                   .make(),
-            if((!presenca.presente&&presenca.justificada))
-            [
-              IconButton(
-                  icon: Icon(FontAwesomeIcons.raspberryPi),
-                  onPressed: () {
-                    Get.defaultDialog(
-                        middleText:
-                            'Tens certeza que queres rejeitar a esta justificação?',
-                        title: 'Aceitar Justificaçao',
-                        onConfirm: () {
-                          Navigator.pop(Get.context);
-                        });
-                  }),
-              SizedBox(
-                width: 5,
-              ),
-              IconButton(
-                  icon: Icon(FontAwesomeIcons.checkCircle),
-                  onPressed: () {
-                    Get.defaultDialog(
-                        middleText:
-                            'Tens certeza que queres aceitar a esta justificação?',
-                        title: 'Aceitar Justificaçao',
-                        onConfirm: () {
-                          Navigator.pop(Get.context);
-                        });
-                  })
-            ].row().centered(),
-          ],
+          centerTitle: true,
+        ),
+        body: Center(
+          child: GetBuilder<HomeController>(
+            builder: (_) {
+              return ListView(
+                children: [
+                  GetBuilder<HomeController>(
+                    builder: (_) {
+                      print(controller.presencaa.nomeAudio);
+                      return controller.presencaa.presente == true
+                          ? Container(
+                              width: 200,
+                              height: 300,
+                              child: controller.presencaa.nomeFoto != null
+                                  ? Image.network(
+                                      controller.presencaa.nomeFoto,
+                                      fit: BoxFit.contain,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes
+                                                : null,
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  : Container(),
+                            )
+                          : Column(
+                              children: [
+                                controller.presencaa.nomeAudio != null
+                                    ? Column(
+                                        children: [
+                                          'Justificação por audio:'.text.make(),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            child: IconButton(
+                                              onPressed: () {
+                                                if (controller.isPlay) {
+                                                  audioPlayer.pause();
+                                                  controller.isPlay = false;
+                                                } else {
+                                                  audioPlayer.play(
+                                                      controller
+                                                          .presencaa.nomeAudio,
+                                                      isLocal: false);
+                                                  controller.isPlay = true;
+                                                }
+                                              },
+                                              icon: Icon(controller.isPlay
+                                                  ? Icons.pause
+                                                  : Icons.play_arrow),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : Container(),
+                              ],
+                            );
+                    },
+                    id: 'isPlay',
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      'Data da  ${controller.presencaa.presente ? 'presença' : 'ausencia'}:'
+                          .text
+                          .size(18)
+                          .color(controller.presencaa.presente
+                              ? Colors.greenAccent
+                              : controller.presencaa
+                                          .justificacaoAceitoPorAdministrador ==
+                                      true
+                                  ? Colors.lightGreenAccent
+                                  : controller.presencaa
+                                              .justificacaoAceitoPorGerente ==
+                                          true
+                                      ? Colors.lightBlueAccent
+                                      : controller.presencaa.justificada
+                                          ? Colors.deepOrangeAccent
+                                          : Colors.redAccent)
+                          .make(),
+                      '${dateFormat.format(controller.presencaa.dataCriacao)}'
+                          .text
+                          .size(20)
+                          .color(controller.presencaa.presente
+                              ? Colors.greenAccent
+                              : controller.presencaa
+                                          .justificacaoAceitoPorAdministrador ==
+                                      true
+                                  ? Colors.lightGreenAccent
+                                  : controller.presencaa
+                                              .justificacaoAceitoPorGerente ==
+                                          true
+                                      ? Colors.lightBlueAccent
+                                      : controller.presencaa.justificada
+                                          ? Colors.deepOrangeAccent
+                                          : Colors.redAccent)
+                          .make(),
+                    ],
+                  ),
+                  if (controller.presencaa.presente)
+                    '*Esteve presente'.text.size(14).center.make()
+                  else if (!controller.presencaa.justificada)
+                    '*Ainda não foi justificada'.text.size(14).center.make()
+                  else if (controller.presencaa.justificacaoAceitoPorGerente ==
+                          null &&
+                      controller.presencaa.justificacaoAceitoPorAdministrador ==
+                          null)
+                    '*Já justificada mais ainda não foi aceita por gerente'
+                        .text
+                        .size(14)
+                        .center
+                        .make()
+                  else if (controller.presencaa.justificacaoAceitoPorGerente ==
+                      false)
+                    '*Já justificada e já foi rejeitada por gerente'
+                        .text
+                        .size(14)
+                        .center
+                        .make()
+                  else if (controller.presencaa.justificacaoAceitoPorGerente ==
+                          true &&
+                      controller.presencaa.justificacaoAceitoPorAdministrador ==
+                          null)
+                    '*Já justificada e já foi aceita por gerente, mais ainda não'
+                            ' foi aceita por administrador'
+                        .text
+                        .size(14)
+                        .center
+                        .make()
+                  else if (controller.presencaa.justificacaoAceitoPorGerente ==
+                          true &&
+                      controller.presencaa.justificacaoAceitoPorAdministrador ==
+                          true)
+                    '*Já justificada e já foi aceita por gerente e admininstrador'
+                        .text
+                        .size(14)
+                        .center
+                        .make()
+                  else if (controller.presencaa.justificacaoAceitoPorGerente ==
+                          false &&
+                      controller.presencaa.justificacaoAceitoPorAdministrador ==
+                          false)
+                    '*Já justificada e já foi rejeitada por gerente e admininstrador'
+                        .text
+                        .size(14)
+                        .center
+                        .make()
+                  else if (controller
+                          .presencaa.justificacaoAceitoPorAdministrador ==
+                      true)
+                    '*Já justificada e já foi aceita por admininstrador'
+                        .text
+                        .size(14)
+                        .center
+                        .make()
+                  else
+                    '*Já justificada e já foi rejeitada por admininstrador'
+                        .text
+                        .size(14)
+                        .center
+                        .make(),
+                  if ((!controller.presencaa.presente &&
+                          controller.presencaa.justificada) &&
+                      (Get.find<AppController>().usuario.tipo != 'Vendedor' &&
+                          Get.find<AppController>().usuario.tipo != null))
+                    [
+                      IconButton(
+                          icon: Icon(FontAwesomeIcons.raspberryPi),
+                          onPressed: () {
+                            Get.defaultDialog(
+                                middleText:
+                                    'Tens certeza que queres rejeitar a esta justificação?',
+                                title: 'Aceitar Justificaçao',
+                                onConfirm: () async {
+                                  var tipo =
+                                      Get.find<AppController>().usuario.tipo;
+                                  if (tipo == "Admininstrador")
+                                    controller.presencaa
+                                            .justificacaoAceitoPorAdministrador =
+                                        false;
+                                  else
+                                    controller.presencaa
+                                        .justificacaoAceitoPorGerente = false;
+                                  await controller
+                                      .atualizarPresenca(controller.presencaa);
+                                  Navigator.pop(Get.context);
+                                  controller.pessoa.presencas
+                                      .forEach((element) {
+                                    if (element.id == controller.presencaa.id)
+                                      element = controller.presencaa;
+                                    controller.listarEmpregados();
+                                  });
+                                  Get.rawSnackbar(
+                                      icon: Icon(FontAwesomeIcons.check),
+                                      duration: Duration(seconds: 2),
+                                      backgroundColor: Color(0xFF3CFEB5),
+                                      messageText: Text(
+                                        'Justificação rejeitada por ${tipo.toLowerCase()} com sucesso',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      borderRadius: 10,
+                                      margin: EdgeInsets.only(
+                                          left: 20, right: 20, bottom: 20));
+                                });
+                          }),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      IconButton(
+                          icon: Icon(FontAwesomeIcons.checkCircle),
+                          onPressed: () {
+                            Get.defaultDialog(
+                                middleText:
+                                    'Tens certeza que queres aceitar a esta justificação?',
+                                title: 'Aceitar Justificaçao',
+                                onConfirm: () async {
+                                  var tipo =
+                                      Get.find<AppController>().usuario.tipo;
+                                  if (tipo == "Admininstrador")
+                                    controller.presencaa
+                                            .justificacaoAceitoPorAdministrador =
+                                        true;
+                                  else
+                                    controller.presencaa
+                                        .justificacaoAceitoPorGerente = true;
+                                  await controller
+                                      .atualizarPresenca(controller.presencaa);
+                                  Navigator.pop(Get.context);
+                                  controller.pessoa.presencas
+                                      .forEach((element) {
+                                    if (element.id == controller.presencaa.id)
+                                      element = controller.presencaa;
+                                    controller.listarEmpregados();
+                                  });
+                                  Get.rawSnackbar(
+                                      icon: Icon(FontAwesomeIcons.check),
+                                      duration: Duration(seconds: 2),
+                                      backgroundColor: Color(0xFF3CFEB5),
+                                      messageText: Text(
+                                        'Justificação aceita por ${tipo.toLowerCase()} com sucesso',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      borderRadius: 10,
+                                      margin: EdgeInsets.only(
+                                          left: 20, right: 20, bottom: 20));
+                                });
+                          })
+                    ].row().centered()
+                ],
+              );
+            },
+            id: 'infoPresenca',
+          ),
         ),
       ),
     );

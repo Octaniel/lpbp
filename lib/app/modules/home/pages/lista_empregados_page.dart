@@ -30,7 +30,7 @@ class ListaEmpregadosPage extends GetView<HomeController> {
                   child: Wrap(
                     children: v.empregados
                         .map((e) => Container(
-                                  width: 120,
+                                  width: e.tipo == 'Admininstrador'?130:120,
                                   height: 140,
                                   child: Card(
                                     elevation: 5,
@@ -46,7 +46,7 @@ class ListaEmpregadosPage extends GetView<HomeController> {
                                         SizedBox(
                                           height: 5,
                                         ),
-                                        if (e.tipo == 'Administrador')
+                                        if (e.tipo == 'Admininstrador')
                                           e.tipo.selectableText.semiBold
                                               .size(16)
                                               .color(Colors.greenAccent)

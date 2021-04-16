@@ -25,14 +25,14 @@ class HomePage extends GetView<HomeController> {
               GetPlatform.isMobile
                   ? Column(
                       children: [
-                        containerCustom('ENTRADA', Routes.MARCAPONTO),
+                        containerCustom('MARCAR', Routes.MARCAPONTO),
                         SizedBox(
                           height: 20,
                         ),
-                        containerCustom('SAIDA', Routes.MARCAPONTO),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        // containerCustom('SAIDA', Routes.MARCAPONTO),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
                       ],
                     )
                   : Container(),
@@ -40,9 +40,41 @@ class HomePage extends GetView<HomeController> {
               SizedBox(
                 height: 20,
               ),
-              GetPlatform.isWeb
-                  ? containerCustom('REGISTRAR FUNCIONARIO', Routes.REGISTRAR)
-                  : Container(),
+              GetBuilder<AppController>(
+                builder: (_) {
+                  return Visibility(
+                    visible: Get.find<AppController>().usuario.tipo ==
+                        'Admininstrador',
+                    replacement: ''.text.make(),
+                    child: AnimatedContainer(
+                      height: 60,
+                      margin: EdgeInsets.symmetric(horizontal: 40),
+                      duration: Duration(seconds: 2),
+                      child: containerCustom(
+                          'REGISTRAR FUNCIONARIO', Routes.REGISTRAR),
+                    ),
+                  );
+                },
+                id: 'mostrarLogin',
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              GetBuilder<AppController>(
+                builder: (_) {
+                  return Visibility(
+                    visible: Get.find<AppController>().logado,
+                    replacement: ''.text.make(),
+                    child: AnimatedContainer(
+                      height: 60,
+                      margin: EdgeInsets.symmetric(horizontal: 40),
+                      duration: Duration(seconds: 2),
+                      child: containerCustom('LOGOUT', Routes.REGISTRAR),
+                    ),
+                  );
+                },
+                id: 'mostrarLogin',
+              ),
               SizedBox(
                 height: 40,
               ),
@@ -69,15 +101,37 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget containerCustom(String label, String rota) {
-    controller.pessoa = Pessoa();
     return GestureDetector(
-      onTap: () {
-        if (rota == Routes.DETALHEMPREGADO) {
+      onTap: () async {
+        if (label == 'MARCAR') {
+          if(!await controller.registar()){
+            Get.rawSnackbar(
+                icon: Icon(
+                  FontAwesomeIcons.erlang,
+                  color: Colors.white,
+                ),
+                duration: Duration(seconds: 2),
+                backgroundColor: Color(0xFFFE3C3C),
+                messageText: Text(
+                  'Erro no servidor, por favor contacte o admininstrador do sistema',
+                  style: TextStyle(
+                      color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+                borderRadius: 10,
+                margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
+          }
+        } else if (label == 'LOGOUT') {
+          if (await Get.find<AppController>().logout()) {
+            Get.find<AppController>().logado = false;
+          }
+        } else if (rota == Routes.DETALHEMPREGADO) {
           if (Get.find<AppController>().usuario.tipo == 'Vendedor') {
             var filtrarPorCodigo = Get.find<AppController>().filtrarPorCodigo(
                 Get.find<AppController>().usuario.pessoa.codigo);
             Get.toNamed(rota, arguments: filtrarPorCodigo);
-          } else if (Get.find<AppController>().usuario.tipo.isNotBlank) {
+          } else if (Get.find<AppController>().usuario.tipo ==
+                  'Admininstrador' ||
+              Get.find<AppController>().usuario.tipo == 'Gerente') {
             Get.toNamed(Routes.LISTAFUNCIONARIO);
           } else {
             Get.defaultDialog(
@@ -86,7 +140,7 @@ class HomePage extends GetView<HomeController> {
                 if (controller.presenca.codigo.isNotBlank) {
                   var filtrarPorCodigo = Get.find<AppController>()
                       .filtrarPorCodigo(controller.presenca.codigo);
-                  if (filtrarPorCodigo==null) {
+                  if (filtrarPorCodigo == null) {
                     Get.rawSnackbar(
                         icon: Icon(
                           FontAwesomeIcons.eraser,
@@ -105,7 +159,9 @@ class HomePage extends GetView<HomeController> {
                         margin:
                             EdgeInsets.only(left: 20, right: 20, bottom: 20));
                   } else
-                    Get.toNamed(rota, arguments: filtrarPorCodigo);
+                    controller.pessoa = filtrarPorCodigo.pessoa;
+                  Navigator.pop(Get.context);
+                  Get.toNamed(rota, arguments: filtrarPorCodigo);
                 }
               },
               content: TextField(

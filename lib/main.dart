@@ -1,3 +1,8 @@
+import 'package:get_storage/get_storage.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+
+import 'app/app_controller.dart';
 import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
 import 'app/theme/my_theme.dart';
@@ -8,7 +13,48 @@ import 'package:get/get.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
 
-void main() => runApp(GetMaterialApp(
+Future<void> main()  async {
+      // TestWidgetsFlutterBinding.ensureInitialized();
+      WidgetsFlutterBinding.ensureInitialized();
+      await GetStorage.init();
+      // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+
+      OneSignal.shared.init(
+          "b856e4e5-e7c5-46cf-95e6-b67aea0fa4e7",
+          iOSSettings: {
+                OSiOSSettings.autoPrompt: false,
+                OSiOSSettings.inAppLaunchUrl: false
+          }
+      );
+      OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
+
+// The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+      await OneSignal.shared.promptUserForPushNotificationPermission(fallbackToSettings: true);
+
+  OneSignal.shared.setNotificationReceivedHandler((OSNotification notification) async {
+    Get.offNamed(Routes.MARCAPONTO);
+    Get.find<AppController>().tocarOuPausar();
+    await Future.delayed(Duration(minutes: 2), () async {
+      Get.find<AppController>().tocarOuPausar();
+      Get.offNamed(Routes.HOME);
+      // await Future.delayed(Duration(minutes: 3), () {
+      //   Get.offNamed(Routes.HOME);
+      // });
+    });
+  });
+
+  OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) async {
+    Get.offNamed(Routes.MARCAPONTO);
+    Get.find<AppController>().tocarOuPausar();
+    await Future.delayed(Duration(minutes: 2), () async {
+      Get.find<AppController>().tocarOuPausar();
+      await Future.delayed(Duration(minutes: 3), () {
+        Get.offNamed(Routes.HOME);
+      });
+    });
+  });
+
+      runApp(GetMaterialApp(
       builder: (context, widget) => ResponsiveWrapper.builder(
           BouncingScrollWrapper.builder(context, widget),
           maxWidth: 1200,
@@ -33,4 +79,4 @@ void main() => runApp(GetMaterialApp(
       translationsKeys:
           AppTranslation.translations, // Suas chaves contendo as traduções<map>
     ));
-  
+}

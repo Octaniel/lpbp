@@ -15,6 +15,7 @@ class PresencaProvider{
         body: json.encode(presenca.toMap()));
 
     if (response.statusCode == 201) {
+      print('Salvou');
       return true;
     } else {
       print("object");

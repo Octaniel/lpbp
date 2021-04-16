@@ -39,6 +39,7 @@ Future<Response> get(url, {Map<String, String> headers}) =>
     }
     }
     var read = storage.read("access_token");
+    print('<<<<<<<<'+read);
     if(headers==null){
       headers = Map();
     }
@@ -47,5 +48,5 @@ Future<Response> get(url, {Map<String, String> headers}) =>
     });
     return fn(headers);
   }
-   
+
 }

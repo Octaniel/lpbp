@@ -124,7 +124,7 @@ class RegistrarPage extends GetView<HomeController> {
                               width: 10,
                             ),
                             VxTextDropDown(
-                                    ['Administrador', 'Gerente', 'Vendedor'],
+                                    ['Admininstrador', 'Gerente', 'Vendedor'],
                                     selectedValue: controller.usuario.tipo,
                                     onChanged: (v) {
                               print(v);

@@ -50,18 +50,19 @@ class SegurancaProvider {
         headers: <String, String>{
           "Content-Type": "application/x-www-form-urlencoded",
           "Authorization": "Basic YW5ndWxhcjpAbmd1bEByMA==",
-          "bmobile": " ",
+          "bmobile": "b",
         },
         body: login);
     if (response.statusCode == 200) {
-      final storage = await GetStorage();
+      final storage = GetStorage();
       var decode = jsonDecode(response.body);
-      storage.write("nomeUsuario", decode["nome"]);
-      storage.write("idUsuario", decode["idUsuario"]);
-      storage.write("access_token", decode["access_token"]);
-      storage.write("date_expires_in", DateTime.now().toString());
-      storage.write("expires_in", decode["expires_in"].toString());
-      storage.write("refresh_token", decode["refresh_token"]);
+      await storage.write("nomeUsuario", decode["nome"]);
+      await storage.write("idUsuario", decode["idUsuario"]);
+      await storage.write("access_token", decode["access_token"]);
+      await storage.write("date_expires_in", DateTime.now().toString());
+      await storage.write("expires_in", decode["expires_in"].toString());
+      await storage.write("refresh_token", decode["refresh_token"]);
+      print(storage.read<String>("refresh_token"));
       return true;
     }
     return false;
@@ -80,7 +81,7 @@ class SegurancaProvider {
 
   Future<bool> logout() async {
     final httpfat = LpbpHttp();
-    final storage = await GetStorage();
+    final storage = GetStorage();
     var response = await httpfat.delete("${baseUrl}tokens/revoke");
     if (response.statusCode == 204) {
       await storage.erase();
@@ -92,7 +93,7 @@ class SegurancaProvider {
   }
 
   Future<bool> accsessTokenExpirado() async {
-    final storage = await GetStorage();
+    final storage = GetStorage();
     var read = storage.read("date_expires_in");
     var read1 = storage.read("expires_in");
     if (read == null) return true;
@@ -106,8 +107,10 @@ class SegurancaProvider {
   }
 
   Future<void> refreshToken() async {
-    final storage = await GetStorage();
-    var read1 = storage.read("refresh_token");
+    print('<<<<<<<<333');
+    final storage = GetStorage();
+    var read1 = storage.read<String>("refresh_token");
+    print("<<<<<<bb"+read1);
     var response =
         await http.post("${baseUrl}oauth/token", headers: <String, String>{
       "Content-Type": "application/x-www-form-urlencoded",
@@ -117,6 +120,7 @@ class SegurancaProvider {
       "refresh_token": read1 == null ? "" : read1
     });
     if (response.statusCode == 200) {
+      print('<<<<<<<<4444');
       var decode = jsonDecode(response.body);
       storage.write("access_token", decode["access_token"]);
       storage.write("date_expires_in", DateTime.now().toString());
@@ -125,6 +129,7 @@ class SegurancaProvider {
   }
 
   Future<bool> verificarERenovarToken() async {
+    print('<<<<<<<<222');
     if (await accsessTokenExpirado()) {
       await refreshToken();
       if (await accsessTokenExpirado()) {
@@ -161,7 +166,7 @@ class SegurancaProvider {
 
   Future<List<Usuario>> listar() async {
     final response =
-    await LpbpHttp().get("${url}usuario/listar",headers: <String,String>{
+    await http.get("${url}usuario/listar",headers: <String,String>{
       "Content-Type":"application/json"
     });
     if (response.statusCode == 200) {

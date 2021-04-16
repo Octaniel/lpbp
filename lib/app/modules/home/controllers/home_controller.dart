@@ -1,12 +1,17 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:lpbp/app/app_controller.dart';
 import 'package:lpbp/app/data/model/pessoa.dart';
 import 'package:lpbp/app/data/model/presenca.dart';
 import 'package:lpbp/app/data/model/usuario.dart';
+import 'package:lpbp/app/data/repository/auth_repository.dart';
+import 'package:lpbp/app/data/repository/presenca_repository.dart';
 import 'package:lpbp/app/data/repository/seguranca_repository.dart';
 
 class HomeController extends GetxController {
   final repository = SegurancaRepository();
+  final repositoryPresenca = PresencaRepository();
+  final repositoryAuth = AuthRepository();
   final _empregados = <Usuario>[].obs;
   final _audio = ''.obs;
   final _presenca = Presenca().obs;
@@ -14,7 +19,25 @@ class HomeController extends GetxController {
   final _isPlay = false.obs;
   final _circularProgressButaoRegistrar = false.obs;
   var pessoa = Pessoa();
+  var presencaa = Presenca();
   var usuario = Usuario();
+  final _pauseGrav = false.obs;
+  AudioPlayer audioPlayer = AudioPlayer();
+  final _gravando = false.obs;
+
+  get gravando => _gravando.value;
+
+  set gravando(value) {
+    _gravando.value = value;
+    update(['gravando']);
+  }
+
+  get pauseGrav => _pauseGrav.value;
+
+  set pauseGrav(value) {
+    _pauseGrav.value = value;
+    update(['playReplay']);
+  }
 
   get circularProgressButaoRegistrar => _circularProgressButaoRegistrar.value;
 
@@ -26,7 +49,7 @@ class HomeController extends GetxController {
 
   set isPlay(bool value) {
     _isPlay.value = value;
-    update(['isPlay']);
+    update(['isPlay', 'playReplay']);
   }
 
   bool get boxShadow => _boxShadow.value;
@@ -54,15 +77,15 @@ class HomeController extends GetxController {
   }
 
   // ignore: invalid_use_of_protected_member
-  List<Usuario> get empregados => _empregados.value;
-
-  set empregados(List<Usuario> value) {
-    _empregados.assignAll(value);
-  }
+  // List<Usuario> get empregados => _empregados.value;
+  //
+  // set empregados(List<Usuario> value) {
+  //   _empregados.assignAll(value);
+  // }
 
   listarEmpregados() async {
-    empregados = Get.find<AppController>().empregados;
-    update();
+    // empregados = Get.find<AppController>().empregados;
+    update(['pontos', 'infoPresenca']);
   }
 
   Future<bool> salvarUsuario() async {
@@ -71,5 +94,17 @@ class HomeController extends GetxController {
     return await repository.add(usuario);
   }
 
+  Future<void> atualizarPresenca(Presenca presenca) async {
+    await repositoryPresenca.atualizar(presenca);
+    await Get.find<AppController>().listarEmpregados();
+  }
 
+  Future<bool> registar() async {
+    return await repositoryAuth.registar();
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
 }

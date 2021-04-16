@@ -109,7 +109,7 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
                                     onTap: () {
                                       // if(GetPlatform.isWeb) getImageWeb();
                                       // else
-                                        getImage();
+                                      getImage();
                                     },
                                     child: Container(
                                       width: 35,
@@ -216,9 +216,9 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
   validarForm() async {
     // controller.image.isNotEmpty &&
     var find = Get.find<AppController>();
-    if ( controller.presenca.codigo.isNotEmpty) {
-      var filtrarPorCodigo = find
-          .filtrarPorCodigo(controller.presenca.codigo);
+    if (controller.presenca.codigo.isNotEmpty) {
+      var filtrarPorCodigo = find.filtrarPorCodigo(controller.presenca.codigo);
+      var dateTime = DateTime.now();
       if (filtrarPorCodigo.isNull) {
         Get.rawSnackbar(
             icon: Icon(
@@ -236,18 +236,44 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
             ),
             borderRadius: 10,
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
+      }
+      if (((dateTime.hour > 13 ||
+                  (dateTime.hour == 13 && dateTime.minute > 29)) &&
+              filtrarPorCodigo.pessoa.turno == 'MANHA') ||
+          ((dateTime.hour < 13 ||
+                  (dateTime.hour == 13 && dateTime.minute <= 30)) &&
+              filtrarPorCodigo.pessoa.turno == 'TARDE')) {
+        Get.rawSnackbar(
+            icon: Icon(
+              FontAwesomeIcons.eraser,
+              color: Colors.white,
+            ),
+            duration: Duration(seconds: 2),
+            backgroundColor: Color(0xFFFE3C3C),
+            messageText: Text(
+              'Não podes marcar ponto agora porque não pertences a este turno',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+            borderRadius: 10,
+            margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
       } else {
-        var nomeCompleto = '${filtrarPorCodigo.nome} ${filtrarPorCodigo.pessoa.apelido}';
+        var nomeCompleto =
+            '${filtrarPorCodigo.nome} ${filtrarPorCodigo.pessoa.apelido}';
         var dateTime = DateTime.now();
-        var nomeFoto = '${nomeCompleto}_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}:${dateTime.minute}';
-        var saveArquiv = await saveArquivo(
-            "imagens/$nomeFoto",
-            controller.image);
-        controller.presenca.codigo = textEditingControl.text;
-        controller.presenca.nomeFoto = saveArquiv;
-        var firstWhere = find.listPresenca.firstWhere((element) => element.codigo == textEditingControl.text, orElse: ()=>null);
-        if(firstWhere.isNull) {
-          find.listPresenca.add(controller.presenca);
+        var nomeFoto =
+            '${nomeCompleto}_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}:${dateTime.minute}';
+        var firstWhere = find.listPresenca.firstWhere(
+            (element) => element.codigo == textEditingControl.text,
+            orElse: () => null);
+        if (firstWhere == null) {
+          var saveArquiv =
+              await saveArquivo("imagens/$nomeFoto", controller.image);
+          controller.presenca.codigo = textEditingControl.text;
+          controller.presenca.nomeFoto = saveArquiv;
+          await find.salvarPresenca(controller.presenca);
           controller.presenca = Presenca();
           controller.image = '';
           textEditingControl.text = '';
@@ -255,10 +281,11 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
               icon: Icon(FontAwesomeIcons.check),
               duration: Duration(seconds: 2),
               backgroundColor: Color(0xFF3CFEB5),
-              messageText: '$nomeCompleto presente'.text.bold.white.size(18).make(),
+              messageText:
+                  '$nomeCompleto presente'.text.bold.white.size(18).make(),
               borderRadius: 10,
               margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
-        }else{
+        } else {
           Get.rawSnackbar(
               icon: Icon(
                 FontAwesomeIcons.eraser,
@@ -266,7 +293,12 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
               ),
               duration: Duration(seconds: 2),
               backgroundColor: Color(0xFFFE3C3C),
-              messageText: '$nomeCompleto já foi marcada como presente'.text.bold.white.size(18).make(),
+              messageText: '$nomeCompleto já foi marcada como presente'
+                  .text
+                  .bold
+                  .white
+                  .size(18)
+                  .make(),
               borderRadius: 10,
               margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
         }

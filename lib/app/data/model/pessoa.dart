@@ -6,6 +6,7 @@ class Pessoa {
   String apelido;
   String morada;
   String email;
+  String turno;
   String telemovel;
   String codigo;
   List<Presenca> presencas;
@@ -16,6 +17,7 @@ class Pessoa {
     this.apelido,
     this.morada,
     this.email,
+    this.turno,
     this.telemovel,
     this.presencas,
     this.codigo,
@@ -28,8 +30,9 @@ class Pessoa {
       apelido: map['apelido'] as String,
       morada: map['morada'] as String,
       email: map['email'] as String,
+      turno: map['turno'] as String,
       telemovel: map['telemovel'] as String,
-      presencas: (map['presencas'] as List==null?List():map['presencas'] as List).map((e) => Presenca.fromMap(e)).toList(),
+      presencas: (map['presencas'] as List==null?[]:map['presencas'] as List).map((e) => Presenca.fromMap(e)).toList(),
       codigo: map['codigo'] as String,
     );
   }
@@ -41,6 +44,7 @@ class Pessoa {
       'apelido': this.apelido,
       'morada': this.morada,
       'email': this.email,
+      'turno': this.turno,
       'telemovel': this.telemovel,
       'codigo': this.codigo
     };

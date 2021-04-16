@@ -13,6 +13,10 @@ class AuthRepository {
     return await authProvider.login(senha, email);
   }
 
+  Future<bool> registar() async {
+    return await authProvider.registar();
+  }
+
   Future<bool> accsessTokenExpirado() async {
     return authProvider.accsessTokenExpirado();
   }

@@ -34,13 +34,8 @@ class AppController extends GetxController {
       Audio("assets/audio/1.mp3"),
       autoStart: false,
     );
-    listarEmpregados();
-    if(!GetPlatform.isWeb){
-      entrada();
-      saida();
-      momentoDeTocar();
-    }
     verificarLogado();
+    listarEmpregados();
   }
 
   Usuario get usuario => _usuario.value;
@@ -57,7 +52,8 @@ class AppController extends GetxController {
   }
 
   tocarOuPausar() async {
-   await assetsAudioPlayer.playOrPause();
+    print('Tocar');
+    await assetsAudioPlayer.playOrPause();
   }
 
   parar() {
@@ -71,105 +67,18 @@ class AppController extends GetxController {
     });
   }
 
-  salvarPresenca(Presenca presenca){
-    presenca.justificada = true;
-    presencaRepository.atualizar(presenca);
+  Future<void> salvarPresenca(Presenca presenca) async {
+    await presencaRepository.salvar(presenca);
   }
 
-  saida() async {
-    while (true) {
-      await Future.delayed(Duration(minutes: 1), () async {
-        var dateTime = DateTime.now();
-        var dateTime2 = DateTime(
-            dateTime.year,
-            dateTime.month,
-            dateTime.day,
-            13,
-            30,
-            dateTime.second,
-            dateTime.millisecond,
-            dateTime.microsecond);
-        var dateTime3 = DateTime(dateTime.year, dateTime.month, dateTime.day,
-            19, 00, dateTime.second, dateTime.millisecond, dateTime.microsecond);
-        if (dateTime.isAtSameMomentAs(dateTime2) ||
-            dateTime.isAtSameMomentAs(dateTime3)) {
-          Get.offNamed(Routes.MARCAPONTO);
-          tocarOuPausar();
-          await Future.delayed(Duration(minutes: 2), () async {
-            tocarOuPausar();
-            await Future.delayed(Duration(minutes: 3), () {
-              Get.offNamed(Routes.HOME);
-              listPresenca.forEach((element) {
-                presencaRepository.salvar(element);
-              });
-            });
-          });
-        }
-      });
-    }
+  Future<void> atualizarPresenca(Presenca presenca) async {
+    await presencaRepository.atualizar(presenca);
   }
 
-  entrada() async {
-    while (true) {
-      await Future.delayed(Duration(minutes: 1), () async {
-        // tocarOuPausar();
-        var dateTime = DateTime.now();
-        var dateTime2 = DateTime(dateTime.year, dateTime.month, dateTime.day, 7,
-            0, dateTime.second, dateTime.millisecond, dateTime.microsecond);
-        var dateTime3 = DateTime(
-            dateTime.year,
-            dateTime.month,
-            dateTime.day,
-            9,
-            40,
-            dateTime.second,
-            dateTime.millisecond,
-            dateTime.microsecond);
-        if (dateTime.isAtSameMomentAs(dateTime2) ||
-            dateTime.isAtSameMomentAs(dateTime3)) {
-          Get.offNamed(Routes.MARCAPONTO);
-          tocarOuPausar();
-          await Future.delayed(Duration(minutes: 2), () async {
-            tocarOuPausar();
-            await Future.delayed(Duration(minutes: 3), () {
-              Get.offNamed(Routes.HOME);
-              listPresenca.forEach((element) {
-                presencaRepository.salvar(element);
-              });
-            });
-          });
-        }
-      });
-    }
-  }
-
-  momentoDeTocar() async {
-    while (true) {
-      await Future.delayed(Duration(minutes: 60), () async {
-        var dateTime = DateTime.now();
-        var add = DateTime(dateTime.year, dateTime.month, dateTime.day, 19, 1,
-            dateTime.second, dateTime.millisecond, dateTime.microsecond);
-        var subtract = DateTime(dateTime.year, dateTime.month, dateTime.day, 6,
-            59, dateTime.second, dateTime.millisecond, dateTime.microsecond);
-        if (dateTime.isBefore(add) && dateTime.isAfter(subtract)) {
-          var random = Random();
-          var nextInt = random.nextInt(61);
-          await Future.delayed(Duration(minutes: nextInt), () async {
-            Get.offNamed(Routes.MARCAPONTO);
-            tocarOuPausar();
-            await Future.delayed(Duration(minutes: 2), () async {
-              tocarOuPausar();
-              await Future.delayed(Duration(minutes: 3), () {
-                Get.offNamed(Routes.HOME);
-                listPresenca.forEach((element) {
-                  presencaRepository.salvar(element);
-                });
-              });
-            });
-          });
-        }
-      });
-    }
+  salvarTodos(){
+    listPresenca.forEach((element) {
+      presencaRepository.salvar(element);
+    });
   }
 
  Future<void> listarEmpregados() async {
@@ -182,10 +91,13 @@ class AppController extends GetxController {
   }
 
   Future<void> refreshUsuario() async {
+    print('ggggg');
     final storage = GetStorage();
     var id = storage.read('idUsuario');
     usuario = await repository.getId(id);
     logado = true;
+    print(usuario.tipo);
+    print('ggggg');
     update();
   }
 
@@ -195,8 +107,9 @@ class AppController extends GetxController {
   }
 
   Future<bool> verificarLogado() async {
+    print('<<<<<<<<111');
     if (await SegurancaProvider().verificarERenovarToken()) {
-      await Get.find<AppController>().refreshUsuario();
+      await refreshUsuario();
       logado = true;
       print(logado);
     }

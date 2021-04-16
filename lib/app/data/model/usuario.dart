@@ -7,7 +7,7 @@ class Usuario {
   Pessoa pessoa;
   String tipo;
 
-  Usuario({this.id, this.nome, this.senha, this.tipo = 'Administrador'});
+  Usuario({this.id, this.nome, this.senha, this.tipo});
 
   Usuario.fromJson(Map<String, dynamic> json) {
     id = json['id'];

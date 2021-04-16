@@ -39,6 +39,17 @@ class AuthProvider {
     return null;
   }
 
+  Future<bool> registar() async {
+    var response = await LpbpHttp().get('${url}usuario/registar',
+        headers: <String, String>{"Content-Type": "application/json"});
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print('erro -get');
+    }
+    return false;
+  }
+
 
 
   Future<bool> login(String senha, String email) async {

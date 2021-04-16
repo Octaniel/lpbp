@@ -137,7 +137,7 @@ class LoginPage extends GetView<SegurancaController> {
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
         Future.delayed(Duration(seconds: 2), () {
           controller.circularProgressButaoRegistrar = false;
-          Get.offAllNamed(Routes.HOME);
+          Get.offAndToNamed(Routes.HOME);
         });
       } else {
         Get.rawSnackbar(

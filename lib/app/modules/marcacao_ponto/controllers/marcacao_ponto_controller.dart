@@ -4,6 +4,8 @@ import 'package:lpbp/app/data/model/presenca.dart';
 import 'package:lpbp/app/data/repository/pessoa_repository.dart';
 import 'package:lpbp/app/data/repository/presenca_repository.dart';
 
+import '../../../app_controller.dart';
+
 class MarcacaoPontoController extends GetxController {
   final pessoaRepository = PessoaRepository();
   final presencaRepository = PresencaRepository();
@@ -28,5 +30,11 @@ class MarcacaoPontoController extends GetxController {
 
   Future<bool> salvarPresenca() async {
    return await presencaRepository.salvar(presenca);
+  }
+
+  @override
+  void onClose() {
+    Get.find<AppController>().salvarTodos();
+    super.onClose();
   }
 }

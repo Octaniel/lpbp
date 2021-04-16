@@ -18,7 +18,7 @@ Future<void> main()  async {
       WidgetsFlutterBinding.ensureInitialized();
       await GetStorage.init();
       // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-      OneSignal.shared.init(
+      // OneSignal.shared.init(
 //           "b856e4e5-e7c5-46cf-95e6-b67aea0fa4e7",
 //           iOSSettings: {
 //                 OSiOSSettings.autoPrompt: false,

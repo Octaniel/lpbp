@@ -9,8 +9,9 @@ class PessoaProvider {
   final httpfat = LpbpHttp();
 
   Future<List<Pessoa>> listar() async {
+    var parse = Uri.parse('${url}pessoa');
     final response =
-    await http.get("${url}pessoa",headers: <String,String>{
+    await http.get(parse,headers: <String,String>{
       "Content-Type":"application/json"
     });
     if (response.statusCode == 200) {

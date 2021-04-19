@@ -4,7 +4,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:image_picker_gallery_camera/image_picker_gallery_camera.dart';
+// import 'package:image_picker_gallery_camera/image_picker_gallery_camera.dart';
 import 'package:lpbp/app/data/model/presenca.dart';
 import 'package:lpbp/app/modules/marcacao_ponto/controllers/marcacao_ponto_controller.dart';
 import 'package:lpbp/app/res/static.dart';
@@ -17,22 +17,22 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
   final textEditingControl = TextEditingController();
 
   Future getImage() async {
-    File image = await ImagePickerGC.pickImage(
-        context: Get.context,
-        source: ImgSource.Camera,
-        cameraIcon: Icon(
-          Icons.camera_alt,
-          color: Colors.red,
-        ),
-        cameraText: Text(
-          "Camera",
-          style: TextStyle(color: Colors.red),
-        ),
-        galleryText: Text(
-          "Galleria",
-          style: TextStyle(color: Colors.blue),
-        ));
-    controller.image = image.path;
+    // File image = await ImagePickerGC.pickImage(
+    //     context: Get.context,
+    //     source: ImgSource.Camera,
+    //     cameraIcon: Icon(
+    //       Icons.camera_alt,
+    //       color: Colors.red,
+    //     ),
+    //     cameraText: Text(
+    //       "Camera",
+    //       style: TextStyle(color: Colors.red),
+    //     ),
+    //     galleryText: Text(
+    //       "Galleria",
+    //       style: TextStyle(color: Colors.blue),
+    //     ));
+    // controller.image = image.path;
   }
 
   @override

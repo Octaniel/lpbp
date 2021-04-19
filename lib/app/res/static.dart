@@ -19,8 +19,8 @@ String decoder(String body) {
 }
 
 Future<String> saveArquivo(String nome, String path) async {
-  StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(nome);
-  StorageUploadTask uploadTask = firebaseStorageRef.putFile(File(path));
-  await uploadTask.onComplete;
+  Reference firebaseStorageRef = FirebaseStorage.instance.ref().child(nome);
+  UploadTask uploadTask = firebaseStorageRef.putFile(File(path));
+  await uploadTask.whenComplete(() => print('Completo'));
   return await firebaseStorageRef.getDownloadURL();
 }

@@ -15,7 +15,8 @@ class SegurancaProvider {
 
   Future<List<Usuario>> getAll() async {
     try {
-      var response = await httpClient.get(baseUrl + 'home');
+      var parse = Uri.parse(baseUrl + 'home');
+      var response = await httpClient.get(parse);
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
         var listUsuario = jsonResponse.map<Usuario>((map) {
@@ -46,7 +47,8 @@ class SegurancaProvider {
   Future<bool> login(String senha, String email) async {
     print("object");
     String login = "username=$email&password=$senha&grant_type=password";
-    final response = await http.post("${baseUrl}oauth/token",
+    var parse = Uri.parse('${baseUrl}oauth/token');
+    final response = await http.post(parse,
         headers: <String, String>{
           "Content-Type": "application/x-www-form-urlencoded",
           "Authorization": "Basic YW5ndWxhcjpAbmd1bEByMA==",
@@ -109,8 +111,9 @@ class SegurancaProvider {
   Future<void> refreshToken() async {
     final storage = GetStorage();
     var read1 = storage.read<String>("refresh_token");
+    var parse = Uri.parse('${baseUrl}oauth/token');
     var response =
-        await http.post("${baseUrl}oauth/token", headers: <String, String>{
+        await http.post(parse, headers: <String, String>{
       "Content-Type": "application/x-www-form-urlencoded",
       "Authorization": "Basic YW5ndWxhcjpAbmd1bEByMA==",
     }, body: <String, String>{
@@ -136,34 +139,10 @@ class SegurancaProvider {
     return true;
   }
 
-  Future<bool> edit(Usuario obj) async {
-    try {
-      var response = await httpClient.put(baseUrl,
-          headers: {'Content-Type': 'application/json'}, body: jsonEncode(obj));
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        print('erro -put');
-      }
-    } catch (_) {}
-    return false;
-  }
-
-  Future<bool> delete(int id) async {
-    try {
-      var response = await httpClient.delete(baseUrl);
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        print('erro -delete');
-      }
-    } catch (_) {}
-    return false;
-  }
-
   Future<List<Usuario>> listar() async {
+    var parse = Uri.parse('${url}usuario/listar');
     final response =
-    await http.get("${url}usuario/listar",headers: <String,String>{
+    await http.get(parse,headers: <String,String>{
       "Content-Type":"application/json"
     });
     if (response.statusCode == 200) {

@@ -34,16 +34,7 @@ class SegurancaRepository {
     return segurancaProvider.getId(id);
   }
 
-  Future<bool> edit(obj) async {
-    return await segurancaProvider.edit(obj);
-  }
-
-  Future<bool> delete(id) async {
-    return await segurancaProvider.delete(id);
-  }
-
   Future<List<Usuario>> listar() async {
     return await segurancaProvider.listar();
   }
 }
-    

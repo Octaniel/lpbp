@@ -10,7 +10,8 @@ class PresencaProvider{
 
   Future<bool> salvar(Presenca presenca) async {
     print(json.encode(presenca.toMap()));
-    final response = await http.post("${url}presenca",
+    var parse = Uri.parse('${url}presenca');
+    final response = await http.post(parse,
         headers: <String, String>{"Content-Type": "application/json"},
         body: json.encode(presenca.toMap()));
 
@@ -24,8 +25,8 @@ class PresencaProvider{
   }
 
   Future<bool> atualizar(Presenca presenca) async {
-    print(json.encode(presenca.toMap()));
-    final response = await http.put("${url}presenca",
+    var parse = Uri.parse('${url}presenca');
+    final response = await http.put(parse,
         headers: <String, String>{"Content-Type": "application/json"},
         body: json.encode(presenca.toMap()));
 

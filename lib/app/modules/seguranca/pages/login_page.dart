@@ -53,7 +53,7 @@ class LoginPage extends GetView<SegurancaController> {
                         offset: Offset(0, 10))
                   ]),
               width: 300,
-              height: GetPlatform.isWeb?270:312,
+              height: GetPlatform.isWeb?280:312,
               child: Form(
                 key: formKey,
                 child: Column(

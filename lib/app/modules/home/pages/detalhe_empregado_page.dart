@@ -16,6 +16,7 @@ class DetalheEmpregadoPage extends GetView<HomeController> {
     // if(arguments==null){
     //   Navigator.pop(Get.context);
     // }
+    controller.pessoa.presencas.sort((a,b)=>a.id.compareTo(b.id));
     return Scaffold(
       appBar: AppBar(
         title: 'Pontos'.text.make(),

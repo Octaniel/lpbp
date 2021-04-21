@@ -52,7 +52,6 @@ class AppController extends GetxController {
   }
 
   tocarOuPausar() async {
-    print('Tocar');
     await assetsAudioPlayer.playOrPause();
   }
 

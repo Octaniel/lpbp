@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -16,6 +17,7 @@ import 'package:responsive_framework/utils/scroll_behavior.dart';
 Future<void> main()  async {
       // TestWidgetsFlutterBinding.ensureInitialized();
       WidgetsFlutterBinding.ensureInitialized();
+      Firebase.initializeApp();
       await GetStorage.init();
       // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 
@@ -44,14 +46,14 @@ Future<void> main()  async {
   });
 
   OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) async {
-    Get.offNamed(Routes.MARCAPONTO);
-    Get.find<AppController>().tocarOuPausar();
-    await Future.delayed(Duration(minutes: 2), () async {
-      Get.find<AppController>().tocarOuPausar();
-      await Future.delayed(Duration(minutes: 3), () {
-        Get.offNamed(Routes.HOME);
-      });
-    });
+    // Get.offNamed(Routes.MARCAPONTO);
+    // Get.find<AppController>().tocarOuPausar();
+    // await Future.delayed(Duration(minutes: 2), () async {
+    //   Get.find<AppController>().tocarOuPausar();
+    //   await Future.delayed(Duration(minutes: 3), () {
+    //     Get.offNamed(Routes.HOME);
+    //   });
+    // });
   });
 
       runApp(GetMaterialApp(

@@ -22,20 +22,21 @@ class HomePage extends GetView<HomeController> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              GetPlatform.isMobile
-                  ? Column(
-                      children: [
-                        containerCustom('MARCAR', Routes.MARCAPONTO),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        // containerCustom('SAIDA', Routes.MARCAPONTO),
-                        // SizedBox(
-                        //   height: 20,
-                        // ),
-                      ],
-                    )
-                  : Container(),
+              GetBuilder<AppController>(
+                builder: (_) {
+                  return Get.find<AppController>().logado == true
+                      ? Column(
+                          children: [
+                            containerCustom('MARCAR', Routes.MARCAPONTO),
+                            SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        )
+                      : Container();
+                },
+                id: 'mostrarLogin',
+              ),
               containerCustom('STATUS', Routes.DETALHEMPREGADO),
               SizedBox(
                 height: 20,
@@ -104,7 +105,8 @@ class HomePage extends GetView<HomeController> {
     return GestureDetector(
       onTap: () async {
         if (label == 'MARCAR') {
-          if(!await controller.registar()){
+          // Get.toNamed(Routes.MARCAPONTO);
+          if (!await controller.registar()) {
             Get.rawSnackbar(
                 icon: Icon(
                   FontAwesomeIcons.erlang,
@@ -115,7 +117,9 @@ class HomePage extends GetView<HomeController> {
                 messageText: Text(
                   'Erro no servidor, por favor contacte o admininstrador do sistema',
                   style: TextStyle(
-                      color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
                 ),
                 borderRadius: 10,
                 margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));

@@ -9,31 +9,27 @@ class PresencaProvider{
   final httpfat = LpbpHttp();
 
   Future<bool> salvar(Presenca presenca) async {
-    print(json.encode(presenca.toMap()));
-    final response = await http.post("${url}presenca",
+    var parse = Uri.parse('${url}presenca');
+    final response = await http.post(parse,
         headers: <String, String>{"Content-Type": "application/json"},
         body: json.encode(presenca.toMap()));
 
     if (response.statusCode == 201) {
-      print('Salvou');
       return true;
     } else {
-      print("object");
       return false;
     }
   }
 
   Future<bool> atualizar(Presenca presenca) async {
-    print(json.encode(presenca.toMap()));
-    final response = await http.put("${url}presenca",
+    var parse = Uri.parse('${url}presenca');
+    final response = await http.put(parse,
         headers: <String, String>{"Content-Type": "application/json"},
         body: json.encode(presenca.toMap()));
 
-    print(response.statusCode);
     if (response.statusCode == 200) {
       return true;
     } else {
-      print("object");
       return false;
     }
   }

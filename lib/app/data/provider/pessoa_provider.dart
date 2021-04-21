@@ -9,8 +9,9 @@ class PessoaProvider {
   final httpfat = LpbpHttp();
 
   Future<List<Pessoa>> listar() async {
+    var parse = Uri.parse('${url}pessoa');
     final response =
-    await http.get("${url}pessoa",headers: <String,String>{
+    await http.get(parse,headers: <String,String>{
       "Content-Type":"application/json"
     });
     if (response.statusCode == 200) {
@@ -20,20 +21,18 @@ class PessoaProvider {
       }).toList();
       return listUsuarioModel;
     } else {
-      print(response.body);
-      print("object");
     }
     return <Pessoa>[];
   }
 
   Future<bool> salvar(Pessoa pessoa) async {
-    final response = await httpfat.post("${url}video",
+    var parse = Uri.parse('${url}video');
+    final response = await httpfat.post(parse,
         headers: <String, String>{"Content-Type": "application/json"},
         body: json.encode(pessoa.toMap()));
     if (response.statusCode == 201) {
       return true;
     } else {
-      print("object");
       return false;
     }
   }

@@ -52,7 +52,6 @@ class AppController extends GetxController {
   }
 
   tocarOuPausar() async {
-    print('Tocar');
     await assetsAudioPlayer.playOrPause();
   }
 
@@ -61,7 +60,6 @@ class AppController extends GetxController {
   }
 
   salvarPresencas(){
-    print(listPresenca.length);
     listPresenca.forEach((element) {
       presencaRepository.salvar(element);
     });
@@ -91,13 +89,10 @@ class AppController extends GetxController {
   }
 
   Future<void> refreshUsuario() async {
-    print('ggggg');
     final storage = GetStorage();
     var id = storage.read('idUsuario');
     usuario = await repository.getId(id);
     logado = true;
-    print(usuario.tipo);
-    print('ggggg');
     update();
   }
 
@@ -107,17 +102,14 @@ class AppController extends GetxController {
   }
 
   Future<bool> verificarLogado() async {
-    print('<<<<<<<<111');
     if (await SegurancaProvider().verificarERenovarToken()) {
       await refreshUsuario();
       logado = true;
-      print(logado);
     }
   }
 
   @override
   void onClose() {
-    print("object");
     super.onClose();
   }
 }

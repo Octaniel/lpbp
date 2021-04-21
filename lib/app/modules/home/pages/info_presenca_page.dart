@@ -42,7 +42,6 @@ class InfoPresencaPage extends GetView<HomeController> {
                 children: [
                   GetBuilder<HomeController>(
                     builder: (_) {
-                      print(controller.presencaa.nomeAudio);
                       return controller.presencaa.presente == true
                           ? Container(
                               width: 200,

@@ -27,7 +27,6 @@ class RecordPage extends GetView<HomeController> {
         controller.pauseGrav = false;
         controller.gravando = false;
         controller.audioPlayer.pause();
-        print('saiu');
         return Future.value(true);
       },
       child: Scaffold(
@@ -135,7 +134,6 @@ class RecordPage extends GetView<HomeController> {
                                             Color.fromARGB(255, 4, 125, 141)),
                                     onPressed: () {
                                       controller.pauseGrav = false;
-                                      print('ddddddd');
                                       controller.audio = '';
                                       controller.boxShadow = true;
                                     },
@@ -281,7 +279,6 @@ class RecordPage extends GetView<HomeController> {
     if (!d.existsSync()) {
       d.createSync(recursive: true);
     }
-    print(sdPath);
     return sdPath + "/test_${i++}.mp3";
   }
 

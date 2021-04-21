@@ -24,20 +24,19 @@ class SegurancaProvider {
         }).toList();
         return listUsuario;
       } else {
-        print('erro -get');
       }
     } catch (_) {}
     return [];
   }
 
   Future<Usuario> getId(int id) async {
-    var response = await LpbpHttp().get('${url}usuario/$id',
+    var parse = Uri.parse('${url}usuario/$id');
+    var response = await LpbpHttp().get(parse,
         headers: <String, String>{"Content-Type": "application/json"});
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       return Usuario.fromJson(jsonResponse);
     } else {
-      print('erro -get');
     }
     return null;
   }
@@ -45,7 +44,6 @@ class SegurancaProvider {
 
 
   Future<bool> login(String senha, String email) async {
-    print("object");
     String login = "username=$email&password=$senha&grant_type=password";
     var parse = Uri.parse('${baseUrl}oauth/token');
     final response = await http.post(parse,
@@ -64,19 +62,18 @@ class SegurancaProvider {
       await storage.write("date_expires_in", DateTime.now().toString());
       await storage.write("expires_in", decode["expires_in"].toString());
       await storage.write("refresh_token", decode["refresh_token"]);
-      print(storage.read<String>("refresh_token"));
       return true;
     }
     return false;
   }
 
   Future<bool> add(Usuario obj) async {
-    var response = await LpbpHttp().post('${baseUrl}usuario/add',
+    var parse = Uri.parse('${baseUrl}usuario/add');
+    var response = await LpbpHttp().post(parse,
         headers: {'Content-Type': 'application/json'}, body: jsonEncode(obj));
     if (response.statusCode == 201) {
       return true;
     } else {
-      print('erro -post');
     }
     return false;
   }
@@ -84,10 +81,10 @@ class SegurancaProvider {
   Future<bool> logout() async {
     final httpfat = LpbpHttp();
     final storage = GetStorage();
-    var response = await httpfat.delete("${baseUrl}tokens/revoke");
+    var parse = Uri.parse('${baseUrl}tokens/revoke');
+    var response = await httpfat.delete(parse);
     if (response.statusCode == 204) {
       await storage.erase();
-      print(true);
       return true;
     }
 //    await storage.clear();
@@ -129,7 +126,6 @@ class SegurancaProvider {
   }
 
   Future<bool> verificarERenovarToken() async {
-    print('<<<<<<<<222');
     if (await accsessTokenExpirado()) {
       await refreshToken();
       if (await accsessTokenExpirado()) {
@@ -152,8 +148,6 @@ class SegurancaProvider {
       }).toList();
       return listUsuarioModel;
     } else {
-      print(response.body);
-      print("object");
     }
     return <Usuario>[];
   }

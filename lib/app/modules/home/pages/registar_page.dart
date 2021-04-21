@@ -158,7 +158,6 @@ class RegistrarPage extends GetView<HomeController> {
                                                     ? 'Vendedor'
                                                     : controller.usuario.tipo,
                                             onChanged: (v) {
-                                      print(v);
                                       controller.usuario.tipo = v;
                                     })
                                         .elevation(5)

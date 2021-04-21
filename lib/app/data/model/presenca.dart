@@ -35,7 +35,6 @@ class Presenca {
   }
 
   Map<String, dynamic> toMap() {
-    print(codigo);
     return {
       'id': this.id,
       'nomeFoto': this.nomeFoto,

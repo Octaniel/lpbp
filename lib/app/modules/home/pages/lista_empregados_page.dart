@@ -25,7 +25,6 @@ class ListaEmpregadosPage extends GetView<HomeController> {
           children: [
             GetBuilder<AppController>(
               builder: (v) {
-                print(v.empregados.length);
                 return Center(
                   child: Wrap(
                     children: v.empregados
@@ -69,10 +68,7 @@ class ListaEmpregadosPage extends GetView<HomeController> {
                                                 icon: Icon(Icons.edit),
                                                 onPressed: () {
                                                   controller.pessoa = e.pessoa;
-                                                  print(e.tipo);
                                                   controller.usuario = e;
-                                                  print(
-                                                      controller.usuario.tipo);
                                                   Get.toNamed(Routes.REGISTRAR);
                                                 }),
                                             SizedBox(

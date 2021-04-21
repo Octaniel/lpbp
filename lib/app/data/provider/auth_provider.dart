@@ -12,12 +12,12 @@ class AuthProvider {
   final httpClient = http.Client();
 
   Future<bool> registar() async {
-    var response = await LpbpHttp().get('${url}usuario/registar',
+    var parse = Uri.parse('${url}usuario/registar');
+    var response = await LpbpHttp().get(parse,
         headers: <String, String>{"Content-Type": "application/json"});
     if (response.statusCode == 200) {
       return true;
     } else {
-      print('erro -get');
     }
     return false;
   }

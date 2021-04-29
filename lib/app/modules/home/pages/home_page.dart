@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:lpbp/app/app_controller.dart';
-import 'package:lpbp/app/data/model/pessoa.dart';
 import 'package:lpbp/app/modules/home/controllers/home_controller.dart';
 import 'package:lpbp/app/routes/app_routes.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -10,6 +9,23 @@ import 'package:velocity_x/velocity_x.dart';
 class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(seconds: 5), (){
+      if(Get.find<AppController>().empregados.isEmpty)
+        Get.defaultDialog(
+          title: 'Problema com o app',
+          onConfirm: () {
+            Navigator.pop(Get.context);
+          },
+          content: Text(
+            "Tens que reiniciar o app porque não conseguimos, adiquirir nenhum empregado!",
+            style: TextStyle(
+              color: Colors.redAccent,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        );
+    });
     return Scaffold(
       appBar: AppBar(
         title: 'Home'.text.size(30).make(),
@@ -162,10 +178,11 @@ class HomePage extends GetView<HomeController> {
                         borderRadius: 10,
                         margin:
                             EdgeInsets.only(left: 20, right: 20, bottom: 20));
-                  } else
+                  } else {
                     controller.pessoa = filtrarPorCodigo.pessoa;
-                  Navigator.pop(Get.context);
-                  Get.toNamed(rota, arguments: filtrarPorCodigo);
+                    Navigator.pop(Get.context);
+                    Get.toNamed(rota, arguments: filtrarPorCodigo);
+                  }
                 }
               },
               content: TextField(

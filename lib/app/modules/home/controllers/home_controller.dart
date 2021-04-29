@@ -103,6 +103,10 @@ class HomeController extends GetxController {
     return await repositoryAuth.registar();
   }
 
+  Future<bool> setarTodosAsPresencasParaPresenteEntre(String de, String ate) async {
+    return await repositoryAuth.setarTodosAsPresencasParaPresenteEntre(de, ate);
+  }
+
   @override
   void onInit() {
     super.onInit();

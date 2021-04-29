@@ -1,11 +1,9 @@
-import 'dart:math';
 
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lpbp/app/data/model/presenca.dart';
 import 'package:lpbp/app/data/repository/presenca_repository.dart';
-import 'package:lpbp/app/routes/app_routes.dart';
 
 import 'data/model/usuario.dart';
 import 'data/provider/seguranca_provider.dart';
@@ -82,6 +80,7 @@ class AppController extends GetxController {
 
  Future<void> listarEmpregados() async {
     empregados = await repository.listar();
+    print("${empregados.length}--000000000000");
     update();
   }
 

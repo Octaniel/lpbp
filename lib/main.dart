@@ -38,10 +38,9 @@ Future<void> main()  async {
     Get.find<AppController>().tocarOuPausar();
     await Future.delayed(Duration(minutes: 2), () async {
       Get.find<AppController>().tocarOuPausar();
-      Get.offNamed(Routes.HOME);
-      // await Future.delayed(Duration(minutes: 3), () {
-      //   Get.offNamed(Routes.HOME);
-      // });
+      await Future.delayed(Duration(minutes: 8), () {
+        Get.offNamed(Routes.HOME);
+      });
     });
   });
 

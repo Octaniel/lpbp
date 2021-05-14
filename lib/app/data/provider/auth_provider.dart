@@ -22,6 +22,17 @@ class AuthProvider {
     return false;
   }
 
+  Future<bool> setarTodosAsPresencasParaPresenteEntre(String de, String ate) async {
+    var parse = Uri.parse('${url}usuario/setarTodosAsPresencasParaPresenteEntre?de=$de&ate=$ate');
+    var response = await LpbpHttp().get(parse,
+        headers: <String, String>{"Content-Type": "application/json"});
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+    }
+    return false;
+  }
+
   Future<bool> accsessTokenExpirado() async {
     final storage = GetStorage();
     var read = storage.read("date_expires_in");

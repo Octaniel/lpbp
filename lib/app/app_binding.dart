@@ -1,4 +1,4 @@
-  import 'package:get/get.dart';
+import 'package:get/get.dart';
 import 'app_controller.dart';
 
 class AppBinding implements Bindings {
@@ -7,4 +7,3 @@ class AppBinding implements Bindings {
     Get.put<AppController>(AppController());
   }
 }
-  

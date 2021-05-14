@@ -1,13 +1,9 @@
 import 'package:get_storage/get_storage.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
-
-import 'app/app_controller.dart';
+import 'package:lpbp/app/app_binding.dart';
 import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
 import 'app/theme/my_theme.dart';
 import 'app/translations/app_translations.dart';
-import 'app/app_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';

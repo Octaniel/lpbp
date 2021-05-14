@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:lpbp/app/app_controller.dart';
-import 'package:lpbp/app/data/model/pessoa.dart';
 import 'package:lpbp/app/modules/home/controllers/home_controller.dart';
 import 'package:lpbp/app/routes/app_routes.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -18,23 +17,33 @@ class HomePage extends GetView<HomeController> {
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: ListView(
             children: [
-              Column(
-                      children: [
-                        containerCustom('MARCAR', Routes.MARCAPONTO),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        // containerCustom('SAIDA', Routes.MARCAPONTO),
-                        // SizedBox(
-                        //   height: 20,
-                        // ),
-                      ],
-                    ),
+              containerCustom('MARCAR', Routes.MARCAPONTO),
+              SizedBox(
+                height: 20,
+              ),
+              containerCustom('EXCEL', ''),
+              SizedBox(
+                height: 20,
+              ),
               containerCustom('STATUS', Routes.DETALHEMPREGADO),
+              SizedBox(
+                height: 20,
+              ),
+              GetBuilder<AppController>(
+                builder: (_) {
+                  return Visibility(
+                    visible: Get.find<AppController>().usuario.tipo ==
+                            'Admininstrador' ||
+                        Get.find<AppController>().usuario.tipo == 'Gerente',
+                    replacement: ''.text.make(),
+                    child: containerCustom(
+                        'ANULAR MARCAÇÕES', Routes.ANULARPRESENCA),
+                  );
+                },
+                id: 'mostrarLogin',
+              ),
               SizedBox(
                 height: 20,
               ),
@@ -44,13 +53,8 @@ class HomePage extends GetView<HomeController> {
                     visible: Get.find<AppController>().usuario.tipo ==
                         'Admininstrador',
                     replacement: ''.text.make(),
-                    child: AnimatedContainer(
-                      height: 60,
-                      margin: EdgeInsets.symmetric(horizontal: 40),
-                      duration: Duration(seconds: 2),
-                      child: containerCustom(
-                          'REGISTRAR FUNCIONARIO', Routes.REGISTRAR),
-                    ),
+                    child: containerCustom(
+                        'REGISTRAR FUNCIONARIO', Routes.REGISTRAR),
                   );
                 },
                 id: 'mostrarLogin',
@@ -101,8 +105,10 @@ class HomePage extends GetView<HomeController> {
   Widget containerCustom(String label, String rota) {
     return GestureDetector(
       onTap: () async {
-        if (label == 'MARCAR') {
-          if(!await controller.registar()){
+        if (label == 'EXCEL') {
+            controller.gerarExcel();
+        } else if (label == 'MARCAR') {
+          if (!await controller.registar()) {
             Get.rawSnackbar(
                 icon: Icon(
                   FontAwesomeIcons.erlang,
@@ -113,7 +119,9 @@ class HomePage extends GetView<HomeController> {
                 messageText: Text(
                   'Erro no servidor, por favor contacte o admininstrador do sistema',
                   style: TextStyle(
-                      color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
                 ),
                 borderRadius: 10,
                 margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));

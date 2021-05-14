@@ -8,6 +8,8 @@ import 'package:get/get.dart';
 import 'package:lpbp/app/data/model/presenca.dart';
 import 'package:lpbp/app/modules/marcacao_ponto/controllers/marcacao_ponto_controller.dart';
 import 'package:lpbp/app/res/static.dart';
+import 'package:progress_state_button/iconed_button.dart';
+import 'package:progress_state_button/progress_button.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../app_controller.dart';
@@ -188,20 +190,43 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
                     SizedBox(
                       height: 20,
                     ),
-                    Container(
-                      height: 45,
-                      width: Get.width,
-                      margin: EdgeInsets.symmetric(horizontal: 100),
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        elevation: 0,
-                        color: Color.fromARGB(255, 4, 125, 141),
-                        onPressed: () async {
-                          validarForm();
-                        },
-                        child: 'Bater Ponto'.text.white.make(),
-                      ),
+                    GetBuilder<MarcacaoPontoController>(
+                      builder: (_) {
+                        return Column(
+                          children: [
+                            Text(controller.refres.value, style: TextStyle(color: Colors.transparent),),
+                            ProgressButton.icon(
+                                iconedButtons: {
+                                  ButtonState.idle: IconedButton(
+                                      text: "Bater Ponto",
+                                      icon:
+                                          Icon(Icons.send, color: Colors.white),
+                                      color: Color.fromARGB(255, 4, 125, 141)),
+                                  ButtonState.loading: IconedButton(
+                                      text: "Carregando",
+                                      color: Color.fromARGB(255, 4, 125, 141)),
+                                  ButtonState.fail: IconedButton(
+                                      text: "Falha",
+                                      icon: Icon(Icons.cancel,
+                                          color: Colors.white),
+                                      color: Colors.redAccent),
+                                  ButtonState.success: IconedButton(
+                                      text: "Sucesso",
+                                      icon: Icon(
+                                        Icons.check_circle,
+                                        color: Colors.white,
+                                      ),
+                                      color: Colors.green.shade400)
+                                },
+                                onPressed: () async {
+                                  controller.buttonState = ButtonState.loading;
+                                  validarForm();
+                                },
+                                state: controller.buttonState)
+                          ],
+                        );
+                      },
+                      id: 'buttonState',
                     ),
                   ],
                 )
@@ -216,7 +241,8 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
   validarForm() async {
     // controller.image.isNotEmpty &&
     var find = Get.find<AppController>();
-    if (controller.presenca.codigo.isNotEmpty) {
+    if (controller.presenca.codigo != null &&
+        controller.presenca.codigo.isNotEmpty) {
       var filtrarPorCodigo = find.filtrarPorCodigo(controller.presenca.codigo);
       var dateTime = DateTime.now();
       if (filtrarPorCodigo.isNull) {
@@ -236,6 +262,10 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
             ),
             borderRadius: 10,
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
+        controller.buttonState = ButtonState.fail;
+        Future.delayed(Duration(seconds: 2), () async {
+          controller.buttonState = ButtonState.idle;
+        });
       }
       if (((dateTime.hour > 13 ||
                   (dateTime.hour == 13 && dateTime.minute > 29)) &&
@@ -259,6 +289,10 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
             ),
             borderRadius: 10,
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
+        controller.buttonState = ButtonState.fail;
+        Future.delayed(Duration(seconds: 2), () async {
+          controller.buttonState = ButtonState.idle;
+        });
       } else {
         var nomeCompleto =
             '${filtrarPorCodigo.nome} ${filtrarPorCodigo.pessoa.apelido}';
@@ -285,6 +319,10 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
                   '$nomeCompleto presente'.text.bold.white.size(18).make(),
               borderRadius: 10,
               margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
+          controller.buttonState = ButtonState.success;
+          Future.delayed(Duration(seconds: 2), () async {
+            controller.buttonState = ButtonState.idle;
+          });
         } else {
           Get.rawSnackbar(
               icon: Icon(
@@ -301,6 +339,10 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
                   .make(),
               borderRadius: 10,
               margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
+          controller.buttonState = ButtonState.fail;
+          Future.delayed(Duration(seconds: 2), () async {
+            controller.buttonState = ButtonState.idle;
+          });
         }
       }
       // Future.delayed(Duration(seconds: 2), () {
@@ -322,6 +364,10 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
           borderRadius: 10,
           margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
       Future.delayed(Duration(seconds: 2), () {});
+      controller.buttonState = ButtonState.fail;
+      Future.delayed(Duration(seconds: 2), () async {
+        controller.buttonState = ButtonState.idle;
+      });
     }
   }
 }

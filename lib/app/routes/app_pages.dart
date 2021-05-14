@@ -5,6 +5,7 @@ import 'package:lpbp/app/modules/home/pages/info_presenca_page.dart';
 import 'package:lpbp/app/modules/home/pages/lista_empregados_page.dart';
 import 'package:lpbp/app/modules/home/pages/record_page.dart';
 import 'package:lpbp/app/modules/home/pages/registar_page.dart';
+import 'package:lpbp/app/modules/home/pages/anular_presenca.dart';
 import 'package:lpbp/app/modules/marcacao_ponto/marcacao_ponto_binding.dart';
 import 'package:lpbp/app/modules/marcacao_ponto/pages/marcacao_ponto_page.dart';
 import 'package:lpbp/app/modules/seguranca/pages/login_page.dart';
@@ -32,13 +33,17 @@ abstract class AppPages {
         page: () => RecordPage(),
         binding: HomeBinding()),
     GetPage(
-        name: Routes.HOME,
-        page: () => HomePage(),
-        binding: HomeBinding()),
+      name: Routes.HOME,
+      page: () => HomePage(),
+      binding: HomeBinding(),
+      transition: Transition.downToUp,
+    ),
     GetPage(
-        name: Routes.LOGIN,
-        page: () => LoginPage(),
-        binding: SegurancaBinding()),
+      name: Routes.LOGIN,
+      page: () => LoginPage(),
+      binding: SegurancaBinding(),
+      transition: Transition.upToDown,
+    ),
     GetPage(
         name: Routes.REGISTRAR,
         page: () => RegistrarPage(),
@@ -47,5 +52,11 @@ abstract class AppPages {
         name: Routes.INFOPRESENCA,
         page: () => InfoPresencaPage(),
         binding: HomeBinding()),
+    GetPage(
+      name: Routes.ANULARPRESENCA,
+      page: () => AnularPresenca(),
+      binding: HomeBinding(),
+      transition: Transition.rightToLeft,
+    ),
   ];
 }

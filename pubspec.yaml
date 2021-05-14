@@ -41,6 +41,8 @@ dependencies:
   google_fonts: ^2.0.0
   onesignal_flutter: ^2.6.3
   pdf: ^3.2.0
+  progress_state_button: ^1.0.3
+  excel: ^2.0.0-null-safety-3
 
 dev_dependencies:
   flutter_test:

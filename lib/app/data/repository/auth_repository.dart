@@ -9,6 +9,10 @@ class AuthRepository {
     return await authProvider.registar();
   }
 
+  Future<bool> setarTodosAsPresencasParaPresenteEntre(String de, String ate) async {
+    return await authProvider.setarTodosAsPresencasParaPresenteEntre(de, ate);
+  }
+
   Future<bool> accsessTokenExpirado() async {
     return authProvider.accsessTokenExpirado();
   }

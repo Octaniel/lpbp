@@ -230,7 +230,7 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
     // controller.image.isNotEmpty &&
     var find = Get.find<AppController>();
     if (controller.presenca.codigo != null &&
-        controller.presenca.codigo.isNotEmpty) {
+        controller.presenca.codigo.isNotEmpty && controller.image.isNotEmpty) {
       var filtrarPorCodigo = find.filtrarPorCodigo(controller.presenca.codigo);
       var dateTime = DateTime.now();
       if (filtrarPorCodigo.isNull) {
@@ -291,10 +291,11 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
             (element) => element.codigo == textEditingControl.text,
             orElse: () => null);
         if (firstWhere == null) {
-          var saveArquiv =
-              await saveArquivo("imagens/$nomeFoto", controller.image);
+          // var saveArquiv =
+          //     await saveArquivo("imagens/$nomeFoto", controller.image);
+              var s = await find.savePhoto(controller.image, nomeFoto);
           controller.presenca.codigo = textEditingControl.text;
-          controller.presenca.nomeFoto = saveArquiv;
+          controller.presenca.nomeFoto = s;
           await find.salvarPresenca(controller.presenca);
           controller.presenca = Presenca();
           controller.image = '';

@@ -1,5 +1,6 @@
 import 'package:lpbp/app/data/model/pessoa.dart';
 
+
 class Usuario {
   int id;
   String nome;

@@ -12,8 +12,20 @@ class PresencaProvider{
     var parse = Uri.parse('${url}presenca');
     final response = await http.post(parse,
         headers: <String, String>{"Content-Type": "application/json"},
-        body: json.encode(presenca.toMap()));
+        body: json.encode(presenca.toJson()));
 
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> salvarOffline(Presenca presenca) async {
+    var parse = Uri.parse('${url}presenca/offline');
+    final response = await http.post(parse,
+        headers: <String, String>{"Content-Type": "application/json"},
+        body: json.encode(presenca.toJson()));
     if (response.statusCode == 201) {
       return true;
     } else {
@@ -25,7 +37,7 @@ class PresencaProvider{
     var parse = Uri.parse('${url}presenca');
     final response = await http.put(parse,
         headers: <String, String>{"Content-Type": "application/json"},
-        body: json.encode(presenca.toMap()));
+        body: json.encode(presenca.toJson()));
 
     if (response.statusCode == 200) {
       return true;

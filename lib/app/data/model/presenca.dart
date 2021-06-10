@@ -21,10 +21,10 @@ class Presenca {
       this.justificacaoAceitoPorAdministrador,
         this.codigo,});
 
-  factory Presenca.fromMap(Map<String, dynamic> map) {
+  factory Presenca.fromJson(Map<String, dynamic> map) {
     return new Presenca(
       id: map['id'] as int,
-      dataCriacao: DateTime.parse(map['dataCriacao']),
+      dataCriacao: map['dataCriacao']!=null? DateTime.parse(map['dataCriacao']):null,
       nomeFoto: map['nomeFoto'] as String,
       nomeAudio: map['nomeAudio'] as String,
       presente: map['presente'] as bool,
@@ -34,8 +34,7 @@ class Presenca {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    print(codigo);
+  Map<String, dynamic> toJson() {
     return {
       'id': this.id,
       'nomeFoto': this.nomeFoto,

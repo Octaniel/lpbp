@@ -32,7 +32,7 @@ class Pessoa {
       email: map['email'] as String,
       turno: map['turno'] as String,
       telemovel: map['telemovel'] as String,
-      presencas: (map['presencas'] as List==null?[]:map['presencas'] as List).map((e) => Presenca.fromMap(e)).toList(),
+      presencas: (map['presencas'] as List==null?[]:map['presencas'] as List).map((e) => Presenca.fromJson(e)).toList(),
       codigo: map['codigo'] as String,
     );
   }

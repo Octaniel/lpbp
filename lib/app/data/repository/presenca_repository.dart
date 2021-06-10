@@ -9,6 +9,10 @@ class PresencaRepository{
     return await presencaProvider.salvar(presenca);
   }
 
+  Future<bool> salvarOffline(Presenca presenca) async {
+    return await presencaProvider.salvarOffline(presenca);
+  }
+
   Future<bool> atualizar(Presenca presenca) async {
     return await presencaProvider.atualizar(presenca);
   }

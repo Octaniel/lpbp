@@ -7,25 +7,18 @@ import 'package:lpbp/app/routes/app_routes.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class HomePage extends GetView<HomeController> {
+  bool v = true;
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 5), (){
-      if(Get.find<AppController>().empregados.isEmpty)
-        Get.defaultDialog(
-          title: 'Problema com o app',
-          onConfirm: () {
-            Navigator.pop(Get.context);
-          },
-          content: Text(
-            "Tens que reiniciar o app porque não conseguimos, adiquirir nenhum empregado!",
-            style: TextStyle(
-              color: Colors.redAccent,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
-        );
+    Future.delayed(Duration(seconds: 3), () {
+      Get.defaultDialog(
+        title: 'Processando',
+        content: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.greenAccent),
+        ),
+      );
     });
+
     return Scaffold(
       appBar: AppBar(
         title: 'Home'.text.size(30).make(),
@@ -54,6 +47,10 @@ class HomePage extends GetView<HomeController> {
                 id: 'mostrarLogin',
               ),
               containerCustom('STATUS', Routes.DETALHEMPREGADO),
+              SizedBox(
+                height: 20,
+              ),
+              containerCustom('COMUNICAR', Routes.DETALHEMPREGADO),
               SizedBox(
                 height: 20,
               ),
@@ -120,6 +117,72 @@ class HomePage extends GetView<HomeController> {
   Widget containerCustom(String label, String rota) {
     return GestureDetector(
       onTap: () async {
+        if (label == 'COMUNICAR') {
+          Get.defaultDialog(
+            title: 'Teu Codigo',
+            onConfirm: () {
+              if (controller.presenca.codigo.isNotBlank) {
+                var filtrarPorCodigo = Get.find<AppController>()
+                    .filtrarPorCodigo(controller.presenca.codigo);
+                if (filtrarPorCodigo == null) {
+                  Get.rawSnackbar(
+                      icon: Icon(
+                        FontAwesomeIcons.eraser,
+                        color: Colors.white,
+                      ),
+                      duration: Duration(seconds: 2),
+                      backgroundColor: Color(0xFFFE3C3C),
+                      messageText: Text(
+                        'Não existe funcionario com este codigo',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      borderRadius: 10,
+                      margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
+                } else {
+                  if (filtrarPorCodigo.tipo != 'Vendedor') {
+                    Navigator.pop(Get.context);
+                  } else {
+                    Get.find<AppController>().salvarTodasPresencas();
+                  }
+                }
+              }
+            },
+            content: TextField(
+              keyboardType: TextInputType.visiblePassword,
+              obscureText: true,
+              obscuringCharacter: '#',
+              onChanged: (v) {
+                controller.presenca.codigo = v;
+              },
+              decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.circular(15)),
+                  border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.circular(15)),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                  ),
+                  prefixIcon: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    decoration: ShapeDecoration(
+                      color: Color.fromARGB(255, 4, 125, 141),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9)),
+                    ),
+                    child: Icon(
+                      Icons.lock,
+                      color: Colors.white,
+                    ),
+                  ),
+                  hintText: 'Sua Senha'),
+            ),
+          );
+        }
         if (label == 'MARCAR') {
           // Get.toNamed(Routes.MARCAPONTO);
           if (!await controller.registar()) {

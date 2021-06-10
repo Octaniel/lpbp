@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -14,10 +16,17 @@ import 'package:get/get.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
 
+void printHello() {
+  final DateTime now = DateTime.now();
+  final int isolateId = Isolate.current.hashCode;
+  print("[$now] Hello, world! isolate=${isolateId} function='$printHello'");
+}
+
 Future<void> main()  async {
       // TestWidgetsFlutterBinding.ensureInitialized();
       WidgetsFlutterBinding.ensureInitialized();
       Firebase.initializeApp();
+      final int helloAlarmID = 0;
       await GetStorage.init();
       // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 
@@ -33,16 +42,16 @@ Future<void> main()  async {
 // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
       await OneSignal.shared.promptUserForPushNotificationPermission(fallbackToSettings: true);
 
-  OneSignal.shared.setNotificationReceivedHandler((OSNotification notification) async {
-    Get.offNamed(Routes.MARCAPONTO);
-    Get.find<AppController>().tocarOuPausar();
-    await Future.delayed(Duration(minutes: 2), () async {
-      Get.find<AppController>().tocarOuPausar();
-      await Future.delayed(Duration(minutes: 8), () {
-        Get.offNamed(Routes.HOME);
-      });
-    });
-  });
+  // OneSignal.shared.setNotificationReceivedHandler((OSNotification notification) async {
+  //   Get.offNamed(Routes.MARCAPONTO);
+  //   Get.find<AppController>().tocarOuPausar();
+  //   await Future.delayed(Duration(minutes: 2), () async {
+  //     Get.find<AppController>().tocarOuPausar();
+  //     await Future.delayed(Duration(minutes: 8), () {
+  //       Get.offNamed(Routes.HOME);
+  //     });
+  //   });
+  // });
 
   OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) async {
     // Get.offNamed(Routes.MARCAPONTO);

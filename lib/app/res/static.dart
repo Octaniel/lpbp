@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
-final String url1 = "http://192.168.0.164:8081/";
+final String url1 = "http://10.234.3.109:50000/";
 final String url11 = "http://172.25.192.1:8080/";
 final String url2 = "http://lpbp-env.eba-9d2vwq5f.sa-east-1.elasticbeanstalk.com/";
-final String url = url2;
+final String url = url1;
 
 String decoder(String body) {
   body = body.replaceAll('Ã§', 'ç');

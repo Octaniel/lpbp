@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:lpbp/app/app_controller.dart';
 import 'package:lpbp/app/data/model/pessoa.dart';
@@ -22,7 +21,6 @@ class HomeController extends GetxController {
   var presencaa = Presenca();
   var usuario = Usuario();
   final _pauseGrav = false.obs;
-  AudioPlayer audioPlayer = AudioPlayer();
   final _gravando = false.obs;
 
   get gravando => _gravando.value;

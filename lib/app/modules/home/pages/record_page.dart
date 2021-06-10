@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:audio_manager/audio_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -26,7 +27,7 @@ class RecordPage extends GetView<HomeController> {
         controller.presencaa = Presenca();
         controller.pauseGrav = false;
         controller.gravando = false;
-        controller.audioPlayer.pause();
+        AudioManager.instance.stop();
         print('saiu');
         return Future.value(true);
       },
@@ -288,7 +289,7 @@ class RecordPage extends GetView<HomeController> {
   Future<void> play() async {
     if (controller.audio != null && File(controller.audio).existsSync()) {
       if (!controller.isPlay) {
-        controller.audioPlayer.play(controller.audio, isLocal: true);
+        AudioManager.instance.start(controller.audio, "title", desc: 'desc', cover: '');
         controller.isPlay = true;
         await Future.delayed(Duration(seconds: 15), () {
           controller.isPlay = false;

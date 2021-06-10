@@ -35,11 +35,12 @@ dependencies:
   assets_audio_player: ^2.0.13+1
   intl: ^0.16.1
   record_mp3: ^2.1.0
-  audioplayers: ^0.17.3
+  #audioplayers: ^0.17.3
   permission_handler: ^5.0.1+1
   firebase_storage: ^4.0.1
   google_fonts: ^1.1.2
   onesignal_flutter: ^2.6.3
+  audio_manager: ^0.8.1
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +50,8 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
+dependency_overrides:
+  path_provider: ^2.0.2
 flutter:
 
   # The following line ensures that the Material Icons font is

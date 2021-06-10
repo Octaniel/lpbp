@@ -1,4 +1,4 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'package:audio_manager/audio_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,7 +14,6 @@ import '../../../app_controller.dart';
 class InfoPresencaPage extends GetView<HomeController> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
-  AudioPlayer audioPlayer = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -85,13 +84,11 @@ class InfoPresencaPage extends GetView<HomeController> {
                                             child: IconButton(
                                               onPressed: () {
                                                 if (controller.isPlay) {
-                                                  audioPlayer.pause();
+                                                  AudioManager.instance.stop();
                                                   controller.isPlay = false;
                                                 } else {
-                                                  audioPlayer.play(
-                                                      controller
-                                                          .presencaa.nomeAudio,
-                                                      isLocal: false);
+                                                  AudioManager.instance.start(controller
+                                                      .presencaa.nomeAudio, "title", desc: "desc", cover: "");
                                                   controller.isPlay = true;
                                                 }
                                               },

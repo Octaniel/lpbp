@@ -233,7 +233,7 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
         controller.presenca.codigo.isNotEmpty && controller.image.isNotEmpty) {
       var filtrarPorCodigo = find.filtrarPorCodigo(controller.presenca.codigo);
       var dateTime = DateTime.now();
-      if (filtrarPorCodigo.isNull) {
+      if (filtrarPorCodigo == null) {
         Get.rawSnackbar(
             icon: Icon(
               FontAwesomeIcons.eraser,
@@ -254,7 +254,7 @@ class MarcacaoPontoPage extends GetView<MarcacaoPontoController> {
         Future.delayed(Duration(seconds: 2), () async {
           controller.buttonState = ButtonState.idle;
         });
-      }
+      } else
       if (((dateTime.hour > 13 ||
                   (dateTime.hour == 13 && dateTime.minute > 29)) &&
               filtrarPorCodigo.pessoa.turno == 'MANHA') ||

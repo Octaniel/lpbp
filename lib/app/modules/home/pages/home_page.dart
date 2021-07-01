@@ -8,16 +8,17 @@ import 'package:velocity_x/velocity_x.dart';
 
 class HomePage extends GetView<HomeController> {
   bool v = true;
+
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 3), () {
-      Get.defaultDialog(
-        title: 'Processando',
-        content: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.greenAccent),
-        ),
-      );
-    });
+    // Future.delayed(Duration(seconds: 3), () {
+    //   Get.defaultDialog(
+    //     title: 'Processando',
+    //     content: CircularProgressIndicator(
+    //       valueColor: AlwaysStoppedAnimation<Color>(Colors.greenAccent),
+    //     ),
+    //   );
+    // });
 
     return Scaffold(
       appBar: AppBar(
@@ -50,7 +51,11 @@ class HomePage extends GetView<HomeController> {
               SizedBox(
                 height: 20,
               ),
-              containerCustom('COMUNICAR', Routes.DETALHEMPREGADO),
+              containerCustom('ATUALIZAR', ''),
+              SizedBox(
+                height: 20,
+              ),
+              containerCustom('COMUNICAR', ''),
               SizedBox(
                 height: 20,
               ),
@@ -117,10 +122,37 @@ class HomePage extends GetView<HomeController> {
   Widget containerCustom(String label, String rota) {
     return GestureDetector(
       onTap: () async {
-        if (label == 'COMUNICAR') {
+        if (label == 'ATUALIZAR') {
+          var appController = Get.find<AppController>();
+          Get.defaultDialog(
+            title: 'Processando',
+            content: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.greenAccent),
+            ),
+          );
+          var i = await appController.listarEmpregados(true);
+          Navigator.pop(Get.context);
+          if (i == 1) {
+            Get.defaultDialog(
+                title: 'Lista de funcionarios atualizados',
+                content: Icon(
+                  FontAwesomeIcons.check,
+                  color: Colors.greenAccent,
+                  size: 40,
+                ));
+          } else {
+            Get.defaultDialog(
+                title: 'Erro ao atualizar lista de funcionarios',
+                content: Icon(
+                  FontAwesomeIcons.times,
+                  color: Colors.redAccent,
+                  size: 40,
+                ));
+          }
+        } else if (label == 'COMUNICAR') {
           Get.defaultDialog(
             title: 'Teu Codigo',
-            onConfirm: () {
+            onConfirm: () async {
               if (controller.presenca.codigo.isNotBlank) {
                 var filtrarPorCodigo = Get.find<AppController>()
                     .filtrarPorCodigo(controller.presenca.codigo);
@@ -142,10 +174,37 @@ class HomePage extends GetView<HomeController> {
                       borderRadius: 10,
                       margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
                 } else {
-                  if (filtrarPorCodigo.tipo != 'Vendedor') {
+                  if (filtrarPorCodigo.tipo == 'Vendedor') {
                     Navigator.pop(Get.context);
                   } else {
-                    Get.find<AppController>().salvarTodasPresencas();
+                    Navigator.pop(Get.context);
+                    Get.defaultDialog(
+                      title: 'Processando',
+                      content: CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.greenAccent),
+                      ),
+                    );
+                    var i =
+                        await Get.find<AppController>().salvarTodasPresencas();
+                    Navigator.pop(Get.context);
+                    if (i == 1) {
+                      Get.defaultDialog(
+                          title: 'Todas presenças salvas no servidor',
+                          content: Icon(
+                            FontAwesomeIcons.check,
+                            color: Colors.greenAccent,
+                            size: 40,
+                          ));
+                    } else {
+                      Get.defaultDialog(
+                          title: 'Erro ao salvar presenças no servidor',
+                          content: Icon(
+                            FontAwesomeIcons.times,
+                            color: Colors.redAccent,
+                            size: 40,
+                          ));
+                    }
                   }
                 }
               }
@@ -182,8 +241,7 @@ class HomePage extends GetView<HomeController> {
                   hintText: 'Sua Senha'),
             ),
           );
-        }
-        if (label == 'MARCAR') {
+        } else if (label == 'MARCAR') {
           // Get.toNamed(Routes.MARCAPONTO);
           if (!await controller.registar()) {
             Get.rawSnackbar(

@@ -10,27 +10,48 @@ class Presenca {
   String codigo;
   String gropo;
 
-  Presenca(
-      {this.id,
-      this.dataCriacao,
-      this.nomeFoto,
-      this.nomeAudio,
-      this.presente,
-      this.justificada,
-      this.justificacaoAceitoPorGerente,
-      this.justificacaoAceitoPorAdministrador,
-        this.codigo,});
+  Presenca({
+    this.id,
+    this.dataCriacao,
+    this.nomeFoto,
+    this.nomeAudio,
+    this.presente,
+    this.justificada,
+    this.justificacaoAceitoPorGerente,
+    this.justificacaoAceitoPorAdministrador,
+    this.codigo,
+  });
 
   factory Presenca.fromJson(Map<String, dynamic> map) {
     return new Presenca(
       id: map['id'] as int,
-      dataCriacao: map['dataCriacao']!=null? DateTime.parse(map['dataCriacao']):null,
+      dataCriacao: map['dataCriacao'] != null
+          ? DateTime.parse(map['dataCriacao'])
+          : null,
       nomeFoto: map['nomeFoto'] as String,
       nomeAudio: map['nomeAudio'] as String,
       presente: map['presente'] as bool,
       justificada: map['justificada'] as bool,
       justificacaoAceitoPorGerente: map['justificacaoAceitoPorGerente'] as bool,
-      justificacaoAceitoPorAdministrador: map['justificacaoAceitoPorAdministrador'] as bool,
+      justificacaoAceitoPorAdministrador:
+          map['justificacaoAceitoPorAdministrador'] as bool,
+    );
+  }
+
+  factory Presenca.fromJson1(Map<String, dynamic> map) {
+    return new Presenca(
+      id: map['id'] as int,
+      dataCriacao: map['dataCriacao'] != null
+          ? DateTime.parse(map['dataCriacao'])
+          : null,
+      nomeFoto: map['nomeFoto'] as String,
+      nomeAudio: map['nomeAudio'] as String,
+      presente: map['presente'] as bool,
+      justificada: map['justificada'] as bool,
+      justificacaoAceitoPorGerente: map['justificacaoAceitoPorGerente'] as bool,
+      justificacaoAceitoPorAdministrador:
+          map['justificacaoAceitoPorAdministrador'] as bool,
+      codigo: map['codigo'],
     );
   }
 
@@ -42,7 +63,8 @@ class Presenca {
       'presente': this.presente,
       'justificada': this.justificada,
       'justificacaoAceitoPorGerente': this.justificacaoAceitoPorGerente,
-      'justificacaoAceitoPorAdministrador': this.justificacaoAceitoPorAdministrador,
+      'justificacaoAceitoPorAdministrador':
+          this.justificacaoAceitoPorAdministrador,
       'codigo': this.codigo,
     };
   }

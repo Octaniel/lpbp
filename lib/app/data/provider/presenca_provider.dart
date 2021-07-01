@@ -1,35 +1,43 @@
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:lpbp/app/data/model/presenca.dart';
 import 'package:lpbp/app/res/lpbp_http.dart';
 import 'package:lpbp/app/res/static.dart';
-import 'package:http/http.dart' as http;
 
-class PresencaProvider{
+class PresencaProvider {
   final httpfat = LpbpHttp();
 
   Future<bool> salvar(Presenca presenca) async {
-    var parse = Uri.parse('${url}presenca');
-    final response = await http.post(parse,
-        headers: <String, String>{"Content-Type": "application/json"},
-        body: json.encode(presenca.toJson()));
+    try {
+      var parse = Uri.parse('${url}presenca');
+      final response = await http.post(parse,
+          headers: <String, String>{"Content-Type": "application/json"},
+          body: json.encode(presenca.toJson()));
 
-    if (response.statusCode == 201) {
-      return true;
-    } else {
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
       return false;
     }
   }
 
   Future<bool> salvarOffline(Presenca presenca) async {
     var parse = Uri.parse('${url}presenca/offline');
-    final response = await http.post(parse,
-        headers: <String, String>{"Content-Type": "application/json"},
-        body: json.encode(presenca.toJson()));
-    if (response.statusCode == 201) {
-      return true;
-    } else {
-      return false;
+    try {
+      final response = await http.post(parse,
+          headers: <String, String>{"Content-Type": "application/json"},
+          body: json.encode(presenca.toJson()));
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
     }
   }
 

@@ -4,14 +4,10 @@ import 'dart:math';
 
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter/animation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lpbp/app/data/model/presenca.dart';
 import 'package:lpbp/app/data/repository/presenca_repository.dart';
-import 'package:http/http.dart' as http;
 import 'package:lpbp/app/res/static.dart';
 import 'package:lpbp/app/routes/app_routes.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -72,15 +68,27 @@ class AppController extends GetxController {
   }
 
   Future<int> salvarTodasPresencas() async {
-    presencasTodos.forEach((presenca) async {
-      var split = presenca.nomeFoto.split('\\.');
-      var split2 = split[split.length - 1].split('\\.')[0];
-      var saveArquiv = await saveArquivo("imagens/$split2", presenca.nomeFoto);
-      presenca.nomeFoto = saveArquiv;
-      await presencaRepository.salvarOffline(presenca);
-    });
-    presencasTodos.clear();
-    return 1;
+    try {
+      presencasTodos.forEach((presenca) async {
+        if (presenca.presente) {
+          var split = presenca.nomeFoto.split('\\.');
+          var split2 = split[split.length - 1].split('\\.')[0];
+          var saveArquiv =
+              await saveArquivo("imagens/$split2", presenca.nomeFoto);
+          presenca.nomeFoto = saveArquiv;
+        }
+        var bool = await presencaRepository.salvarOffline(presenca);
+        if (!bool) {
+          return 0;
+        }
+      });
+      presencasTodos.clear();
+      var getStorage = GetStorage();
+      getStorage.write("presencasTodos", []);
+      return 1;
+    } catch (e) {
+      return 0;
+    }
   }
 
   Future<void> salvarPresenca(Presenca presenca) async {
@@ -148,30 +156,35 @@ class AppController extends GetxController {
     });
   }
 
-  Future<void> listarEmpregados() async {
-    final storage = GetStorage();
-    print('$connectionStatus bbbbbbbbbbbbb');
-    if (connectionStatus) {
-      empregados = await repository.listar();
-      storage.write("empregados", empregados);
-    } else {
-      var read1 = storage.read("empregados");
-      if (read1 != null)
-        empregados = storage.read("empregados").map<Usuario>((map) {
-          return Usuario.fromJson(map);
-        }).toList();
-      List read = storage.read("presencasTodos");
-      if (read != null)
-        presencasTodos.addAll(read.map<Presenca>((map) {
-          return Presenca.fromJson(map);
-        }).toList());
-      empregados.forEach((element) {
-        print('${empregados[1].pessoa.codigo}->${empregados[1].pessoa.turno}');
-      });
+  Future<int> listarEmpregados(bool connectionStatus) async {
+    try {
+      final storage = GetStorage();
+      if (connectionStatus) {
+        empregados = await repository.listar();
+        storage.write("empregados", empregados);
+      } else {
+        var read1 = storage.read("empregados");
+        if (read1 != null)
+          empregados = storage.read("empregados").map<Usuario>((map) {
+            return Usuario.fromJson(map);
+          }).toList();
+        List read = storage.read("presencasTodos");
+        print('${read.length}TTTTTTT');
+        if (read != null)
+          presencasTodos.addAll(read.map<Presenca>((map) {
+            return Presenca.fromJson1(map);
+          }).toList());
+        empregados.forEach((element) {
+          print(
+              '${empregados[1].pessoa.codigo}->${empregados[1].pessoa.turno}');
+        });
+      }
+      print('${empregados.length}llllllllllllllll');
+      update();
+      return 1;
+    } catch (e) {
+      return 0;
     }
-    print('${empregados.length}llllllllllllllll');
-    print('${presencasTodos.length}TTTTTTT');
-    update();
   }
 
   Usuario filtrarPorCodigo(String codigo) {
@@ -188,47 +201,50 @@ class AppController extends GetxController {
   }
 
   momentoDeTocar() async {
-    // while (true) {
-    //   await Future.delayed(Duration(minutes: 60), () async {
-    //     var dateTime = DateTime.now();
-    //     var add = DateTime(dateTime.year, dateTime.month, dateTime.day, 19, 1,
-    //         dateTime.second, dateTime.millisecond, dateTime.microsecond);
-    //     var subtract = DateTime(dateTime.year, dateTime.month, dateTime.day, 6,
-    //         59, dateTime.second, dateTime.millisecond, dateTime.microsecond);
-    //     if (dateTime.isBefore(add) && dateTime.isAfter(subtract)) {
-    //       var random = Random();
-    //       var nextInt = random.nextInt(61);
-    //       await Future.delayed(Duration(minutes: nextInt), () async {
-    //         Get.offNamed(Routes.MARCAPONTO);
-    //         tocarOuPausar();
-    //         await Future.delayed(Duration(minutes: 2), () async {
-    //           tocarOuPausar();
-    //           await Future.delayed(Duration(minutes: 8), () {
-    //             Get.offNamed(Routes.HOME);
-    //             salvarAusencias();
-    //           });
-    //         });
-    //       });
-    //     }
-    //   });
-    // }
-
     while (true) {
-      if (connectionStatus != null) {
-        await Future.delayed(Duration(seconds: 3), () async {
-          await Future.delayed(Duration(seconds: 2), () async {
+      print('11111');
+      await Future.delayed(Duration(minutes: 60), () async {
+        print('22222');
+        var dateTime = DateTime.now();
+        var add = DateTime(dateTime.year, dateTime.month, dateTime.day, 19, 1,
+            dateTime.second, dateTime.millisecond, dateTime.microsecond);
+        var subtract = DateTime(dateTime.year, dateTime.month, dateTime.day, 8,
+            0, dateTime.second, dateTime.millisecond, dateTime.microsecond);
+        if (dateTime.isBefore(add) && dateTime.isAfter(subtract)) {
+          print('33333');
+          var random = Random();
+          var nextInt = random.nextInt(61);
+          print(nextInt);
+          await Future.delayed(Duration(minutes: nextInt), () async {
+            print('44444');
             Get.offNamed(Routes.MARCAPONTO);
-            // tocarOuPausar();
-            await Future.delayed(Duration(minutes: 1), () async {
-              // tocarOuPausar();
-              await Future.delayed(Duration(minutes: 1), () {
+            tocarOuPausar();
+            await Future.delayed(Duration(minutes: 2), () async {
+              tocarOuPausar();
+              await Future.delayed(Duration(minutes: 8), () {
                 Get.offNamed(Routes.HOME);
                 salvarAusencias();
               });
             });
           });
+        }
+      });
+    }
+
+    while (true) {
+      await Future.delayed(Duration(seconds: 3), () async {
+        await Future.delayed(Duration(seconds: 2), () async {
+          Get.offNamed(Routes.MARCAPONTO);
+          // tocarOuPausar();
+          await Future.delayed(Duration(minutes: 1), () async {
+            // tocarOuPausar();
+            await Future.delayed(Duration(minutes: 1), () {
+              Get.offNamed(Routes.HOME);
+              salvarAusencias();
+            });
+          });
         });
-      }
+      });
     }
   }
 
@@ -257,35 +273,40 @@ class AppController extends GetxController {
     }
   }
 
-  Future<void> updateConnectionStatus() async {
-    String login = "username=rrrr&password=tttt&grant_type=password";
-    var parse = Uri.parse('${baseUrl}oauth/token');
-    try {
-      final response = await http.post(parse,
-          headers: <String, String>{
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": "Basic YW5ndWxhcjpAbmd1bEByMA==",
-            "bmobile": "b",
-          },
-          body: login);
-
-      if (response.statusCode == 200 || response.statusCode == 400) {
-        connectionStatus = true;
-        Navigator.pop(Get.context);
-      } else {
-        connectionStatus = false;
-        Navigator.pop(Get.context);
-      }
-    } catch (e) {
-      connectionStatus = false;
-      Navigator.pop(Get.context);
-    }
-
-    listarEmpregados();
-    if (connectionStatus) {
-      verificarLogado();
-    }
-  }
+  // Future<void> updateConnectionStatus() async {
+  //   String login = "username=rrrr&password=tttt&grant_type=password";
+  //   var parse = Uri.parse('${baseUrl}oauth/token');
+  //   try {
+  //     final response = await http.post(parse,
+  //         headers: <String, String>{
+  //           "Content-Type": "application/x-www-form-urlencoded",
+  //           "Authorization": "Basic YW5ndWxhcjpAbmd1bEByMA==",
+  //           "bmobile": "b",
+  //         },
+  //         body: login);
+  //
+  //     if (response.statusCode == 200 || response.statusCode == 400) {
+  //       connectionStatus = true;
+  //     } else {
+  //       connectionStatus = false;
+  //       Future.delayed(Duration(seconds: 5), () {
+  //         Navigator.pop(Get.context);
+  //         Navigator.pop(Get.context);
+  //       });
+  //     }
+  //   } catch (e) {
+  //     connectionStatus = false;
+  //     Future.delayed(Duration(seconds: 5), () {
+  //       Navigator.pop(Get.context);
+  //       Navigator.pop(Get.context);
+  //     });
+  //   }
+  //
+  //   listarEmpregados();
+  //   if (connectionStatus) {
+  //     verificarLogado();
+  //   }
+  // }
 
   @override
   void onInit() {
@@ -293,8 +314,8 @@ class AppController extends GetxController {
       Audio("assets/audio/1.mp3"),
       autoStart: false,
     );
-    // momentoDeTocar();
-    updateConnectionStatus();
+    momentoDeTocar();
+    listarEmpregados(false);
     super.onInit();
   }
 

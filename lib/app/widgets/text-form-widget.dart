@@ -29,11 +29,11 @@ class TextFormFieldWidget extends StatelessWidget {
         onChanged: onChanged,
         obscureText: isObscure,
         keyboardType: inputType,
-        style: GoogleFonts.muli(color: Colors.black),
+        style: GoogleFonts.mulish(color: Colors.black),
         validator: validator,
         decoration: InputDecoration(
             // errorText: widget.errorText == null ? null : widget.errorText(),
-            errorStyle: GoogleFonts.muli(),
+            errorStyle: GoogleFonts.mulish(),
             prefixIcon: icon,
             border: InputBorder.none,
             hintText: label,

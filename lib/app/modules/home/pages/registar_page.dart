@@ -267,7 +267,7 @@ class RegistrarPage extends GetView<HomeController> {
                 .make(),
             borderRadius: 10,
             margin: EdgeInsets.only(left: 20, right: 20, bottom: 20));
-       await Get.find<AppController>().listarEmpregados();
+        await Get.find<AppController>().listarEmpregados(false);
         controller.listarEmpregados();
         Future.delayed(Duration(seconds: 2), () {
           controller.circularProgressButaoRegistrar = false;

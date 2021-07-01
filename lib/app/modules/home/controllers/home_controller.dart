@@ -70,7 +70,7 @@ class HomeController extends GetxController {
     update(['playReplay']);
   }
 
-  HomeController(){
+  HomeController() {
     listarEmpregados();
   }
 
@@ -94,14 +94,15 @@ class HomeController extends GetxController {
 
   Future<void> atualizarPresenca(Presenca presenca) async {
     await repositoryPresenca.atualizar(presenca);
-    await Get.find<AppController>().listarEmpregados();
+    await Get.find<AppController>().listarEmpregados(false);
   }
 
   Future<bool> registar() async {
     return await repositoryAuth.registar();
   }
 
-  Future<bool> setarTodosAsPresencasParaPresenteEntre(String de, String ate) async {
+  Future<bool> setarTodosAsPresencasParaPresenteEntre(
+      String de, String ate) async {
     return await repositoryAuth.setarTodosAsPresencasParaPresenteEntre(de, ate);
   }
 

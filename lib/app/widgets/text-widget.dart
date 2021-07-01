@@ -18,7 +18,7 @@ class TextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(text,
-        style: GoogleFonts.muli(
+        style: GoogleFonts.mulish(
             fontSize: fontSize, fontWeight: fontWeight, color: color));
   }
 }

@@ -30,18 +30,22 @@ class ListaEmpregadosPage extends GetView<HomeController> {
             children: [
               GetBuilder<AppController>(
                 builder: (v) {
-                  v.empregados.sort((a,b)=>a.pessoa.nome.compareTo(b.pessoa.nome));
+                  v.empregados
+                      .sort((a, b) => a.pessoa.nome.compareTo(b.pessoa.nome));
                   return Center(
                     child: Wrap(
                       children: v.empregados
                           .map((e) => Container(
-                                    width: e.tipo == 'Admininstrador'?130:120,
+                                    width: 150,
                                     height: 140,
                                     child: Card(
                                       elevation: 5,
                                       child: Column(
                                         children: [
-                                          e.pessoa.nome.text.size(18).bold.make(),
+                                          e.pessoa.nome.text
+                                              .size(18)
+                                              .bold
+                                              .make(),
                                           SizedBox(
                                             height: 5,
                                           ),
@@ -73,9 +77,11 @@ class ListaEmpregadosPage extends GetView<HomeController> {
                                               IconButton(
                                                   icon: Icon(Icons.edit),
                                                   onPressed: () {
-                                                    controller.pessoa = e.pessoa;
+                                                    controller.pessoa =
+                                                        e.pessoa;
                                                     controller.usuario = e;
-                                                    Get.toNamed(Routes.REGISTRAR);
+                                                    Get.toNamed(
+                                                        Routes.REGISTRAR);
                                                   }),
                                               SizedBox(
                                                 width: 10,
@@ -83,7 +89,8 @@ class ListaEmpregadosPage extends GetView<HomeController> {
                                               IconButton(
                                                   icon: Icon(Icons.more_horiz),
                                                   onPressed: () {
-                                                    controller.pessoa = e.pessoa;
+                                                    controller.pessoa =
+                                                        e.pessoa;
                                                     Get.toNamed(
                                                         Routes.DETALHEMPREGADO,
                                                         arguments: e);

@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:lpbp/app/app_controller.dart';
 import 'package:lpbp/app/data/model/pessoa.dart';
 import 'package:lpbp/app/modules/home/controllers/home_controller.dart';
-import 'package:lpbp/app/routes/app_routes.dart';
 import 'package:lpbp/app/widgets/text-form-widget.dart';
 import 'package:lpbp/app/widgets/text-widget.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -36,7 +35,6 @@ class RegistrarPage extends GetView<HomeController> {
       },
       child: WillPopScope(
         onWillPop: () {
-
           return Future.value(true);
         },
         child: Scaffold(
@@ -159,7 +157,8 @@ class RegistrarPage extends GetView<HomeController> {
                                         'Vendedor'
                                       ],
                                               selectedValue:
-                                                  controller.usuario.tipo == null
+                                                  controller.usuario.tipo ==
+                                                          null
                                                       ? 'Vendedor'
                                                       : controller.usuario.tipo,
                                               onChanged: (v) {
@@ -186,11 +185,20 @@ class RegistrarPage extends GetView<HomeController> {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      VxTextDropDown(['Manhã', 'Tarde'],
-                                              selectedValue:
-                                                  controller.pessoa.turno == null
+                                      VxTextDropDown(
+                                              ['Manhã', 'Tarde', 'De Feria'],
+                                              selectedValue: controller
+                                                          .pessoa.turno ==
+                                                      null
+                                                  ? 'Manhã'
+                                                  : controller.pessoa.turno ==
+                                                          'MANHA'
                                                       ? 'Manhã'
-                                                      : controller.pessoa.turno=='MANHA'?'Manhã':'Tarde',
+                                                      : controller.pessoa
+                                                                  .turno ==
+                                                              'TARDE'
+                                                          ? 'Tarde'
+                                                          : 'De Feria',
                                               onChanged: (v) {
                                         controller.pessoa.turno = v;
                                       })
@@ -290,7 +298,8 @@ class RegistrarPage extends GetView<HomeController> {
                                       () => controller
                                               .circularProgressButaoRegistrar
                                           ? Center(
-                                              child: CircularProgressIndicator(),
+                                              child:
+                                                  CircularProgressIndicator(),
                                             )
                                           : TextWidget(
                                               text: "REGISTRAR",
@@ -325,12 +334,7 @@ class RegistrarPage extends GetView<HomeController> {
       if (await controller.salvarUsuario()) {
         Get.snackbar("", "",
             snackPosition: SnackPosition.BOTTOM,
-            titleText: 'Sucesso'
-                .text
-                .color(Colors.white)
-                .size(16)
-                .bold
-                .make(),
+            titleText: 'Sucesso'.text.color(Colors.white).size(16).bold.make(),
             messageText: 'Registado com sucesso'
                 .text
                 .color(Colors.white)
@@ -354,12 +358,7 @@ class RegistrarPage extends GetView<HomeController> {
       } else {
         Get.snackbar("", "",
             snackPosition: SnackPosition.BOTTOM,
-            titleText: 'Erro'
-                .text
-                .color(Colors.white)
-                .size(16)
-                .bold
-                .make(),
+            titleText: 'Erro'.text.color(Colors.white).size(16).bold.make(),
             messageText: 'Falha ao Registar'
                 .text
                 .color(Colors.white)

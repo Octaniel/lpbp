@@ -95,6 +95,7 @@ class AppController extends GetxController {
     // if (_connectionStatus)
     //   await presencaRepository.salvar(presenca);
     // else {
+    presenca.dataCriacao = DateTime.now();
     presenca.presente = true;
     presencas.add(presenca);
     // }
@@ -116,6 +117,7 @@ class AppController extends GetxController {
           Presenca pres = Presenca();
           pres.codigo = elemen.pessoa.codigo;
           pres.presente = false;
+          pres.dataCriacao = DateTime.now();
           ausencias.add(pres);
         }
       });
@@ -131,7 +133,7 @@ class AppController extends GetxController {
         });
         if (v) {
           Presenca pres = Presenca();
-          // pres.dataCriacao = DateTime.now().toUtc();
+          pres.dataCriacao = DateTime.now();
           pres.codigo = elemen.pessoa.codigo;
           pres.presente = false;
           ausencias.add(pres);
@@ -144,6 +146,14 @@ class AppController extends GetxController {
     getStorage.write("presencasTodos", presencasTodos);
     ausencias.clear();
     presencas.clear();
+  }
+
+  testSave() async {
+    Presenca pres = Presenca();
+    pres.codigo = '14316';
+    pres.presente = false;
+    pres.dataCriacao = DateTime.now();
+    await presencaRepository.salvarOffline(pres);
   }
 
   Future<void> atualizarPresenca(Presenca presenca) async {

@@ -66,6 +66,11 @@ class Presenca {
       'justificacaoAceitoPorAdministrador':
           this.justificacaoAceitoPorAdministrador,
       'codigo': this.codigo,
+      'dataCriacao': '${dataCriacao.year}-'
+          '${dataCriacao.month.toString().length == 1 ? '0${dataCriacao.month}' : dataCriacao.month}-'
+          '${dataCriacao.day.toString().length == 1 ? '0${dataCriacao.day}' : dataCriacao.day}T${dataCriacao.hour.toString().length == 1 ? '0${dataCriacao.hour}' : dataCriacao.hour}:'
+          '${dataCriacao.minute.toString().length == 1 ? '0${dataCriacao.minute}' : dataCriacao.minute}:'
+          '${dataCriacao.second.toString().length == 1 ? '0${dataCriacao.second}' : dataCriacao.second}'
     };
   }
 }

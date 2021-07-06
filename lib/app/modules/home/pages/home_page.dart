@@ -130,25 +130,26 @@ class HomePage extends GetView<HomeController> {
               valueColor: AlwaysStoppedAnimation<Color>(Colors.greenAccent),
             ),
           );
-          var i = await appController.listarEmpregados(true);
+          // var i = await appController.listarEmpregados(true);
+          await appController.testSave();
           Navigator.pop(Get.context);
-          if (i == 1) {
-            Get.defaultDialog(
-                title: 'Lista de funcionarios atualizados',
-                content: Icon(
-                  FontAwesomeIcons.check,
-                  color: Colors.greenAccent,
-                  size: 40,
-                ));
-          } else {
-            Get.defaultDialog(
-                title: 'Erro ao atualizar lista de funcionarios',
-                content: Icon(
-                  FontAwesomeIcons.times,
-                  color: Colors.redAccent,
-                  size: 40,
-                ));
-          }
+          // if (i == 1) {
+          //   Get.defaultDialog(
+          //       title: 'Lista de funcionarios atualizados',
+          //       content: Icon(
+          //         FontAwesomeIcons.check,
+          //         color: Colors.greenAccent,
+          //         size: 40,
+          //       ));
+          // } else {
+          //   Get.defaultDialog(
+          //       title: 'Erro ao atualizar lista de funcionarios',
+          //       content: Icon(
+          //         FontAwesomeIcons.times,
+          //         color: Colors.redAccent,
+          //         size: 40,
+          //       ));
+          // }
         } else if (label == 'COMUNICAR') {
           Get.defaultDialog(
             title: 'Teu Codigo',

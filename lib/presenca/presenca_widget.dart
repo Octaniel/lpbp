@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 class PresencaWidget extends StatefulWidget {
   const PresencaWidget({
     Key? key,
-    this.presen,
+    required this.presen,
   }) : super(key: key);
 
   final List<dynamic> presen;
@@ -48,9 +48,9 @@ class _PresencaWidgetState extends State<PresencaWidget> {
             return ListView.builder(
               padding: EdgeInsets.zero,
               scrollDirection: Axis.vertical,
-              itemCount: pres.length,
+              itemCount: pres?.length,
               itemBuilder: (context, presIndex) {
-                final presItem = pres[presIndex];
+                final presItem = pres![presIndex];
                 return Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
                   child: Container(

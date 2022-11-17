@@ -15,7 +15,6 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -23,10 +22,24 @@
   <meta name="apple-mobile-web-app-title" content="lpbp">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  
 
-  <title>lpbp</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- Open Graph & SEO tags -->
+  <meta property="og:title" content="lpbp" />
+  <meta property="og:description" content="Built with FlutterFlow." />
+  <meta property="og:image" content="https://storage.googleapis.com/flutterflow-prod-hosting/og_splash_gradient.png" /> 
+  <meta name="twitter:title" content="lpbp" />
+  <meta name="twitter:description" content="Built with FlutterFlow." />
+  <meta name="twitter:image" content="https://storage.googleapis.com/flutterflow-prod-hosting/og_splash_gradient.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <title> lpbp </title>
+  <meta name="description" content="Built with FlutterFlow." />
+    
+
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -40,6 +53,30 @@
       });
     }
   </script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  
+  
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+  
+  
+  
+
+  <script>
+    const firebaseConfig = {
+    apiKey: "AIzaSyC8kEuKMDX0S2vs12KgMyD1PXx3IiW7uYQ",
+      authDomain: "lbpb-49a3c.firebaseapp.com",
+      projectId: "lbpb-49a3c",
+      storageBucket: "lbpb-49a3c.appspot.com",
+      messagingSenderId: "313998617632",
+      appId: "1:313998617632:web:1666b1397a806ca8e06045",
+      measurementId: "G-RJVPX3BZB9"
+    }
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  
+  
+  
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>

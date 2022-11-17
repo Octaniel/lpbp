@@ -1,43 +1,49 @@
 {
   "project_info": {
-    "project_number": "742556804061",
-    "firebase_url": "https://lpdp-dde6b.firebaseio.com",
-    "project_id": "lpdp-dde6b",
-    "storage_bucket": "lpdp-dde6b.appspot.com"
+    "project_number": "313998617632",
+    "project_id": "lbpb-49a3c",
+    "storage_bucket": "lbpb-49a3c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:742556804061:android:6663d7ca6075fd12fccc34",
+        "mobilesdk_app_id": "1:313998617632:android:f0c97f4c9cefb927e06045",
         "android_client_info": {
-          "package_name": "com.bsoftware.lpbp"
+          "package_name": "com.octa.lpbp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "742556804061-8nhishk7fls3s44rsm7tcl75p6pvos8k.apps.googleusercontent.com",
+          "client_id": "313998617632-i7s6gdmcg62rsre6s22idkt2ogfbfo4g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.bsoftware.lpbp",
-            "certificate_hash": "c1854ded06c750716c1429e834c91c57c030f7bf"
+            "package_name": "com.octa.lpbp",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
           }
         },
         {
-          "client_id": "742556804061-3ut1jhq15uk24psj5v5u2v9h3adibav7.apps.googleusercontent.com",
+          "client_id": "313998617632-ch0j648u89mqdpq0si37tslct0s9p6m3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC0Yuhcu3pU8il0YPgVfCnn9kVNJc0Woig"
+          "current_key": "AIzaSyBbP610Ir_1ALjN7G43Kwer5GNgoY_IrSY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "742556804061-3ut1jhq15uk24psj5v5u2v9h3adibav7.apps.googleusercontent.com",
+              "client_id": "313998617632-ch0j648u89mqdpq0si37tslct0s9p6m3.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "313998617632-d024nmgmu58a7ja03m881ogkl1ufu6km.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.octa.lpbp"
+              }
             }
           ]
         }

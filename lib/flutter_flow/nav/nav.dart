@@ -68,14 +68,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? LoginWidget() : ListafuncionarioWidget(),
+          appStateNotifier.loggedIn ? LoginWidget() : HomePageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) => appStateNotifier.loggedIn
-              ? LoginWidget()
-              : ListafuncionarioWidget(),
+          builder: (context, _) =>
+              appStateNotifier.loggedIn ? LoginWidget() : HomePageWidget(),
           routes: [
             FFRoute(
               name: 'HomePage',
@@ -101,8 +100,21 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'presenca',
               path: 'presenca',
               builder: (context, params) => PresencaWidget(
-                presen:
-                    params.getParam<dynamic>('presen', ParamType.JSON, true),
+                presen: params.getParam('presen', ParamType.int),
+              ),
+            ),
+            FFRoute(
+              name: 'infoPresenca',
+              path: 'infoPresenca',
+              builder: (context, params) => InfoPresencaWidget(
+                id: params.getParam('id', ParamType.int),
+              ),
+            ),
+            FFRoute(
+              name: 'Justificar',
+              path: 'justificar',
+              builder: (context, params) => JustificarWidget(
+                id: params.getParam('id', ParamType.int),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
@@ -266,7 +278,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.location);
-            return '/listafuncionario';
+            return '/homePage';
           }
           return null;
         },
@@ -279,13 +291,11 @@ class FFRoute {
                 )
               : builder(context, ffParams);
           final child = appStateNotifier.loading
-              ? Center(
-                  child: SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: CircularProgressIndicator(
-                      color: FlutterFlowTheme.of(context).primaryColor,
-                    ),
+              ? Container(
+                  color: Color(0xFF18756A),
+                  child: Image.asset(
+                    'assets/images/iconlpbp.png',
+                    fit: BoxFit.fitWidth,
                   ),
                 )
               : page;

@@ -43,8 +43,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                         child: FFButtonWidget(
-                          onPressed: () {
-                            print('Button pressed ...');
+                          onPressed: () async {
+                            context.pushNamed('listafuncionario');
                           },
                           text: 'STATUS',
                           options: FFButtonOptions(
@@ -97,8 +97,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 25, 0, 0),
                         child: FFButtonWidget(
-                          onPressed: () {
-                            print('Button pressed ...');
+                          onPressed: () async {
+                            context.pushNamed('marcacao');
                           },
                           text: 'COMUNICAR',
                           options: FFButtonOptions(

@@ -14,7 +14,9 @@ class GetFuncionarioCall {
       callName: 'getFuncionario',
       apiUrl: 'http://52.204.190.168:8080/pessoa',
       callType: ApiCallType.GET,
-      headers: {},
+      headers: {
+        'Accept': 'application/json; charset = UTF-8',
+      },
       params: {},
       returnBody: true,
       cache: false,
@@ -24,7 +26,80 @@ class GetFuncionarioCall {
   static dynamic funcionario(dynamic response) => getJsonField(
         response,
         r'''$''',
+        true,
       );
+}
+
+class GetPresencaPorIdFuncionarioCall {
+  static Future<ApiCallResponse> call({
+    int? idPessoa = 1,
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'getPresencaPorIdFuncionario',
+      apiUrl: 'http://52.204.190.168:8080/presenca/idPessoa/${idPessoa}',
+      callType: ApiCallType.GET,
+      headers: {
+        'Accept': 'application/json; charset = UTF-8',
+      },
+      params: {},
+      returnBody: true,
+      cache: false,
+    );
+  }
+}
+
+class GetPresencaPorIdCall {
+  static Future<ApiCallResponse> call({
+    int? id = 1,
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'getPresencaPorId',
+      apiUrl: 'http://52.204.190.168:8080/presenca/${id}',
+      callType: ApiCallType.GET,
+      headers: {},
+      params: {},
+      returnBody: true,
+      cache: false,
+    );
+  }
+}
+
+class AtualizarPresencaCall {
+  static Future<ApiCallResponse> call({
+    String? urlVideo = '',
+    int? id,
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'atualizarPresenca',
+      apiUrl:
+          'http://52.204.190.168:8080/presenca?urlVideo=${urlVideo}&id=${id}',
+      callType: ApiCallType.PATCH,
+      headers: {},
+      params: {},
+      bodyType: BodyType.NONE,
+      returnBody: true,
+      cache: false,
+    );
+  }
+}
+
+class AicionarPresencaCall {
+  static Future<ApiCallResponse> call({
+    int? codigoPessoa,
+    String? urlFoto = '',
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'aicionarPresenca',
+      apiUrl:
+          'http://52.204.190.168:8080/presenca?codigoPessoa=${codigoPessoa}&urlFoto=${urlFoto}',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {},
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      cache: false,
+    );
+  }
 }
 
 class ApiPagingParams {

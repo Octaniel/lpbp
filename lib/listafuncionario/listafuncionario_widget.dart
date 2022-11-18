@@ -1,6 +1,7 @@
 import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,13 +21,13 @@ class _ListafuncionarioWidgetState extends State<ListafuncionarioWidget> {
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
-        backgroundColor: Color(0xFF0985A8),
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Text(
           'Lista De Funcionario',
           style: FlutterFlowTheme.of(context).title2.override(
                 fontFamily: 'Poppins',
-                color: Colors.white,
+                color: Color(0xFF57636C),
                 fontSize: 22,
               ),
         ),
@@ -103,10 +104,9 @@ class _ListafuncionarioWidgetState extends State<ListafuncionarioWidget> {
                                           'presen': serializeParam(
                                             getJsonField(
                                               funcionariosItem,
-                                              r'''$.presencas''',
+                                              r'''$.id''',
                                             ),
-                                            ParamType.JSON,
-                                            true,
+                                            ParamType.int,
                                           ),
                                         }.withoutNulls,
                                         extra: <String, dynamic>{
@@ -137,7 +137,7 @@ class _ListafuncionarioWidgetState extends State<ListafuncionarioWidget> {
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(8, 8, 8, 8),
                                               child: Icon(
-                                                Icons.monetization_on_rounded,
+                                                Icons.person,
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .tertiaryColor,
@@ -159,10 +159,11 @@ class _ListafuncionarioWidgetState extends State<ListafuncionarioWidget> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  getJsonField(
+                                                  functions.formatStringToUtf8(
+                                                      getJsonField(
                                                     funcionariosItem,
                                                     r'''$.nome''',
-                                                  ).toString(),
+                                                  ).toString()),
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .subtitle1

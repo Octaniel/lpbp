@@ -265,10 +265,11 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
                                 var _shouldSetState = false;
                                 if (functions.checarCodigoMarcacao(
                                     seucodigoController!.text,
-                                    getJsonField(
+                                    (GetFuncionarioCall.codigo(
                                       listViewGetFuncionarioResponse.jsonBody,
-                                      r'''$''',
-                                    ))) {
+                                    ) as List)
+                                        .map<String>((s) => s.toString())
+                                        .toList())) {
                                   apiResultkvw =
                                       await AicionarPresencaCall.call(
                                     codigoPessoa:

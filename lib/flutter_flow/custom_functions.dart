@@ -36,6 +36,10 @@ String formatUrlUploadFile(String url) {
   return url.replaceAll('users/uploads/', 'users%2Fuploads%2F');
 }
 
+String formatUrlUploadImage(String url) {
+  return url.replaceAll('users/uploads/', 'users%2Fuploads%2F');
+}
+
 bool podeApresentarVideoJustificando(
   bool presente,
   bool justificado,
@@ -48,7 +52,7 @@ bool podeApresentarFotoPresenca(
   bool presente,
   String? urlFoto,
 ) {
-  return presente && urlFoto != null;
+  return presente == true && urlFoto != null;
 }
 
 bool checarCodigoMarcacao(

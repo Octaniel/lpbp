@@ -107,10 +107,10 @@ class _InfoPresencaWidgetState extends State<InfoPresencaWidget> {
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(50, 25, 50, 0),
                       child: Image.network(
-                        getJsonField(
+                        functions.formatUrlUploadImage(getJsonField(
                           listViewGetPresencaPorIdResponse.jsonBody,
                           r'''$.nomeFoto''',
-                        ),
+                        ).toString()),
                         width: 100,
                         height: 400,
                         fit: BoxFit.cover,
@@ -168,6 +168,42 @@ class _InfoPresencaWidgetState extends State<InfoPresencaWidget> {
                               listViewGetPresencaPorIdResponse.jsonBody,
                               r'''$.justificada''',
                             ).toString(),
+                            style: FlutterFlowTheme.of(context).bodyText1,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Align(
+                        alignment: AlignmentDirectional(0, 0),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                          child: Text(
+                            'Teste? ',
+                            style: FlutterFlowTheme.of(context).bodyText1,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional(0, 0),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                          child: Text(
+                            functions
+                                .podeApresentarFotoPresenca(
+                                    getJsonField(
+                                      listViewGetPresencaPorIdResponse.jsonBody,
+                                      r'''$.presente''',
+                                    ),
+                                    getJsonField(
+                                      listViewGetPresencaPorIdResponse.jsonBody,
+                                      r'''$.nomeFoto''',
+                                    ).toString())
+                                .toString(),
                             style: FlutterFlowTheme.of(context).bodyText1,
                           ),
                         ),

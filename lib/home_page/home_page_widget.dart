@@ -1,3 +1,5 @@
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -16,6 +18,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    OneSignal.shared.setNotificationWillShowInForegroundHandler((OSNotificationReceivedEvent event) {
+      //event.complete(event.notification);
+      context.pushNamed('marcacao');
+    });
+    OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      context.pushNamed('marcacao');
+    });
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,

@@ -53,10 +53,8 @@ bool podeApresentarFotoPresenca(
 
 bool checarCodigoMarcacao(
   String codigo,
-  List<dynamic> funcionarios,
+  List<String> codigos,
 ) {
-  var funci = funcionarios.firstWhere(
-      (funcionario) => funcionario.codigo == codigo,
-      orElse: () => null);
-  return funci != null;
+  var cod = codigos.firstWhere((codig) => codig == codigo, orElse: () => '');
+  return cod != '';
 }

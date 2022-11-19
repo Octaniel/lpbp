@@ -28,6 +28,11 @@ class GetFuncionarioCall {
         r'''$''',
         true,
       );
+  static dynamic codigo(dynamic response) => getJsonField(
+        response,
+        r'''$[:].codigo''',
+        true,
+      );
 }
 
 class GetPresencaPorIdFuncionarioCall {

@@ -183,42 +183,6 @@ class _InfoPresencaWidgetState extends State<InfoPresencaWidget> {
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                           child: Text(
-                            'Teste? ',
-                            style: FlutterFlowTheme.of(context).bodyText1,
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(0, 0),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-                          child: Text(
-                            functions
-                                .podeApresentarFotoPresenca(
-                                    getJsonField(
-                                      listViewGetPresencaPorIdResponse.jsonBody,
-                                      r'''$.presente''',
-                                    ),
-                                    getJsonField(
-                                      listViewGetPresencaPorIdResponse.jsonBody,
-                                      r'''$.nomeFoto''',
-                                    ).toString())
-                                .toString(),
-                            style: FlutterFlowTheme.of(context).bodyText1,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional(0, 0),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-                          child: Text(
                             'Aceito Por Gerente? ',
                             style: FlutterFlowTheme.of(context).bodyText1,
                           ),

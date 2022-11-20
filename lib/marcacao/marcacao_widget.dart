@@ -132,10 +132,8 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
                                 EdgeInsetsDirectional.fromSTEB(300, 0, 300, 0),
                             child: InkWell(
                               onTap: () async {
-                                final selectedMedia =
-                                    await selectMediaWithSourceBottomSheet(
-                                  context: context,
-                                  allowPhoto: true,
+                                final selectedMedia = await selectMedia(
+                                  multiImage: false,
                                 );
                                 if (selectedMedia != null &&
                                     selectedMedia.every((m) =>

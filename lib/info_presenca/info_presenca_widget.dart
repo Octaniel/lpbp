@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
+
 import '../backend/api_requests/api_calls.dart';
+import '../flutter_flow/custom_functions.dart' as functions;
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_video_player.dart';
-import '../flutter_flow/custom_functions.dart' as functions;
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class InfoPresencaWidget extends StatefulWidget {
   const InfoPresencaWidget({
@@ -81,8 +81,13 @@ class _InfoPresencaWidgetState extends State<InfoPresencaWidget> {
                         r'''$.nomeAudio''',
                       ).toString()))
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(50, 25, 50, 0),
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                          MediaQuery.of(context).size.width * .25,
+                          0,
+                          MediaQuery.of(context).size.width * .25,
+                          0),
                       child: FlutterFlowVideoPlayer(
+                        height: MediaQuery.of(context).size.width * .35,
                         path: functions.formatUrlUploadFile(getJsonField(
                           listViewGetPresencaPorIdResponse.jsonBody,
                           r'''$.nomeAudio''',
@@ -111,9 +116,9 @@ class _InfoPresencaWidgetState extends State<InfoPresencaWidget> {
                           listViewGetPresencaPorIdResponse.jsonBody,
                           r'''$.nomeFoto''',
                         ).toString()),
-                        width: 100,
+                        width: 200,
                         height: 400,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fitHeight,
                       ),
                     ),
                   Row(

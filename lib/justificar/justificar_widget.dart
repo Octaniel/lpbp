@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+
 import '../backend/api_requests/api_calls.dart';
 import '../backend/firebase_storage/storage.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/upload_media.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class JustificarWidget extends StatefulWidget {
   const JustificarWidget({
@@ -138,7 +138,6 @@ class _JustificarWidgetState extends State<JustificarWidget> {
                               return;
                             }
 
-                            if (_shouldSetState) setState(() {});
                           },
                           text: 'Gravar Justificativa',
                           icon: Icon(

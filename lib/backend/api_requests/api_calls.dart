@@ -6,8 +6,6 @@ import 'api_manager.dart';
 
 export 'api_manager.dart' show ApiCallResponse;
 
-const _kPrivateApiFunctionName = 'ffPrivateApiCall';
-
 class GetFuncionarioCall {
   static Future<ApiCallResponse> call() {
     return ApiManager.instance.makeApiCall(
@@ -41,7 +39,7 @@ class GetPresencaPorIdFuncionarioCall {
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'getPresencaPorIdFuncionario',
-      apiUrl: 'http://52.204.190.168:8080/presenca/idPessoa/${idPessoa}',
+      apiUrl: 'http://52.204.190.168:8080/presenca/idPessoa/$idPessoa',
       callType: ApiCallType.GET,
       headers: {
         'Accept': 'application/json; charset = UTF-8',
@@ -59,7 +57,7 @@ class GetPresencaPorIdCall {
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'getPresencaPorId',
-      apiUrl: 'http://52.204.190.168:8080/presenca/${id}',
+      apiUrl: 'http://52.204.190.168:8080/presenca/$id',
       callType: ApiCallType.GET,
       headers: {},
       params: {},
@@ -77,7 +75,7 @@ class AtualizarPresencaCall {
     return ApiManager.instance.makeApiCall(
       callName: 'atualizarPresenca',
       apiUrl:
-          'http://52.204.190.168:8080/presenca?urlVideo=${urlVideo}&id=${id}',
+          'http://52.204.190.168:8080/presenca?urlVideo=$urlVideo&id=$id',
       callType: ApiCallType.PATCH,
       headers: {},
       params: {},
@@ -96,7 +94,7 @@ class AicionarPresencaCall {
     return ApiManager.instance.makeApiCall(
       callName: 'aicionarPresenca',
       apiUrl:
-          'http://52.204.190.168:8080/presenca?codigoPessoa=${codigoPessoa}&urlFoto=${urlFoto}',
+          'http://52.204.190.168:8080/presenca?codigoPessoa=$codigoPessoa&urlFoto=$urlFoto',
       callType: ApiCallType.POST,
       headers: {},
       params: {},
@@ -123,11 +121,3 @@ class ApiPagingParams {
       'PagingParams(nextPageNumber: $nextPageNumber, numItems: $numItems, lastResponse: $lastResponse,)';
 }
 
-String _serializeList(List? list) {
-  list ??= <String>[];
-  try {
-    return json.encode(list);
-  } catch (_) {
-    return '[]';
-  }
-}

@@ -10,15 +10,15 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
 
-import 'lat_lng.dart';
-
-export 'lat_lng.dart';
-export 'place.dart';
-export 'dart:math' show min, max;
 export 'dart:convert' show jsonEncode, jsonDecode;
+export 'dart:math' show min, max;
+
 export 'package:intl/intl.dart';
 export 'package:page_transition/page_transition.dart';
+
+export 'lat_lng.dart';
 export 'nav/nav.dart';
+export 'place.dart';
 
 T valueOrDefault<T>(T? value, T defaultValue) =>
     (value is String && value.isEmpty) || value == null ? defaultValue : value;
@@ -34,9 +34,9 @@ String dateTimeFormat(String format, DateTime? dateTime, {String? locale}) {
 }
 
 Future launchURL(String url) async {
-  var uri = Uri.parse(url).toString();
+  var uri = Uri.parse(url);
   try {
-    await launch(uri);
+    await launchUrl(uri);
   } catch (e) {
     throw 'Could not launch $uri: $e';
   }

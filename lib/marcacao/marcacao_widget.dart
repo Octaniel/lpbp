@@ -1,15 +1,14 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get_storage/get_storage.dart';
+
 import '../backend/api_requests/api_calls.dart';
 import '../backend/firebase_storage/storage.dart';
+import '../flutter_flow/custom_functions.dart' as functions;
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/upload_media.dart';
-import '../flutter_flow/custom_functions.dart' as functions;
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class MarcacaoWidget extends StatefulWidget {
   const MarcacaoWidget({Key? key}) : super(key: key);
@@ -52,6 +51,7 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
   String uploadedFileUrl = '';
 
   TextEditingController? seucodigoController;
+  final box = GetStorage();
 
   late bool seucodigoVisibility;
   ApiCallResponse? apiResultkvw;
@@ -167,6 +167,7 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
                                         uploadedFileUrl = downloadUrls.first);
                                     showUploadMessage(context, 'Success!');
                                   } else {
+                                    box.write('uploadedFileUrl', selectedMedia.first.storagePath);
                                     setState(() {});
                                     showUploadMessage(
                                         context, 'Failed to upload media');
@@ -338,7 +339,6 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
                                   return;
                                 }
 
-                                if (_shouldSetState) setState(() {});
                               },
                               text: 'MARCAR',
                               options: FFButtonOptions(

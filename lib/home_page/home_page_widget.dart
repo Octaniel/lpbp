@@ -1,7 +1,9 @@
+import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePageWidget extends StatefulWidget {
@@ -12,7 +14,36 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+  ApiCallResponse? apiResultlvg;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      apiResultlvg = await CheckTokenCall.call(
+        acessToken: FFAppState().accesstoken,
+      );
+      if ((apiResultlvg?.succeeded ?? true)) {
+        return;
+      }
+
+      context.goNamed(
+        'login',
+        extra: <String, dynamic>{
+          kTransitionInfoKey: TransitionInfo(
+            hasTransition: true,
+            transitionType: PageTransitionType.topToBottom,
+          ),
+        },
+      );
+
+      return;
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +129,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 25, 0, 0),
                         child: FFButtonWidget(
                           onPressed: () async {
-                            context.pushNamed('marcacao');
+                            context.pushNamed('criarFuncionario');
                           },
                           text: 'COMUNICAR',
                           options: FFButtonOptions(

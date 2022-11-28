@@ -4,6 +4,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_video_player.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class InfoPresencaWidget extends StatefulWidget {
@@ -19,7 +20,36 @@ class InfoPresencaWidget extends StatefulWidget {
 }
 
 class _InfoPresencaWidgetState extends State<InfoPresencaWidget> {
+  ApiCallResponse? apiResultlvg;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      apiResultlvg = await CheckTokenCall.call(
+        acessToken: FFAppState().accesstoken,
+      );
+      if ((apiResultlvg?.succeeded ?? true)) {
+        return;
+      }
+
+      context.goNamed(
+        'login',
+        extra: <String, dynamic>{
+          kTransitionInfoKey: TransitionInfo(
+            hasTransition: true,
+            transitionType: PageTransitionType.topToBottom,
+          ),
+        },
+      );
+
+      return;
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+  }
 
   @override
   Widget build(BuildContext context) {

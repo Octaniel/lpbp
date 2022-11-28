@@ -116,6 +116,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => JustificarWidget(
                 id: params.getParam('id', ParamType.int),
               ),
+            ),
+            FFRoute(
+              name: 'criarFuncionario',
+              path: 'criarFuncionario',
+              builder: (context, params) => CriarFuncionarioWidget(
+                id: params.getParam('id', ParamType.int),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

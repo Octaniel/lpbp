@@ -107,6 +107,95 @@ class AicionarPresencaCall {
   }
 }
 
+class AdicionarPessoaCall {
+  static Future<ApiCallResponse> call({
+    String? nomeUs = '',
+    String? senha = '',
+    String? tipo = '',
+    String? nomePes = '',
+    String? apelido = '',
+    String? email = '',
+    String? morada = '',
+    String? telemovel = '',
+    String? dataNascimento = '',
+    String? turno = '',
+    String? acessToken = '',
+  }) {
+    final body = '''
+{
+  "nome": "${nomeUs}",
+  "senha": "${senha}",
+  "tipo": "${tipo}",
+  "pessoa": {
+    "nome": "${nomePes}",
+    "apelido": "${apelido}",
+    "email": "${email}",
+    "morada": "${morada}",
+    "telemovel": "${telemovel}",
+    "dataNascimento": "${dataNascimento}",
+    "turno": "${turno}"
+  }
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'adicionarPessoa',
+      apiUrl: 'http://52.204.190.168:8080/usuario/add',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Bearer ${acessToken}',
+      },
+      params: {},
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      cache: false,
+    );
+  }
+}
+
+class LoginCall {
+  static Future<ApiCallResponse> call({
+    String? username = '',
+    String? password = '',
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'login',
+      apiUrl: 'http://52.204.190.168:8080/oauth/token',
+      callType: ApiCallType.POST,
+      headers: {
+        'Authorization': 'Basic YW5ndWxhcjpAbmd1bEByMA==',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      params: {
+        'client': "angular",
+        'username': username,
+        'password': password,
+        'grant_type': "password",
+      },
+      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
+      returnBody: true,
+      cache: false,
+    );
+  }
+}
+
+class CheckTokenCall {
+  static Future<ApiCallResponse> call({
+    String? acessToken = '',
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'checkToken',
+      apiUrl: 'http://52.204.190.168:8080/util/checkConnect',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer ${acessToken}',
+      },
+      params: {},
+      returnBody: true,
+      cache: false,
+    );
+  }
+}
+
 class ApiPagingParams {
   int nextPageNumber = 0;
   int numItems = 0;

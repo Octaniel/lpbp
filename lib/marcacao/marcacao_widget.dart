@@ -56,8 +56,6 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
 
   late bool seucodigoVisibility;
   ApiCallResponse? apiResultkvw;
-  ApiCallResponse? apiResultkvw;
-  List<dynamic>? pessoas;
   ApiCallResponse? apiResultm09;
   bool? checkInternet;
   List<dynamic>? getPessoas;
@@ -72,16 +70,10 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
       if (checkInternet == true) {
         apiResultm09 = await GetFuncionarioCall.call();
         if ((apiResultm09?.succeeded ?? true)) {
-          await actions.getWrite(
-            getJsonField(
-              (apiResultm09?.jsonBody ?? ''),
-              r'''$''',
-            ),
-          );
-          return;
-        } else {
           return;
         }
+
+        return;
       } else {
         getPessoas = await actions.getRead(
           'pessoas',
@@ -98,6 +90,8 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
           !anim.applyInitialState),
       this,
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -307,68 +301,45 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     250, 25, 250, 0),
-                                child: InkWell(
-                                  onDoubleTap: () async {
+                                child: FFButtonWidget(
+                                  onPressed: () async {
                                     var _shouldSetState = false;
-                                    if (checkInternet == true) {
-                                      if (functions.checarCodigoMarcacao(
-                                          seucodigoController!.text,
-                                          (GetFuncionarioCall.codigo(
-                                            listViewGetFuncionarioResponse
-                                                .jsonBody,
-                                          ) as List)
-                                              .map<String>((s) => s.toString())
-                                              .toList())) {
-                                        apiResultkvw =
-                                            await AicionarPresencaCall.call(
-                                          codigoPessoa: int.parse(
-                                              seucodigoController!.text),
-                                          urlFoto: uploadedFileUrl,
+                                    if (functions.checarCodigoMarcacao(
+                                        seucodigoController!.text,
+                                        (GetFuncionarioCall.codigo(
+                                          listViewGetFuncionarioResponse
+                                              .jsonBody,
+                                        ) as List)
+                                            .map<String>((s) => s.toString())
+                                            .toList())) {
+                                      apiResultkvw =
+                                          await AicionarPresencaCall.call(
+                                        codigoPessoa: int.parse(
+                                            seucodigoController!.text),
+                                        urlFoto: uploadedFileUrl,
+                                      );
+                                      _shouldSetState = true;
+                                      if ((apiResultkvw?.succeeded ?? true)) {
+                                        await showDialog(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title: Text('Sucesso'),
+                                              content: Text(
+                                                  'Marcação salvo com sucesso'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext),
+                                                  child: Text('Ok'),
+                                                ),
+                                              ],
+                                            );
+                                          },
                                         );
-                                        _shouldSetState = true;
-                                        if ((apiResultkvw?.succeeded ?? true)) {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                title: Text('Sucesso'),
-                                                content: Text(
-                                                    'Marcação salvo com sucesso'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext),
-                                                    child: Text('Ok'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                          if (_shouldSetState) setState(() {});
-                                          return;
-                                        } else {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                title: Text('Error'),
-                                                content: Text(
-                                                    'Erro ao fazer a marcação'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext),
-                                                    child: Text('Ok'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                          if (_shouldSetState) setState(() {});
-                                          return;
-                                        }
+                                        if (_shouldSetState) setState(() {});
+                                        return;
                                       } else {
                                         await showDialog(
                                           context: context,
@@ -376,7 +347,7 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
                                             return AlertDialog(
                                               title: Text('Error'),
                                               content: Text(
-                                                  'Não Existe Funcionario com este Codigo'),
+                                                  'Erro ao fazer a marcação'),
                                               actions: [
                                                 TextButton(
                                                   onPressed: () =>
@@ -392,193 +363,48 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
                                         return;
                                       }
                                     } else {
-                                      if (functions.checarCodigoMarcacao(
-                                          seucodigoController!.text,
-                                          getPessoas!
-                                              .map((e) => getJsonField(
-                                                    e,
-                                                    r'''$.codigo''',
-                                                  ))
-                                              .toList())) {
-                                        pessoas = await actions.getRead(
-                                          'pessoas',
-                                        );
-                                        _shouldSetState = true;
-                                        if ((apiResultkvw?.succeeded ?? true)) {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                title: Text('Sucesso'),
-                                                content: Text(
-                                                    'Marcação salvo com sucesso'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext),
-                                                    child: Text('Ok'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
+                                      await showDialog(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: Text('Error'),
+                                            content: Text(
+                                                'Não Existe Funcionario com este Codigo'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext),
+                                                child: Text('Ok'),
+                                              ),
+                                            ],
                                           );
-                                          if (_shouldSetState) setState(() {});
-                                          return;
-                                        } else {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                title: Text('Error'),
-                                                content: Text(
-                                                    'Erro ao fazer a marcação'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext),
-                                                    child: Text('Ok'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                          if (_shouldSetState) setState(() {});
-                                          return;
-                                        }
-                                      } else {
-                                        await showDialog(
-                                          context: context,
-                                          builder: (alertDialogContext) {
-                                            return AlertDialog(
-                                              title: Text('Error'),
-                                              content: Text(
-                                                  'Não Existe Funcionario com este Codigo'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(
-                                                          alertDialogContext),
-                                                  child: Text('Ok'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                        if (_shouldSetState) setState(() {});
-                                        return;
-                                      }
+                                        },
+                                      );
+                                      if (_shouldSetState) setState(() {});
+                                      return;
                                     }
 
                                     if (_shouldSetState) setState(() {});
                                   },
-                                  child: FFButtonWidget(
-                                    onPressed: () async {
-                                      var _shouldSetState = false;
-                                      if (functions.checarCodigoMarcacao(
-                                          seucodigoController!.text,
-                                          (GetFuncionarioCall.codigo(
-                                            listViewGetFuncionarioResponse
-                                                .jsonBody,
-                                          ) as List)
-                                              .map<String>((s) => s.toString())
-                                              .toList())) {
-                                        apiResultkvw =
-                                            await AicionarPresencaCall.call(
-                                          codigoPessoa: int.parse(
-                                              seucodigoController!.text),
-                                          urlFoto: uploadedFileUrl,
-                                        );
-                                        _shouldSetState = true;
-                                        if ((apiResultkvw?.succeeded ?? true)) {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                title: Text('Sucesso'),
-                                                content: Text(
-                                                    'Marcação salvo com sucesso'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext),
-                                                    child: Text('Ok'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                          if (_shouldSetState) setState(() {});
-                                          return;
-                                        } else {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                title: Text('Error'),
-                                                content: Text(
-                                                    'Erro ao fazer a marcação'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext),
-                                                    child: Text('Ok'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                          if (_shouldSetState) setState(() {});
-                                          return;
-                                        }
-                                      } else {
-                                        await showDialog(
-                                          context: context,
-                                          builder: (alertDialogContext) {
-                                            return AlertDialog(
-                                              title: Text('Error'),
-                                              content: Text(
-                                                  'Não Existe Funcionario com este Codigo'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(
-                                                          alertDialogContext),
-                                                  child: Text('Ok'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                        if (_shouldSetState) setState(() {});
-                                        return;
-                                      }
-
-                                      if (_shouldSetState) setState(() {});
-                                    },
-                                    text: 'MARCAR',
-                                    options: FFButtonOptions(
-                                      width: 20,
-                                      height: 50,
-                                      color: Color(0xFF0985A8),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                      elevation: 20,
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
+                                  text: 'MARCAR',
+                                  options: FFButtonOptions(
+                                    width: 20,
+                                    height: 50,
+                                    color: Color(0xFF0985A8),
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .subtitle2
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                    elevation: 20,
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                      width: 1,
                                     ),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
                               ),

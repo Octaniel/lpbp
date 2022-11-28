@@ -7,3 +7,5 @@ export 'listafuncionario/listafuncionario_widget.dart'
 export 'presenca/presenca_widget.dart' show PresencaWidget;
 export 'info_presenca/info_presenca_widget.dart' show InfoPresencaWidget;
 export 'justificar/justificar_widget.dart' show JustificarWidget;
+export 'criar_funcionario/criar_funcionario_widget.dart'
+    show CriarFuncionarioWidget;

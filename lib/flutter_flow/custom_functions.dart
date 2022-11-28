@@ -28,6 +28,13 @@ String formatDate(String? date) {
   return '';
 }
 
+String formatDateParaBack(String? date) {
+  if (date != null) {
+    return DateFormat('yyyy-MM-dd').format(DateTime.parse(date));
+  }
+  return '';
+}
+
 String formatStringToUtf8(String arg) {
   return Uri.decodeFull(arg);
 }

@@ -1,5 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
+import 'package:lpbp/flutter_flow/upload_media.dart';
+
+import '../backend/api_requests/api_calls.dart';
+import '../backend/api_requests/api_manager.dart';
+import '../backend/firebase_storage/storage.dart';
 
 Color getColorByPresente(bool? presente) {
   if (presente != null && presente) {
@@ -14,6 +23,11 @@ String presencaBoleanToString(bool? presente) {
   return presente == true ? 'PRESENTE' : 'AUSENTE';
 }
 
+Future<bool> checkInternetConnection() async {
+  bool result = await InternetConnectionChecker().hasConnection;
+  return result;
+}
+
 String formatDate(String? date) {
   if (date != null) {
     return DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.parse(date));
@@ -23,6 +37,45 @@ String formatDate(String? date) {
 
 String formatStringToUtf8(String arg) {
   return Uri.decodeFull(arg);
+}
+
+Future<void> savePresentcaOffline() async {
+  var read = GetStorage().read('presencas');
+  List<dynamic> presencas = [];
+  if (read != null) {
+    await read.forEach((value) async {
+      try {
+        if (value['presente'] == true) {
+          var url = await uploadData(value['urlFoto'], value['bytes'] as Uint8List);
+          if (url != null && url.isNotEmpty) {
+            ApiCallResponse? apiResultkvw =
+                await AicionarPresencaOfflineCall.call(
+              codigoPessoa: int.parse(value['codigo']),
+              urlFoto: url,
+              date: value['data'],
+            );
+            if (!(apiResultkvw.succeeded)) {
+              presencas.add(value);
+            }
+          }
+        } else {
+          ApiCallResponse? apiResultkvw =
+              await AicionarAusenciaOfflineCall.call(
+            codigoPessoa: int.parse(value['codigo']),
+            date: value['data'],
+          );
+          if (!(apiResultkvw.succeeded)) {
+            presencas.add(value);
+          }
+        }
+      } catch (e) {
+        return;
+      }
+    });
+    read.clear();
+    read.addAll(presencas);
+    await GetStorage().write('presencas', read);
+  }
 }
 
 String formatUrlUploadFile(String url) {

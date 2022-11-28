@@ -105,6 +105,45 @@ class AicionarPresencaCall {
   }
 }
 
+class AicionarPresencaOfflineCall {
+  static Future<ApiCallResponse> call({
+    int? codigoPessoa,
+    String? urlFoto = '',
+    String? date = '',
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'aicionarPresenca',
+      apiUrl:
+      'http://52.204.190.168:8080/presenca/offline?codigoPessoa=$codigoPessoa&urlFoto=$urlFoto&date=$date&presente=true',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {},
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      cache: false,
+    );
+  }
+}
+
+class AicionarAusenciaOfflineCall {
+  static Future<ApiCallResponse> call({
+    int? codigoPessoa,
+    String? date = '',
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'aicionarPresenca',
+      apiUrl:
+      'http://52.204.190.168:8080/presenca/offline?codigoPessoa=$codigoPessoa&date=$date&presente=false',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {},
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      cache: false,
+    );
+  }
+}
+
 class ApiPagingParams {
   int nextPageNumber = 0;
   int numItems = 0;

@@ -215,12 +215,13 @@ String signatureStoragePath(String uid) {
   return 'users/$uid/uploads/signature_$timestamp.png';
 }
 
-void showUploadMessage(BuildContext context, String message,
+void showUploadMessage(BuildContext context, String message, Color color,
     {bool showLoading = false}) {
   ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
     ..showSnackBar(
       SnackBar(
+        backgroundColor: color,
         content: Row(
           children: [
             if (showLoading)

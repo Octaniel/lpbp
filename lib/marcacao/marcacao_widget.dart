@@ -1,6 +1,12 @@
+import 'dart:collection';
+
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:go_router/go_router.dart';
 
 import '../backend/api_requests/api_calls.dart';
 import '../backend/firebase_storage/storage.dart';
@@ -49,11 +55,13 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
   };
   bool isMediaUploading = false;
   String uploadedFileUrl = '';
+  var selectedMedia;
+  var box = new GetStorage();
 
   TextEditingController? seucodigoController;
-  final box = GetStorage();
 
   late bool seucodigoVisibility;
+  var presencas = [];
   ApiCallResponse? apiResultkvw;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -66,14 +74,14 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
           !anim.applyInitialState),
       this,
     );
-
     seucodigoController = TextEditingController();
     seucodigoVisibility = false;
   }
 
   @override
-  void dispose() {
+  Future<void> dispose() async {
     seucodigoController?.dispose();
+    selectedMedia = null;
     super.dispose();
   }
 
@@ -110,7 +118,7 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
                     future: GetFuncionarioCall.call(),
                     builder: (context, snapshot) {
                       // Customize what your widget looks like when it's loading.
-                      if (!snapshot.hasData) {
+                      if (!snapshot.hasData && !snapshot.hasError) {
                         return Center(
                           child: SizedBox(
                             width: 50,
@@ -121,59 +129,26 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
                           ),
                         );
                       }
-                      final listViewGetFuncionarioResponse = snapshot.data!;
+                      final listViewGetFuncionarioResponse = snapshot.hasData
+                          ? snapshot.data?.jsonBody
+                          : box.read('pessoas');
+                      if (snapshot.hasData) {
+                        box.write('pessoas', snapshot.data?.jsonBody);
+                      }
                       return ListView(
                         padding: EdgeInsets.zero,
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         children: [
                           Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(300, 0, 300, 0),
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                Get.width * .2, 0, Get.width * .2, 0),
                             child: InkWell(
                               onTap: () async {
-                                final selectedMedia = await selectMedia(
+                                selectedMedia = await selectMedia(
                                   multiImage: false,
                                 );
-                                if (selectedMedia != null &&
-                                    selectedMedia.every((m) =>
-                                        validateFileFormat(
-                                            m.storagePath, context))) {
-                                  setState(() => isMediaUploading = true);
-                                  var downloadUrls = <String>[];
-                                  try {
-                                    showUploadMessage(
-                                      context,
-                                      'Uploading file...',
-                                      showLoading: true,
-                                    );
-                                    downloadUrls = (await Future.wait(
-                                      selectedMedia.map(
-                                        (m) async => await uploadData(
-                                            m.storagePath, m.bytes),
-                                      ),
-                                    ))
-                                        .where((u) => u != null)
-                                        .map((u) => u!)
-                                        .toList();
-                                  } finally {
-                                    ScaffoldMessenger.of(context)
-                                        .hideCurrentSnackBar();
-                                    isMediaUploading = false;
-                                  }
-                                  if (downloadUrls.length ==
-                                      selectedMedia.length) {
-                                    setState(() =>
-                                        uploadedFileUrl = downloadUrls.first);
-                                    showUploadMessage(context, 'Success!');
-                                  } else {
-                                    box.write('uploadedFileUrl', selectedMedia.first.storagePath);
-                                    setState(() {});
-                                    showUploadMessage(
-                                        context, 'Failed to upload media');
-                                    return;
-                                  }
-                                }
+                                setState(() {});
                               },
                               child: Container(
                                 width: 100,
@@ -182,15 +157,15 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
-                                child: Image.network(
-                                  'https://picsum.photos/seed/105/600',
-                                ),
+                                child: selectedMedia != null
+                                    ? Image.memory(selectedMedia.first.bytes)
+                                    : Icon(Icons.camera_alt),
                               ),
                             ),
                           ),
                           Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(200, 20, 200, 0),
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                Get.width * .2, 20, Get.width * .2, 0),
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.5,
                               child: TextFormField(
@@ -257,88 +232,48 @@ class _MarcacaoWidgetState extends State<MarcacaoWidget>
                                 animationsMap['textFieldOnPageLoadAnimation']!),
                           ),
                           Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(250, 25, 250, 0),
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                Get.width * .2, 25, Get.width * .2, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                var _shouldSetState = false;
-                                if (functions.checarCodigoMarcacao(
+                                if (selectedMedia == null) {
+                                  showUploadMessage(
+                                      context,
+                                      'Por favor, tire uma foto!',
+                                      Colors.redAccent);
+                                } else if (functions.checarCodigoMarcacao(
                                     seucodigoController!.text,
                                     (GetFuncionarioCall.codigo(
-                                      listViewGetFuncionarioResponse.jsonBody,
+                                      listViewGetFuncionarioResponse,
                                     ) as List)
                                         .map<String>((s) => s.toString())
                                         .toList())) {
-                                  apiResultkvw =
-                                      await AicionarPresencaCall.call(
-                                    codigoPessoa:
-                                        int.parse(seucodigoController!.text),
-                                    urlFoto: uploadedFileUrl,
-                                  );
-                                  _shouldSetState = true;
-                                  if ((apiResultkvw?.succeeded ?? true)) {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (alertDialogContext) {
-                                        return AlertDialog(
-                                          title: Text('Sucesso'),
-                                          content: Text(
-                                              'Marcação salvo com sucesso'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () => Navigator.pop(
-                                                  alertDialogContext),
-                                              child: Text('Ok'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                    if (_shouldSetState) setState(() {});
-                                    return;
-                                  } else {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (alertDialogContext) {
-                                        return AlertDialog(
-                                          title: Text('Error'),
-                                          content:
-                                              Text('Erro ao fazer a marcação'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () => Navigator.pop(
-                                                  alertDialogContext),
-                                              child: Text('Ok'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                    if (_shouldSetState) setState(() {});
-                                    return;
-                                  }
+                                  setState(() => isMediaUploading = true);
+
+                                  var dateTime = DateTime.now();
+                                  presencas.add({
+                                    'urlFoto': selectedMedia.first.storagePath,
+                                    'codigo': seucodigoController!.text,
+                                    'presente': true,
+                                    'bytes': selectedMedia.first.bytes,
+                                    'data':
+                                        '${dateTime.year}-${dateTime.month}-${dateTime.day}-${dateTime.hour}-${dateTime.minute}-${dateTime.second}'
+                                  });
+                                  await box.write('presencasTemp', presencas);
+                                  showUploadMessage(
+                                      context,
+                                      'Marcacão registrada com sucesso!',
+                                      Colors.orangeAccent);
+                                  seucodigoController?.text = '';
+                                  selectedMedia = null;
+                                  return;
                                 } else {
-                                  await showDialog(
-                                    context: context,
-                                    builder: (alertDialogContext) {
-                                      return AlertDialog(
-                                        title: Text('Error'),
-                                        content: Text(
-                                            'Não Existe Funcionario com este Codigo'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(
-                                                alertDialogContext),
-                                            child: Text('Ok'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                  if (_shouldSetState) setState(() {});
+                                  showUploadMessage(
+                                      context,
+                                      'Não Existe Funcionario com este Codigo',
+                                      Colors.redAccent);
                                   return;
                                 }
-
                               },
                               text: 'MARCAR',
                               options: FFButtonOptions(

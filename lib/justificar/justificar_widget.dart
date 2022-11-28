@@ -79,6 +79,7 @@ class _JustificarWidgetState extends State<JustificarWidget> {
                                 showUploadMessage(
                                   context,
                                   'Uploading file...',
+                                  Colors.white,
                                   showLoading: true,
                                 );
                                 downloadUrls = (await Future.wait(
@@ -98,11 +99,11 @@ class _JustificarWidgetState extends State<JustificarWidget> {
                               if (downloadUrls.length == selectedMedia.length) {
                                 setState(
                                     () => uploadedFileUrl = downloadUrls.first);
-                                showUploadMessage(context, 'Success!');
+                                showUploadMessage(context, 'Success!', Colors.greenAccent);
                               } else {
                                 setState(() {});
                                 showUploadMessage(
-                                    context, 'Failed to upload media');
+                                    context, 'Failed to upload media', Colors.redAccent);
                                 return;
                               }
                             }

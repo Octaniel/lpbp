@@ -39,7 +39,6 @@ Future signOut() {
 Future deleteUser(BuildContext context) async {
   try {
     if (currentUser?.user == null) {
-      print('Error: delete user attempted with no logged in user!');
       return;
     }
     await currentUser?.user?.delete();

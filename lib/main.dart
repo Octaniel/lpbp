@@ -22,7 +22,6 @@ void main() async {
   OneSignal.shared.setAppId("7cd8a33b-86f3-4167-8fe9-61d308cf3248");
 
   OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
-    print("Accepted permission: $accepted");
   });
 
   runApp(MyApp());

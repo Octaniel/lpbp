@@ -108,8 +108,6 @@ class _FlutterFlowVideoPlayerState extends State<FlutterFlowVideoPlayer> {
     _videoPlayers.add(_videoPlayerController!);
     _videoPlayerController!.addListener(() {
       if (_videoPlayerController!.value.hasError && !_loggedError) {
-        print(
-            'Error playing video: ${_videoPlayerController!.value.errorDescription}');
         _loggedError = true;
       }
       // Stop all other players when one video is playing.

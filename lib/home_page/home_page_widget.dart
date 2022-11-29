@@ -119,7 +119,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           onPressed: () async {
                             context.pushNamed('listafuncionario');
                           },
-                          text: 'STATUS',
+                          text: 'STATUSb',
                           options: FFButtonOptions(
                             width: 130,
                             height: 50,
